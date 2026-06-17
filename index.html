@@ -67,7 +67,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   color: var(--ink);
   margin: 0;
 }
-.display-italic { font-style: italic; color: var(--accent); font-weight: 400; }
+.display-italic { font-style: italic; font-weight: 400; }
 .display-soft { color: var(--ink-soft); font-style: italic; }
 .h-display { font-size: clamp(32px, 3.6vw, 52px); }
 .h-display-light { color: var(--paper); }
@@ -472,6 +472,91 @@ html { scroll-behavior: smooth; }
 .btn-arrow { display: inline-flex; transition: transform .2s; }
 .btn:hover .btn-arrow { transform: translateX(5px); }
 .hero-deco { position: absolute; right: 0; top: 50%; transform: translateY(-50%); pointer-events: none; z-index: 0; opacity: 0.07; }
+
+/* Hero gradient pulse */
+@media (prefers-reduced-motion: no-preference) {
+  .hero::before { animation: heroGlow 10s ease-in-out infinite; }
+  @keyframes heroGlow { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+}
+
+/* Gradient hero italic */
+.display-italic {
+  background: linear-gradient(130deg, var(--accent) 0%, #6BABFF 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; font-style: italic; color: transparent;
+}
+
+/* Service icon hover scale + rotate */
+.svc-icon { transition: transform .28s cubic-bezier(.2,.7,.2,1); }
+.svc:hover .svc-icon { transform: scale(1.2) rotate(-5deg); }
+
+/* Process connector line */
+.steps { position: relative; }
+.steps::before {
+  content: ''; position: absolute; top: 46px; left: 18px; right: 18px; height: 1px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--ink-15) 100%);
+}
+.step-n { position: relative; z-index: 1; }
+@media (max-width: 900px) { .steps::before { display: none; } }
+
+/* Scroll progress bar */
+.scroll-prog {
+  position: fixed; top: 0; left: 0; height: 3px; z-index: 200;
+  background: var(--accent); pointer-events: none;
+  box-shadow: 0 0 10px rgba(30,96,214,0.55);
+  transition: width .1s linear;
+}
+
+/* Back to top */
+.back-top {
+  position: fixed; right: 24px; z-index: 58;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--ink); color: var(--paper);
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 20px rgba(10,31,58,0.22);
+  transition: transform .25s, opacity .3s, bottom .3s;
+  opacity: 0; pointer-events: none; bottom: 20px;
+}
+.back-top.is-vis { opacity: 1; pointer-events: all; bottom: 80px; }
+.back-top:hover { transform: translateY(-3px); }
+
+/* Mobile hamburger */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  padding: 8px; border: none; background: none; cursor: pointer; z-index: 90;
+}
+.hamburger span { width: 22px; height: 1.5px; background: var(--ink); display: block; transition: transform .3s, opacity .3s; transform-origin: center; }
+.hamburger.is-open span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
+.hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.is-open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
+@media (max-width: 960px) { .hamburger { display: flex; } }
+.site-header.menu-open { border-bottom-color: transparent; }
+
+/* Mobile nav overlay */
+.nav-overlay {
+  position: fixed; inset: 0; z-index: 76; background: var(--paper);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transform: translateX(105%); transition: transform .38s cubic-bezier(.25,.46,.45,.94);
+}
+.nav-overlay.is-open { transform: none; }
+.nav-overlay-links {
+  display: flex; flex-direction: column; align-items: center; width: 100%; padding: 0 32px;
+}
+.nav-overlay-links a {
+  font-family: var(--font-display); font-size: clamp(26px, 6.5vw, 42px);
+  color: var(--ink); padding: 16px 0; border-bottom: 1px solid var(--ink-15);
+  width: 100%; text-align: center; letter-spacing: -0.02em; transition: color .2s;
+}
+.nav-overlay-links a:first-child { border-top: 1px solid var(--ink-15); }
+.nav-overlay-links a:hover { color: var(--accent); }
+.nav-overlay-cta { margin-top: 32px; }
+.nav-overlay-close {
+  position: absolute; top: 18px; right: 20px;
+  font-size: 28px; color: var(--ink-soft); line-height: 1;
+  padding: 8px; transition: color .2s;
+}
+.nav-overlay-close:hover { color: var(--ink); }
+@media (min-width: 961px) { .nav-overlay { display: none; } }
 </style>
 </head>
 <body>
@@ -1062,32 +1147,63 @@ function AnimatedNumber({ value, duration = 1400 }) {
 // ── Header ──
 function Header({ t, lang, setLang, onCta, logoVariant }) {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  function close() { setMenuOpen(false); }
+  function handleCta() { close(); onCta(); }
+
+  const navLinks = [
+    ["#about", t.nav.home],
+    ["#services-ar", t.nav.services],
+    ["#team", t.nav.team],
+    ["#offices", t.nav.offices],
+    ["#contact", t.nav.contact],
+  ];
+
   return (
-    <header className={"site-header " + (scrolled ? "is-scrolled" : "")}>
-      <div className="container header-row">
-        <Logo variant={logoVariant}/>
-        <nav className="nav" aria-label="Primary">
-          <a href="#about">{t.nav.home}</a>
-          <a href="#services-ar">{t.nav.services}</a>
-          <a href="#team">{t.nav.team}</a>
-          <a href="#offices">{t.nav.offices}</a>
-          <a href="#contact">{t.nav.contact}</a>
-        </nav>
-        <div className="header-actions">
-          <div className="lang-switch" role="tablist" aria-label="Language">
-            <button role="tab" aria-selected={lang === "es"} className={lang === "es" ? "is-active" : ""} onClick={() => setLang("es")}>ES</button>
-            <span className="lang-divider" aria-hidden="true"></span>
-            <button role="tab" aria-selected={lang === "en"} className={lang === "en" ? "is-active" : ""} onClick={() => setLang("en")}>EN</button>
+    <>
+      <header className={"site-header " + (scrolled ? "is-scrolled" : "") + (menuOpen ? " menu-open" : "")}>
+        <div className="container header-row">
+          <Logo variant={logoVariant}/>
+          <nav className="nav" aria-label="Primary">
+            {navLinks.map(([href, label]) => <a key={href} href={href}>{label}</a>)}
+          </nav>
+          <div className="header-actions">
+            <div className="lang-switch" role="tablist" aria-label="Language">
+              <button role="tab" aria-selected={lang === "es"} className={lang === "es" ? "is-active" : ""} onClick={() => setLang("es")}>ES</button>
+              <span className="lang-divider" aria-hidden="true"></span>
+              <button role="tab" aria-selected={lang === "en"} className={lang === "en" ? "is-active" : ""} onClick={() => setLang("en")}>EN</button>
+            </div>
+            <button className="btn btn-primary btn-sm" onClick={onCta} style={{ display: menuOpen ? "none" : undefined }}>{t.nav.cta}</button>
+            <button className={"hamburger " + (menuOpen ? "is-open" : "")} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu" aria-expanded={menuOpen}>
+              <span/><span/><span/>
+            </button>
           </div>
-          <button className="btn btn-primary btn-sm" onClick={onCta}>{t.nav.cta}</button>
+        </div>
+      </header>
+      <div className={"nav-overlay " + (menuOpen ? "is-open" : "")} aria-hidden={!menuOpen}>
+        <button className="nav-overlay-close" onClick={close} aria-label="Close menu">&#x2715;</button>
+        <div className="nav-overlay-links">
+          {navLinks.map(([href, label]) => (
+            <a key={href} href={href} onClick={close}>{label}</a>
+          ))}
+        </div>
+        <div className="nav-overlay-cta">
+          <button className="btn btn-primary" onClick={handleCta}>{t.nav.cta}<span className="btn-arrow"><ArrowIcon/></span></button>
         </div>
       </div>
-    </header>
+    </>
   );
 }
 
@@ -1497,6 +1613,38 @@ function WhatsAppFab() {
   );
 }
 
+// ── Scroll Progress ──
+function ScrollProgress() {
+  const [w, setW] = useState(0);
+  useEffect(() => {
+    const update = () => {
+      const scrolled = window.scrollY;
+      const max = document.body.scrollHeight - window.innerHeight;
+      setW(max > 0 ? Math.round((scrolled / max) * 1000) / 10 : 0);
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+  return <div className="scroll-prog" style={{ width: w + "%" }} aria-hidden="true"/>;
+}
+
+// ── Back to Top ──
+function BackToTop() {
+  const [vis, setVis] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setVis(window.scrollY > 640);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <button className={"back-top " + (vis ? "is-vis" : "")} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Back to top">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 13V3M3 8l5-5 5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </button>
+  );
+}
+
 // ── Footer ──
 function Footer({ t, logoVariant }) {
   return (
@@ -1533,7 +1681,7 @@ function Footer({ t, logoVariant }) {
   );
 }
 
-Object.assign(window, { Logo, Header, Hero, About, ServicesAR, ServicesINT, Team, Offices, Process, Stack, FAQ, Contact, Footer, WhatsAppFab });
+Object.assign(window, { Logo, Header, Hero, About, ServicesAR, ServicesINT, Team, Offices, Process, Stack, FAQ, Contact, ScrollProgress, BackToTop, Footer, WhatsAppFab });
 </script>
 
 <!-- App -->
@@ -1634,6 +1782,8 @@ function App() {
         <Contact t={t}/>
       </main>
       <Footer t={t} logoVariant={tweak.logoVariant}/>
+      <ScrollProgress/>
+      <BackToTop/>
       {tweak.whatsapp !== false && <WhatsAppFab/>}
 
       <TweaksPanel title="Tweaks">
