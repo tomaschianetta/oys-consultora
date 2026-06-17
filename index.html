@@ -173,7 +173,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .stat { padding: 24px 28px; border-right: 1px solid var(--ink-15); }
 .stat:last-child { border-right: none; }
 .stat:first-child { padding-left: 0; }
-.stat-n { font-family: var(--font-display); font-size: clamp(32px, 3vw, 44px); line-height: 1; letter-spacing: -0.02em; }
+.stat-n { font-family: var(--font-display); font-size: clamp(32px, 3vw, 44px); line-height: 1; letter-spacing: -0.02em; color: var(--accent); }
 .stat-l { color: var(--ink-soft); font-size: 13px; margin-top: 8px; }
 @media (max-width: 720px) {
   .hero-stats { grid-template-columns: repeat(2, 1fr); }
@@ -194,7 +194,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 0;
   border-top: 1px solid var(--ink-15);
 }
-.pillar { padding: 24px 24px 24px 0; border-bottom: 1px solid var(--ink-15); }
+.pillar { padding: 24px 24px 24px 0; border-bottom: 1px solid var(--ink-15); transition: background .2s; }
+.pillar:hover { background: color-mix(in oklab, var(--accent) 4%, var(--paper)); }
 .pillar:nth-child(odd) { border-right: 1px solid var(--ink-15); padding-right: 24px; }
 .pillar:nth-child(even) { padding-left: 24px; }
 .pillar dt { font-family: var(--font-display); font-size: 20px; margin-bottom: 6px; letter-spacing: -0.01em; }
@@ -216,9 +217,15 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } }
 .svc {
   padding: 32px 28px; border-right: 1px solid var(--ink-15); border-bottom: 1px solid var(--ink-15);
-  background: transparent; transition: background .2s; position: relative;
+  background: transparent; transition: background .22s, transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s; position: relative;
 }
-.svc:hover { background: color-mix(in oklab, var(--accent) 6%, transparent); }
+.svc:hover {
+  background: color-mix(in oklab, var(--accent) 5%, transparent);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 44px -10px rgba(10,31,58,0.14), 0 4px 12px -4px rgba(10,31,58,0.06);
+  z-index: 1;
+}
+.svc-icon { display: block; margin-bottom: 14px; color: var(--accent); }
 .svc-num { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--accent); }
 .svc-t { font-family: var(--font-display); font-size: 22px; margin: 14px 0 10px; letter-spacing: -0.01em; line-height: 1.15; }
 .svc-d { color: var(--ink-soft); font-size: 14px; margin: 0; line-height: 1.5; }
@@ -229,7 +236,13 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .services-int .eyebrow-dot { background: var(--accent-soft); }
 .services-grid-dark { border-top-color: rgba(255,255,255,0.08); border-left-color: rgba(255,255,255,0.08); }
 .svc-dark { border-right-color: rgba(255,255,255,0.08); border-bottom-color: rgba(255,255,255,0.08); }
-.svc-dark:hover { background: rgba(255,255,255,0.04); }
+.svc-dark:hover {
+  background: rgba(255,255,255,0.06);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 44px -10px rgba(0,0,0,0.32);
+  z-index: 1;
+}
+.svc-dark .svc-icon { color: var(--accent-soft); }
 .svc-num-dark { color: var(--accent-soft); }
 .svc-t-dark { color: var(--paper); }
 .svc-d-dark { color: rgba(255,255,255,0.7); }
@@ -242,9 +255,16 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 @media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 540px) { .steps { grid-template-columns: 1fr; } }
-.step { padding: 28px 24px 28px 0; border-top: 1px solid var(--ink); position: relative; }
+.step { padding: 28px 24px 28px 0; border-top: 2px solid var(--ink); position: relative; transition: background .2s; }
 .step + .step { padding-left: 24px; }
-.step-n { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--accent); margin-bottom: 16px; }
+.step:hover { background: color-mix(in oklab, var(--accent) 4%, transparent); }
+.step-n {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--accent); color: var(--paper);
+  font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: 0.12em;
+  margin-bottom: 18px;
+}
 .step-t { font-family: var(--font-display); font-size: 24px; letter-spacing: -0.01em; margin: 0 0 10px; }
 .step-d { color: var(--ink-soft); font-size: 14px; margin: 0; }
 
@@ -255,7 +275,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .member {
   background: var(--paper); border: 1px solid var(--ink-15); border-radius: 4px;
   display: grid; grid-template-columns: 200px 1fr; overflow: hidden;
+  transition: transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s;
 }
+.member:hover { transform: translateY(-4px); box-shadow: 0 20px 44px -10px rgba(10,31,58,0.12); }
 @media (max-width: 600px) { .member { grid-template-columns: 1fr; } }
 .member-portrait {
   background: var(--paper-warm); position: relative; aspect-ratio: 5/6; overflow: hidden;
@@ -307,7 +329,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .stack-list li {
   font-family: ui-monospace, monospace; font-size: 13px; padding: 8px 14px;
   border: 1px solid var(--ink-15); border-radius: 4px; color: var(--ink); background: var(--paper);
+  transition: background .2s, color .2s, border-color .2s, transform .15s; cursor: default;
 }
+.stack-list li:hover { background: var(--accent); color: var(--paper); border-color: var(--accent); transform: translateY(-2px); }
 
 /* Contact */
 .contact { background: var(--ink); color: var(--paper); }
@@ -432,26 +456,22 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 @media (max-width: 600px) { .wa-fab { bottom: 16px; right: 16px; } }
 
-/* Scroll reveal */
+/* Scroll reveal — driven by IntersectionObserver in JS */
 @media (prefers-reduced-motion: no-preference) {
-  .section-head, .pillar, .svc, .step, .member, .office,
-  .stack-list li, .faq-item, .stat, .hero-copy {
-    opacity: 0; transform: translateY(18px);
-    animation: rise .8s cubic-bezier(.2,.7,.2,1) forwards;
+  .reveal-el {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .72s cubic-bezier(.2,.7,.2,1), transform .72s cubic-bezier(.2,.7,.2,1);
+    transition-delay: var(--reveal-delay, 0s);
   }
-  .hero-copy { animation-delay: .05s; }
-  .stat:nth-child(1) { animation-delay: .35s; }
-  .stat:nth-child(2) { animation-delay: .45s; }
-  .stat:nth-child(3) { animation-delay: .55s; }
-  .stat:nth-child(4) { animation-delay: .65s; }
-  .svc:nth-child(odd) { animation-delay: .05s; }
-  .svc:nth-child(even) { animation-delay: .15s; }
-  .step:nth-child(1) { animation-delay: .05s; }
-  .step:nth-child(2) { animation-delay: .15s; }
-  .step:nth-child(3) { animation-delay: .25s; }
-  .step:nth-child(4) { animation-delay: .35s; }
-  @keyframes rise { to { opacity: 1; transform: none; } }
+  .reveal-el.is-visible { opacity: 1; transform: none; }
 }
+
+/* Pro-max additions */
+html { scroll-behavior: smooth; }
+.btn-arrow { display: inline-flex; transition: transform .2s; }
+.btn:hover .btn-arrow { transform: translateX(5px); }
+.hero-deco { position: absolute; right: 0; top: 50%; transform: translateY(-50%); pointer-events: none; z-index: 0; opacity: 0.07; }
 </style>
 </head>
 <body>
@@ -1075,6 +1095,15 @@ function Header({ t, lang, setLang, onCta, logoVariant }) {
 function Hero({ t }) {
   return (
     <section className="hero" id="top">
+      <div className="hero-deco" aria-hidden="true">
+        <svg width="560" height="560" viewBox="0 0 560 560" fill="none">
+          <circle cx="280" cy="280" r="270" stroke="var(--accent)" strokeWidth="1"/>
+          <circle cx="280" cy="280" r="210" stroke="var(--accent)" strokeWidth="1"/>
+          <circle cx="280" cy="280" r="150" stroke="var(--accent)" strokeWidth="1"/>
+          <circle cx="280" cy="280" r="90" stroke="var(--accent)" strokeWidth="1.5"/>
+          <circle cx="280" cy="280" r="30" stroke="var(--accent)" strokeWidth="2"/>
+        </svg>
+      </div>
       <div className="container hero-grid hero-grid-solo">
         <div className="hero-copy">
           <div className="eyebrow"><span className="eyebrow-dot"></span>{t.hero.eyebrow}</div>
@@ -1086,7 +1115,7 @@ function Hero({ t }) {
           </h1>
           <p className="lede">{t.hero.lede}</p>
           <div className="hero-ctas">
-            <a href="#contact" className="btn btn-primary">{t.hero.ctaPrimary}<ArrowIcon/></a>
+            <a href="#contact" className="btn btn-primary">{t.hero.ctaPrimary}<span className="btn-arrow"><ArrowIcon/></span></a>
             <a href="#services-ar" className="btn btn-ghost">{t.hero.ctaSecondary}</a>
           </div>
         </div>
@@ -1144,6 +1173,25 @@ function About({ t }) {
 }
 
 // ── Services ──
+const AR_ICONS = [
+  // 0 Impuestos
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/><circle cx="10" cy="10" r="1.5" fill="currentColor" stroke="none"/></svg>,
+  // 1 Sueldos
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+  // 2 Constitución
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+  // 3 Auditorías
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M8.5 11l2.5 2.5 4-4"/></svg>,
+  // 4 Análisis de viabilidad
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="3" y1="20" x2="21" y2="20"/></svg>,
+  // 5 Facturación
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>,
+  // 6 Libros contables
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+  // 7 Automation BA
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="6" height="6"/><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/></svg>,
+];
+
 function ServicesAR({ t }) {
   return (
     <section className="section services-ar" id="services-ar">
@@ -1156,6 +1204,7 @@ function ServicesAR({ t }) {
         <ul className="services-grid">
           {t.servicesAR.items.map((it, i) => (
             <li className="svc" key={i}>
+              <span className="svc-icon" aria-hidden="true" style={{ width: 28, height: 28 }}>{AR_ICONS[i] || AR_ICONS[0]}</span>
               <span className="svc-num">{String(i + 1).padStart(2, "0")}</span>
               <h3 className="svc-t">{it.t}</h3>
               <p className="svc-d">{it.d}</p>
@@ -1166,6 +1215,25 @@ function ServicesAR({ t }) {
     </section>
   );
 }
+
+const INT_ICONS = [
+  // 0 Bookkeeping
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/><line x1="6" y1="8" x2="8" y2="8"/><line x1="6" y1="12" x2="8" y2="12"/></svg>,
+  // 1 Invoice Processing
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
+  // 2 Wages & Payroll
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><line x1="5" y1="15" x2="9" y2="15"/><line x1="12" y1="15" x2="13" y2="15"/></svg>,
+  // 3 Financial Reporting
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+  // 4 BAS & Tax
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>,
+  // 5 Software Setup
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="16" cy="10" r="2"/><path d="M16 8v-2M16 14v-2M13.27 8.27l1.42 1.42M19.31 14.31l1.42 1.42M12 10h-2M20 10h2M13.27 11.73l1.42-1.42M19.31 9.69l1.42-1.42"/></svg>,
+  // 6 Cashflow Forecasting
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="20" x2="21" y2="20"/><polyline points="7 14 12 9 16 13 21 8"/><circle cx="21" cy="8" r="2" fill="currentColor" stroke="none"/></svg>,
+  // 7 Automation BA
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M22 12h-2M4 12H2M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93M12 22v-2M12 4V2"/></svg>,
+];
 
 function ServicesINT({ t }) {
   return (
@@ -1179,6 +1247,7 @@ function ServicesINT({ t }) {
         <ul className="services-grid services-grid-dark">
           {t.servicesINT.items.map((it, i) => (
             <li className="svc svc-dark" key={i}>
+              <span className="svc-icon" aria-hidden="true" style={{ width: 28, height: 28 }}>{INT_ICONS[i] || INT_ICONS[0]}</span>
               <span className="svc-num svc-num-dark">{String(i + 1).padStart(2, "0")}</span>
               <h3 className="svc-t svc-t-dark">{it.t}</h3>
               <p className="svc-d svc-d-dark">{it.d}</p>
@@ -1405,7 +1474,7 @@ function Contact({ t }) {
           </label>
           <button type="submit" className="btn btn-primary btn-block">
             {sent ? t.contact.sent : t.contact.submit}
-            {!sent && <ArrowIcon/>}
+            {!sent && <span className="btn-arrow"><ArrowIcon/></span>}
           </button>
         </form>
       </div>
@@ -1503,6 +1572,25 @@ function App() {
 
   const palette = PALETTES[tweak.palette] || PALETTES.navy;
   const typePair = TYPES[tweak.type] || TYPES.modern;
+
+  React.useEffect(() => {
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+      const staggerGroups = ['.services-grid .svc', '.steps .step', '.hero-stats .stat', '.pillars .pillar', '.stack-list li', '.faq-list .faq-item'];
+      staggerGroups.forEach(sel => {
+        document.querySelectorAll(sel).forEach((el, i) => {
+          el.style.setProperty('--reveal-delay', `${Math.min(i * 0.07, 0.42)}s`);
+        });
+      });
+      const els = document.querySelectorAll('.section-head, .pillar, .svc, .step, .member, .office, .stack-list li, .faq-item, .stat, .hero-copy');
+      els.forEach(el => { el.classList.add('reveal-el'); io.observe(el); });
+      return () => io.disconnect();
+    }
+  }, []);
 
   React.useEffect(() => {
     const toHex2 = (n) => Math.round(n * 255).toString(16).padStart(2, "0");
