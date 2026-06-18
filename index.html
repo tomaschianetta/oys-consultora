@@ -41,6 +41,7 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
@@ -75,8 +76,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
-  font-family: ui-monospace, "JetBrains Mono", monospace;
-  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
+  font-style: italic; font-weight: 400;
   color: var(--ink-soft); margin-bottom: 18px;
 }
 .eyebrow-light { color: var(--accent-soft); }
@@ -119,14 +121,39 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .nav a:hover::after { transform: scaleX(1); }
 @media (max-width: 960px) { .nav { display: none; } }
-.header-actions { display: flex; align-items: center; gap: 14px; }
-.lang-switch {
-  display: inline-flex; align-items: center; gap: 6px;
-  border: 1px solid var(--ink-15); border-radius: 999px; padding: 4px 8px;
-  font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.1em;
+.nav-btn {
+  font-size: 14px; color: var(--ink-soft); position: relative; padding: 6px 0;
+  transition: color .2s; background: none; border: none; cursor: pointer;
+  font-family: inherit;
 }
-.lang-switch button { padding: 4px 6px; color: var(--ink-soft); border-radius: 999px; }
+.nav-btn:hover { color: var(--ink); }
+.nav-btn::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .25s;
+}
+.nav-btn:hover::after { transform: scaleX(1); }
+.nav-overlay-btn {
+  font-family: var(--font-display); font-size: clamp(26px, 6.5vw, 42px);
+  color: var(--ink); padding: 16px 0; border-bottom: 1px solid var(--ink-15);
+  width: 100%; text-align: center; letter-spacing: -0.02em;
+  background: none; border-top: none; border-left: none; border-right: none; cursor: pointer;
+  transition: color .2s;
+}
+.nav-overlay-btn:hover { color: var(--accent); }
+
+.header-actions { display: flex; align-items: center; gap: 10px; }
+@media (max-width: 600px) {
+  .header-actions .btn-primary { display: none; }
+  .header-row { padding: 12px 16px; }
+}
+.lang-switch {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 1px solid var(--ink-15); border-radius: 999px; padding: 4px 6px;
+  font-family: var(--font-display); font-size: 12px; letter-spacing: 0.04em;
+}
+.lang-switch button { padding: 4px 8px; color: var(--ink-soft); border-radius: 999px; display: flex; align-items: center; gap: 5px; transition: background .2s, color .2s; }
 .lang-switch button.is-active { color: var(--paper); background: var(--ink); }
+.lang-switch button .flag { font-size: 15px; line-height: 1; }
 .lang-divider { width: 1px; height: 12px; background: var(--ink-15); }
 
 /* === Buttons === */
@@ -257,6 +284,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 @media (max-width: 540px) { .steps { grid-template-columns: 1fr; } }
 .step { padding: 28px 24px 28px 0; border-top: 2px solid var(--ink); position: relative; transition: background .2s; }
 .step + .step { padding-left: 24px; }
+@media (max-width: 540px) { .step, .step + .step { padding: 24px 0; } }
 .step:hover { background: color-mix(in oklab, var(--accent) 4%, transparent); }
 .step-n {
   display: inline-flex; align-items: center; justify-content: center;
@@ -298,40 +326,11 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .member-city { color: var(--ink-soft); font-size: 13px; margin-bottom: 14px; }
 .member-bio { color: var(--ink-soft); font-size: 14px; line-height: 1.55; margin: 0; }
 
-/* Offices */
-.offices { background: var(--paper); border-top: 1px solid var(--ink-15); }
-.offices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--ink); }
-@media (max-width: 720px) { .offices-grid { grid-template-columns: 1fr; } }
-.office { padding: 32px 0; border-right: 1px solid var(--ink-15); padding-right: 32px; }
-.office:last-child { border-right: none; padding-left: 32px; padding-right: 0; }
-@media (max-width: 720px) {
-  .office { border-right: none; border-bottom: 1px solid var(--ink-15); padding: 24px 0; }
-  .office:last-child { padding-left: 0; border-bottom: none; }
-}
-.office-head { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px; }
-.office-flag {
-  font-family: ui-monospace, monospace; font-size: 12px; letter-spacing: 0.18em;
-  background: var(--ink); color: var(--paper); padding: 6px 8px; border-radius: 3px;
-}
-.office-city { font-family: var(--font-display); font-size: 28px; letter-spacing: -0.01em; }
-.office-country { color: var(--ink-soft); font-style: italic; }
-.office-role { color: var(--accent); font-size: 13px; font-family: ui-monospace, monospace; letter-spacing: 0.04em; margin-top: 4px; }
-.office-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 0; }
-.office-meta > div { padding: 14px 0; border-top: 1px solid var(--ink-15); }
-.office-meta dt { font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
+/* Offices section removed */
 .office-meta dd { margin: 0; font-size: 15px; }
 
-/* Stack */
-.stack { background: var(--paper-warm); border-top: 1px solid var(--ink-15); padding: 64px 0; }
-.stack-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: center; }
-@media (max-width: 800px) { .stack-row { grid-template-columns: 1fr; gap: 24px; } }
-.stack-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.stack-list li {
-  font-family: ui-monospace, monospace; font-size: 13px; padding: 8px 14px;
-  border: 1px solid var(--ink-15); border-radius: 4px; color: var(--ink); background: var(--paper);
-  transition: background .2s, color .2s, border-color .2s, transform .15s; cursor: default;
-}
-.stack-list li:hover { background: var(--accent); color: var(--paper); border-color: var(--accent); transform: translateY(-2px); }
+/* Stack section removed */
+/* stack-list removed */
 
 /* Contact */
 .contact { background: var(--ink); color: var(--paper); }
@@ -557,6 +556,76 @@ html { scroll-behavior: smooth; }
 }
 .nav-overlay-close:hover { color: var(--ink); }
 @media (min-width: 961px) { .nav-overlay { display: none; } }
+
+/* Clickable service cards */
+.svc-clickable { cursor: pointer; }
+.svc-more {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--accent); margin-top: 12px;
+  font-family: var(--font-display); font-style: italic;
+  opacity: 0; transition: opacity .2s;
+}
+.svc-clickable:hover .svc-more { opacity: 1; }
+
+/* Service Detail Modal */
+.svc-modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(10,31,58,0.6); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; animation: fadeIn .2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.svc-modal {
+  background: var(--paper); border-radius: 10px;
+  max-width: 560px; width: 100%;
+  max-height: 88vh; overflow-y: auto;
+  animation: slideUp .28s cubic-bezier(.2,.7,.2,1);
+  box-shadow: 0 32px 80px -16px rgba(10,31,58,0.35);
+}
+@keyframes slideUp { from { transform: translateY(28px); opacity: 0; } to { transform: none; opacity: 1; } }
+.svc-modal-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 28px 28px 0;
+}
+.svc-modal-section { font-family: var(--font-display); font-size: 12px; font-style: italic; color: var(--accent); letter-spacing: 0.04em; }
+.svc-modal-close {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--paper-warm);
+  display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--ink-soft);
+  transition: background .2s;
+}
+.svc-modal-close:hover { background: var(--ink-15); }
+.svc-modal-body { padding: 20px 28px 28px; }
+.svc-modal-icon { color: var(--accent); margin-bottom: 16px; }
+.svc-modal-title { font-family: var(--font-display); font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.02em; margin: 0 0 16px; color: var(--ink); }
+.svc-modal-desc { color: var(--ink-soft); font-size: 16px; line-height: 1.65; margin: 0 0 28px; }
+.svc-modal-nav { display: flex; gap: 8px; border-top: 1px solid var(--ink-15); padding-top: 20px; }
+.svc-modal-nav button {
+  flex: 1; padding: 10px; font-size: 13px; border: 1px solid var(--ink-15); border-radius: 6px;
+  color: var(--ink-soft); transition: border-color .2s, color .2s; text-align: center;
+  font-family: var(--font-display); font-style: italic;
+}
+.svc-modal-nav button:hover { border-color: var(--accent); color: var(--accent); }
+.svc-modal-nav button:disabled { opacity: 0.3; cursor: default; }
+.svc-modal-dots { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
+.svc-modal-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-15); transition: background .2s; }
+.svc-modal-dot.is-active { background: var(--accent); }
+
+/* Team Modal */
+.team-modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--paper); overflow-y: auto;
+  animation: fadeIn .25s ease;
+}
+.team-modal-inner { max-width: 1240px; margin: 0 auto; padding: 40px 32px 80px; }
+.team-modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 48px; }
+.team-modal-close {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border: 1px solid var(--ink-15); border-radius: 6px;
+  font-size: 14px; color: var(--ink-soft); transition: border-color .2s, color .2s;
+}
+.team-modal-close:hover { border-color: var(--ink); color: var(--ink); }
+@media (max-width: 600px) { .team-modal-inner { padding: 24px 20px 60px; } }
+
 </style>
 </head>
 <body>
@@ -617,18 +686,18 @@ window.I18N = {
       ],
     },
     servicesINT: {
-      eyebrow: "02 · International Division",
-      title: "Remote Accounting Services Worldwide",
-      lede: "We work in your timezone, in your language, on your stack — from Sydney and Rosario.",
+      eyebrow: "02 · División Internacional",
+      title: "Servicios Contables Remotos para el Mundo",
+      lede: "Trabajamos en tu zona horaria, en tu idioma, sobre tu plataforma — desde Sydney y Rosario.",
       items: [
-        { t: "Bookkeeping", d: "Daily and monthly reconciliations, chart of accounts, transaction categorisation." },
-        { t: "Invoice Processing", d: "AP/AR management, supplier onboarding, payment runs and approvals." },
-        { t: "Wages & Payroll", d: "Multi-jurisdiction payroll, payslips, superannuation/STP, leave tracking." },
-        { t: "Financial Reporting", d: "Monthly P&L, balance sheet, cashflow and KPI dashboards." },
-        { t: "BAS & Tax Support", d: "BAS lodgement support, GST returns, year-end coordination with local CPAs." },
-        { t: "Software Setup", d: "Xero, QuickBooks, MYOB, Deputy, Tanda. Migrations and clean-ups." },
-        { t: "Cashflow Forecasting", d: "13-week rolling cashflow, scenario modelling and budget vs actuals." },
-        { t: "Automation Business Analyst", d: "Process mapping, workflow automation, RPA implementation and management dashboards for growing businesses." },
+        { t: "Teneduría de Libros", d: "Conciliaciones diarias y mensuales, plan de cuentas, categorización de transacciones." },
+        { t: "Procesamiento de Facturas", d: "Gestión de cuentas por pagar/cobrar, alta de proveedores, órdenes de pago y aprobaciones." },
+        { t: "Sueldos y Cumplimiento", d: "Liquidaciones multi-jurisdiccionales, recibos de sueldo, superannuation/STP, control de ausencias." },
+        { t: "Informes Financieros", d: "Estado de resultados mensual, balance, flujo de caja y tableros de KPI." },
+        { t: "BAS y Soporte Impositivo", d: "Asistencia en presentación de BAS, declaraciones de GST, coordinación de cierre anual con CPAs locales." },
+        { t: "Configuración de Software", d: "Xero, QuickBooks, MYOB, Deputy, Tanda. Migraciones y limpiezas de datos." },
+        { t: "Proyección de Flujo de Caja", d: "Cash flow rotativo a 13 semanas, modelos de escenarios y comparación presupuesto vs. real." },
+        { t: "Automatización & Business Analyst", d: "Relevamiento de procesos, automatización de flujos, implementación de RPA y tableros de gestión." },
       ],
     },
     team: {
@@ -1145,7 +1214,7 @@ function AnimatedNumber({ value, duration = 1400 }) {
 }
 
 // ── Header ──
-function Header({ t, lang, setLang, onCta, logoVariant }) {
+function Header({ t, lang, setLang, onCta, logoVariant, onTeam }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -1166,8 +1235,7 @@ function Header({ t, lang, setLang, onCta, logoVariant }) {
   const navLinks = [
     ["#about", t.nav.home],
     ["#services-ar", t.nav.services],
-    ["#team", t.nav.team],
-    ["#offices", t.nav.offices],
+    [null, t.nav.team, onTeam],
     ["#contact", t.nav.contact],
   ];
 
@@ -1177,13 +1245,17 @@ function Header({ t, lang, setLang, onCta, logoVariant }) {
         <div className="container header-row">
           <Logo variant={logoVariant}/>
           <nav className="nav" aria-label="Primary">
-            {navLinks.map(([href, label]) => <a key={href} href={href}>{label}</a>)}
+            {navLinks.map(([href, label, action]) => 
+              action 
+                ? <button key={label} className="nav-btn" onClick={action}>{label}</button>
+                : <a key={href} href={href}>{label}</a>
+            )}
           </nav>
           <div className="header-actions">
             <div className="lang-switch" role="tablist" aria-label="Language">
-              <button role="tab" aria-selected={lang === "es"} className={lang === "es" ? "is-active" : ""} onClick={() => setLang("es")}>ES</button>
+              <button role="tab" aria-selected={lang === "es"} className={lang === "es" ? "is-active" : ""} onClick={() => setLang("es")}><span className="flag">🇦🇷</span>ES</button>
               <span className="lang-divider" aria-hidden="true"></span>
-              <button role="tab" aria-selected={lang === "en"} className={lang === "en" ? "is-active" : ""} onClick={() => setLang("en")}>EN</button>
+              <button role="tab" aria-selected={lang === "en"} className={lang === "en" ? "is-active" : ""} onClick={() => setLang("en")}><span className="flag">🇦🇺</span>EN</button>
             </div>
             <button className="btn btn-primary btn-sm" onClick={onCta} style={{ display: menuOpen ? "none" : undefined }}>{t.nav.cta}</button>
             <button className={"hamburger " + (menuOpen ? "is-open" : "")} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu" aria-expanded={menuOpen}>
@@ -1195,8 +1267,10 @@ function Header({ t, lang, setLang, onCta, logoVariant }) {
       <div className={"nav-overlay " + (menuOpen ? "is-open" : "")} aria-hidden={!menuOpen}>
         <button className="nav-overlay-close" onClick={close} aria-label="Close menu">&#x2715;</button>
         <div className="nav-overlay-links">
-          {navLinks.map(([href, label]) => (
-            <a key={href} href={href} onClick={close}>{label}</a>
+          {navLinks.map(([href, label, action]) => (
+            action
+              ? <button key={label} className="nav-btn nav-overlay-btn" onClick={() => { action(); close(); }}>{label}</button>
+              : <a key={href} href={href} onClick={close}>{label}</a>
           ))}
         </div>
         <div className="nav-overlay-cta">
@@ -1222,7 +1296,7 @@ function Hero({ t }) {
       </div>
       <div className="container hero-grid hero-grid-solo">
         <div className="hero-copy">
-          <div className="eyebrow"><span className="eyebrow-dot"></span>{t.hero.eyebrow}</div>
+          <div className="eyebrow">{t.hero.eyebrow}</div>
           <h1 className="display">
             <span>{t.hero.titleA}</span>{" "}
             <em className="display-italic">{t.hero.titleB}</em>
@@ -1269,7 +1343,7 @@ function About({ t }) {
     <section className="section about" id="about">
       <div className="container about-grid">
         <div className="about-head">
-          <div className="eyebrow"><span className="eyebrow-dot"></span>{t.about.eyebrow}</div>
+          <div className="eyebrow">{t.about.eyebrow}</div>
           <h2 className="h-display">{t.about.title}</h2>
         </div>
         <div className="about-body">
@@ -1308,22 +1382,21 @@ const AR_ICONS = [
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="6" height="6"/><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/></svg>,
 ];
 
-function ServicesAR({ t }) {
+function ServicesAR({ t, onSelect }) {
   return (
     <section className="section services-ar" id="services-ar">
       <div className="container">
         <div className="section-head">
-          <div className="eyebrow"><span className="eyebrow-dot"></span>{t.servicesAR.eyebrow}</div>
+          <div className="eyebrow">{t.servicesAR.eyebrow}</div>
           <h2 className="h-display">{t.servicesAR.title}</h2>
           <p className="lede">{t.servicesAR.lede}</p>
         </div>
         <ul className="services-grid">
           {t.servicesAR.items.map((it, i) => (
-            <li className="svc" key={i}>
+            <li className="svc svc-clickable" key={i} onClick={() => onSelect({ items: t.servicesAR.items, idx: i, icons: AR_ICONS, sectionTitle: t.servicesAR.title })} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onSelect({ items: t.servicesAR.items, idx: i, icons: AR_ICONS, sectionTitle: t.servicesAR.title })}>
               <span className="svc-icon" aria-hidden="true" style={{ width: 28, height: 28 }}>{AR_ICONS[i] || AR_ICONS[0]}</span>
-              <span className="svc-num">{String(i + 1).padStart(2, "0")}</span>
               <h3 className="svc-t">{it.t}</h3>
-              <p className="svc-d">{it.d}</p>
+              <span className="svc-more">Ver detalle <ArrowIcon/></span>
             </li>
           ))}
         </ul>
@@ -1351,22 +1424,21 @@ const INT_ICONS = [
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M22 12h-2M4 12H2M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93M12 22v-2M12 4V2"/></svg>,
 ];
 
-function ServicesINT({ t }) {
+function ServicesINT({ t, onSelect }) {
   return (
     <section className="section services-int" id="services-int">
       <div className="container">
         <div className="section-head">
-          <div className="eyebrow eyebrow-light"><span className="eyebrow-dot"></span>{t.servicesINT.eyebrow}</div>
+          <div className="eyebrow eyebrow-light">{t.servicesINT.eyebrow}</div>
           <h2 className="h-display" style={{ color: "var(--paper)" }}>{t.servicesINT.title}</h2>
           <p className="lede lede-light">{t.servicesINT.lede}</p>
         </div>
         <ul className="services-grid services-grid-dark">
           {t.servicesINT.items.map((it, i) => (
-            <li className="svc svc-dark" key={i}>
+            <li className="svc svc-dark svc-clickable" key={i} onClick={() => onSelect({ items: t.servicesINT.items, idx: i, icons: INT_ICONS, sectionTitle: t.servicesINT.title, dark: true })} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onSelect({ items: t.servicesINT.items, idx: i, icons: INT_ICONS, sectionTitle: t.servicesINT.title, dark: true })}>
               <span className="svc-icon" aria-hidden="true" style={{ width: 28, height: 28 }}>{INT_ICONS[i] || INT_ICONS[0]}</span>
-              <span className="svc-num svc-num-dark">{String(i + 1).padStart(2, "0")}</span>
               <h3 className="svc-t svc-t-dark">{it.t}</h3>
-              <p className="svc-d svc-d-dark">{it.d}</p>
+              <span className="svc-more" style={{ color: "rgba(255,255,255,0.5)" }}>Ver detalle <ArrowIcon/></span>
             </li>
           ))}
         </ul>
@@ -1381,7 +1453,7 @@ function Process({ t }) {
     <section className="section process">
       <div className="container">
         <div className="section-head">
-          <div className="eyebrow"><span className="eyebrow-dot"></span>{t.process.eyebrow}</div>
+          <div className="eyebrow">{t.process.eyebrow}</div>
           <h2 className="h-display">{t.process.title}</h2>
         </div>
         <ol className="steps">
@@ -1404,7 +1476,7 @@ function Team({ t }) {
     <section className="section team" id="team">
       <div className="container">
         <div className="section-head">
-          <div className="eyebrow"><span className="eyebrow-dot"></span>{t.team.eyebrow}</div>
+          <div className="eyebrow">{t.team.eyebrow}</div>
           <h2 className="h-display">{t.team.title}</h2>
           <p className="lede">{t.team.lede}</p>
         </div>
@@ -1448,7 +1520,7 @@ function Offices({ t }) {
     <section className="section offices" id="offices">
       <div className="container">
         <div className="section-head">
-          <div className="eyebrow"><span className="eyebrow-dot"></span>{t.offices.eyebrow}</div>
+          <div className="eyebrow">{t.offices.eyebrow}</div>
           <h2 className="h-display">{t.offices.title}</h2>
           <p className="lede">{t.offices.lede}</p>
         </div>
@@ -1486,7 +1558,7 @@ function Stack({ t }) {
       <div className="container">
         <div className="stack-row">
           <div>
-            <div className="eyebrow"><span className="eyebrow-dot"></span>{t.stack.eyebrow}</div>
+            <div className="eyebrow">{t.stack.eyebrow}</div>
             <h2 className="h-stack">{t.stack.title}</h2>
           </div>
           <ul className="stack-list">
@@ -1500,12 +1572,12 @@ function Stack({ t }) {
 
 // ── FAQ ──
 function FAQ({ t }) {
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState(-1);
   return (
     <section className="section faq" id="faq">
       <div className="container">
         <div className="section-head">
-          <div className="eyebrow"><span className="eyebrow-dot"></span>{t.faq.eyebrow}</div>
+          <div className="eyebrow">{t.faq.eyebrow}</div>
           <h2 className="h-display">{t.faq.title}</h2>
         </div>
         <ul className="faq-list">
@@ -1544,7 +1616,7 @@ function Contact({ t }) {
     <section className="section contact" id="contact">
       <div className="container contact-grid">
         <div className="contact-copy">
-          <div className="eyebrow eyebrow-light"><span className="eyebrow-dot"></span>{t.contact.eyebrow}</div>
+          <div className="eyebrow eyebrow-light">{t.contact.eyebrow}</div>
           <h2 className="h-display" style={{ color: "var(--paper)" }}>{t.contact.title}</h2>
           <p className="lede lede-light">{t.contact.lede}</p>
           <div className="contact-direct">
@@ -1610,6 +1682,104 @@ function WhatsAppFab() {
       </svg>
       <span className="wa-fab-label">WhatsApp</span>
     </a>
+  );
+}
+
+// ── Service Detail Modal ──
+function ServiceModal({ items, idx, icons, sectionTitle, onClose }) {
+  const [cur, setCur] = useState(idx);
+  const item = items[cur];
+  const icon = icons[cur] || icons[0];
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight' && cur < items.length - 1) setCur(c => c + 1);
+      if (e.key === 'ArrowLeft' && cur > 0) setCur(c => c - 1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [cur, items.length]);
+
+  return (
+    <div className="svc-modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="svc-modal" role="dialog" aria-modal="true">
+        <div className="svc-modal-header">
+          <span className="svc-modal-section">{sectionTitle}</span>
+          <button className="svc-modal-close" onClick={onClose} aria-label="Cerrar">&#x2715;</button>
+        </div>
+        <div className="svc-modal-body">
+          <div className="svc-modal-icon" style={{ width: 40, height: 40 }}>{icon}</div>
+          <h2 className="svc-modal-title">{item.t}</h2>
+          <p className="svc-modal-desc">{item.d}</p>
+          <div className="svc-modal-nav">
+            <button onClick={() => setCur(c => c - 1)} disabled={cur === 0}>← Anterior</button>
+            <button onClick={() => setCur(c => c + 1)} disabled={cur === items.length - 1}>Siguiente →</button>
+          </div>
+          <div className="svc-modal-dots">
+            {items.map((_, i) => <span key={i} className={"svc-modal-dot " + (i === cur ? "is-active" : "")}/>)}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Team Modal ──
+function TeamModal({ t, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, []);
+  return (
+    <div className="team-modal-overlay">
+      <div className="team-modal-inner">
+        <div className="team-modal-top">
+          <div>
+            <div className="eyebrow">{t.team.eyebrow}</div>
+            <h2 className="h-display">{t.team.title}</h2>
+          </div>
+          <button className="team-modal-close" onClick={onClose}>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+            Volver
+          </button>
+        </div>
+        <p className="lede" style={{ marginBottom: 40 }}>{t.team.lede}</p>
+        <div className="team-grid">
+          {t.team.members.map((m, i) => (
+            <article className="member" key={i}>
+              <div className="member-portrait" aria-hidden="true">
+                {m.photo ? (
+                  <img src={m.photo} alt=""/>
+                ) : (
+                  <svg viewBox="0 0 200 240" preserveAspectRatio="xMidYMid slice">
+                    <defs>
+                      <pattern id={"stripe-" + i} patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
+                        <line x1="0" y1="0" x2="0" y2="4" stroke="var(--ink-soft-20)" strokeWidth="1"/>
+                      </pattern>
+                    </defs>
+                    <rect width="200" height="240" fill="var(--paper-warm)"/>
+                    <rect width="200" height="240" fill={"url(#stripe-" + i + ")"}/>
+                  </svg>
+                )}
+              </div>
+              <div className="member-body">
+                <div className="member-tag">{i === 0 ? "AR" : "INT"}</div>
+                <h3 className="member-name">{m.name}</h3>
+                <div className="member-role">{m.role}</div>
+                <div className="member-city">{m.city}</div>
+                <p className="member-bio">{m.bio}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -1711,6 +1881,8 @@ function App() {
   const [tweak, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
   const [lang, setLangState] = React.useState(tweak.lang || "es");
   const t = window.I18N[lang];
+  const [teamOpen, setTeamOpen] = React.useState(false);
+  const [svcModal, setSvcModal] = React.useState(null);
 
   function setLang(l) {
     setLangState(l);
@@ -1768,16 +1940,13 @@ function App() {
 
   return (
     <div className="app">
-      <Header t={t} lang={lang} setLang={setLang} onCta={scrollToContact} logoVariant={tweak.logoVariant}/>
+      <Header t={t} lang={lang} setLang={setLang} onCta={scrollToContact} logoVariant={tweak.logoVariant} onTeam={() => setTeamOpen(true)}/>
       <main>
         <Hero t={t}/>
         <About t={t}/>
-        <ServicesAR t={t}/>
-        <ServicesINT t={t}/>
+        <ServicesAR t={t} onSelect={(data) => setSvcModal(data)}/>
+        <ServicesINT t={t} onSelect={(data) => setSvcModal(data)}/>
         <Process t={t}/>
-        <Team t={t}/>
-        <Offices t={t}/>
-        <Stack t={t}/>
         <FAQ t={t}/>
         <Contact t={t}/>
       </main>
@@ -1785,6 +1954,8 @@ function App() {
       <ScrollProgress/>
       <BackToTop/>
       {tweak.whatsapp !== false && <WhatsAppFab/>}
+      {teamOpen && <TeamModal t={t} onClose={() => setTeamOpen(false)}/>}
+      {svcModal && <ServiceModal {...svcModal} onClose={() => setSvcModal(null)}/>}
 
       <TweaksPanel title="Tweaks">
         <TweakSection title="Idioma">
