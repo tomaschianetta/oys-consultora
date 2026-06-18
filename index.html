@@ -153,7 +153,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .lang-switch button { padding: 4px 8px; color: var(--ink-soft); border-radius: 999px; display: flex; align-items: center; gap: 5px; transition: background .2s, color .2s; }
 .lang-switch button.is-active { color: var(--paper); background: var(--ink); }
-.lang-switch button .flag { font-size: 15px; line-height: 1; }
 .lang-divider { width: 1px; height: 12px; background: var(--ink-15); }
 
 /* === Buttons === */
@@ -193,7 +192,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .lede { margin-top: 24px; }
 
 .hero-stats {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 0; padding: 28px 0 64px;
   border-top: 1px solid var(--ink-15); margin-top: 24px;
 }
@@ -204,7 +203,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .stat-l { color: var(--ink-soft); font-size: 13px; margin-top: 8px; }
 @media (max-width: 720px) {
   .hero-stats { grid-template-columns: repeat(2, 1fr); }
-  .stat { border-right: none; padding: 20px 16px 20px 0; }
+  .stat { border-right: none; border-bottom: 1px solid var(--ink-15); padding: 20px 16px 20px 0; }
+  .stat:nth-child(3) { border-bottom: none; }
 }
 
 /* === Sections === */
@@ -213,7 +213,17 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .section-head .lede { margin-top: 18px; }
 
 /* About */
-.about { background: var(--paper); border-top: 1px solid var(--ink-15); }
+.about { background: var(--ink); border-top: none; }
+.about .eyebrow { color: var(--accent-soft); }
+.about .h-display { color: var(--paper); }
+.about .lede { color: rgba(255,255,255,0.75); }
+.about-lede { color: rgba(255,255,255,0.75) !important; }
+.about .pillars { border-top-color: rgba(255,255,255,0.12); }
+.about .pillar { border-bottom-color: rgba(255,255,255,0.12); }
+.about .pillar:nth-child(odd) { border-right-color: rgba(255,255,255,0.12); }
+.about .pillar dt { color: var(--paper); font-size: 22px; }
+.about .pillar dd { color: rgba(255,255,255,0.65); }
+.about .pillar:hover { background: rgba(255,255,255,0.05); }
 .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; }
 @media (max-width: 960px) { .about-grid { grid-template-columns: 1fr; gap: 40px; } }
 .about-lede { margin-bottom: 40px; max-width: none; }
@@ -356,8 +366,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 @media (max-width: 600px) { .cf-row { grid-template-columns: 1fr; } }
 .cf-field {
   display: flex; flex-direction: column; gap: 8px;
-  font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.14em;
-  text-transform: uppercase; color: rgba(255,255,255,0.6);
+  font-family: var(--font-display); font-size: 13px; letter-spacing: 0.02em; font-style: italic;
+  color: rgba(255,255,255,0.65); font-weight: 400;
 }
 .cf-field input, .cf-field textarea {
   background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.18);
@@ -654,10 +664,8 @@ window.I18N = {
       stat1Label: "años de trayectoria",
       stat2Num: "2",
       stat2Label: "continentes operativos",
-      stat3Num: "5",
-      stat3Label: "profesionales especializados",
       stat4Num: "ES · EN",
-      stat4Label: "atención bilingüe",
+      stat4Label: "Español · English",
     },
     about: {
       eyebrow: "Sobre el estudio",
@@ -667,13 +675,12 @@ window.I18N = {
         { k: "Trayectoria", v: "Más de 25 años acompañando empresas argentinas." },
         { k: "Alcance global", v: "Operación remota para clientes en EE.UU., España, Australia y LATAM." },
         { k: "Bilingüe", v: "Atención y entregables en español e inglés." },
-        { k: "Boutique", v: "Cinco profesionales — atención directa, sin intermediarios." },
       ],
     },
     servicesAR: {
       eyebrow: "01 · División Nacional",
       title: "Servicios para clientes en Argentina",
-      lede: "Cobertura completa bajo normativa AFIP, ARCA, IGJ y organismos provinciales.",
+      lede: "Cobertura completa bajo normativa ARCA, IGJ y organismos provinciales.",
       items: [
         { t: "Impuestos", d: "Monotributo, IVA, Ganancias (Personas Físicas y Jurídicas), Bienes Personales, Ingresos Brutos." },
         { t: "Sueldos y Cargas Sociales", d: "Liquidación mensual, Libro de Sueldos digital, Formulario 931, alta y baja de empleados." },
@@ -741,7 +748,7 @@ window.I18N = {
     stack: {
       eyebrow: "Tecnología",
       title: "Trabajamos sobre el stack que ya usás.",
-      items: ["Xero", "QuickBooks", "MYOB", "Deputy", "Tanda", "Tango/04", "AFIP / ARCA", "Tango Gestión"],
+      items: ["Xero", "QuickBooks", "MYOB", "Deputy", "Tanda", "Tango/04", "ARCA", "Tango Gestión"],
     },
     faq: {
       eyebrow: "Preguntas frecuentes",
@@ -751,7 +758,7 @@ window.I18N = {
         { q: "¿Cómo se cobran los honorarios?", a: "Por abono mensual fijo, definido al inicio según el alcance acordado. Sin sorpresas ni cobros por consulta. Servicios puntuales (constitución, auditorías) se cotizan aparte." },
         { q: "¿Trabajan con clientes fuera de Rosario o de Argentina?", a: "Sí. Operamos 100% en forma remota: video-llamadas, firma electrónica, acceso a la nube. Tenemos clientes en CABA, Córdoba, Mendoza y en el exterior (EE.UU., España, Australia)." },
         { q: "¿Qué sistemas contables usan?", a: "Nos adaptamos a tu stack: Tango, Bejerman, Xubio, Holded, Xero, QuickBooks, MYOB. Si todavía no tenés sistema, te recomendamos uno acorde al volumen." },
-        { q: "Soy una startup, ¿pueden ayudar con la constitución de la SAS?", a: "Sí. Acompañamos toda la constitución (SAS, SRL, SA), inscripción en AFIP y organismos provinciales, y el primer año de cumplimiento contable e impositivo." },
+        { q: "Soy una startup, ¿pueden ayudar con la constitución de la SAS?", a: "Sí. Acompañamos toda la constitución (SAS, SRL, SA), inscripción en ARCA y organismos provinciales, y el primer año de cumplimiento contable e impositivo." },
         { q: "¿Atienden en inglés?", a: "Sí. Toda la división internacional opera en inglés. Si sos un cliente argentino con socios o inversores en el exterior, podemos preparar reportes bilingües." },
         { q: "¿Cuánto tarda el onboarding?", a: "Entre 7 y 14 días hábiles. Migramos accesos, sistemas e información histórica, te asignamos un punto de contacto único y definimos el calendario de cumplimiento." },
       ],
@@ -800,10 +807,8 @@ window.I18N = {
       stat1Label: "years of practice",
       stat2Num: "2",
       stat2Label: "operating continents",
-      stat3Num: "5",
-      stat3Label: "specialised professionals",
       stat4Num: "ES · EN",
-      stat4Label: "bilingual service",
+      stat4Label: "Spanish · English",
     },
     about: {
       eyebrow: "About the firm",
@@ -813,13 +818,12 @@ window.I18N = {
         { k: "Track record", v: "25+ years supporting Argentine companies." },
         { k: "Global reach", v: "Remote operations for clients in the US, Spain, Australia and LATAM." },
         { k: "Bilingual", v: "Service and deliverables in Spanish and English." },
-        { k: "Boutique", v: "Five professionals — direct, partner-led service." },
       ],
     },
     servicesAR: {
       eyebrow: "01 · National Division",
       title: "Services for clients in Argentina",
-      lede: "Full coverage under AFIP, ARCA, IGJ and provincial regulators.",
+      lede: "Full coverage under ARCA, IGJ and provincial regulators.",
       items: [
         { t: "Taxes", d: "Monotributo, VAT, Income Tax (individuals and corporates), Personal Assets, Gross Income." },
         { t: "Payroll & Social Security", d: "Monthly payroll, digital wage book, Form 931, employee on/offboarding." },
@@ -887,7 +891,7 @@ window.I18N = {
     stack: {
       eyebrow: "Technology",
       title: "We work on the stack you already use.",
-      items: ["Xero", "QuickBooks", "MYOB", "Deputy", "Tanda", "Tango/04", "AFIP / ARCA", "Tango Gestión"],
+      items: ["Xero", "QuickBooks", "MYOB", "Deputy", "Tanda", "Tango/04", "ARCA", "Tango Gestión"],
     },
     faq: {
       eyebrow: "Frequently asked",
@@ -1213,8 +1217,42 @@ function AnimatedNumber({ value, duration = 1400 }) {
   return <span ref={ref}>{prefix}{display}{suffix}</span>;
 }
 
+// ── Flag SVGs ──
+function FlagAR() {
+  return (
+    <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true" style={{borderRadius:'2px',flexShrink:0,display:'block'}}>
+      <rect width="20" height="14" fill="#74ACDF"/>
+      <rect y="4.67" width="20" height="4.67" fill="white"/>
+      <circle cx="10" cy="7" r="2.2" fill="#F6B40E"/>
+      <line x1="10" y1="3.8" x2="10" y2="5" stroke="#F6B40E" strokeWidth="0.8"/>
+      <line x1="10" y1="9" x2="10" y2="10.2" stroke="#F6B40E" strokeWidth="0.8"/>
+      <line x1="7" y1="7" x2="8.2" y2="7" stroke="#F6B40E" strokeWidth="0.8"/>
+      <line x1="11.8" y1="7" x2="13" y2="7" stroke="#F6B40E" strokeWidth="0.8"/>
+    </svg>
+  );
+}
+function FlagAU() {
+  return (
+    <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true" style={{borderRadius:'2px',flexShrink:0,display:'block'}}>
+      <rect width="20" height="14" fill="#003DA5"/>
+      <rect y="6" width="10" height="2" fill="white"/>
+      <rect x="4" y="0" width="2" height="14" fill="white"/>
+      <rect y="6.5" width="10" height="1" fill="#CF142B"/>
+      <rect x="4.5" y="0" width="1" height="14" fill="#CF142B"/>
+      <line x1="0" y1="0" x2="10" y2="7" stroke="white" strokeWidth="2"/>
+      <line x1="10" y1="0" x2="0" y2="7" stroke="white" strokeWidth="2"/>
+      <line x1="0" y1="0" x2="10" y2="7" stroke="#CF142B" strokeWidth="1"/>
+      <line x1="10" y1="0" x2="0" y2="7" stroke="#CF142B" strokeWidth="1"/>
+      <circle cx="14.5" cy="10" r="1.3" fill="white"/>
+      <circle cx="17.5" cy="6.5" r="1.0" fill="white"/>
+      <circle cx="17" cy="12" r="0.9" fill="white"/>
+      <circle cx="13" cy="7" r="0.8" fill="white"/>
+    </svg>
+  );
+}
+
 // ── Header ──
-function Header({ t, lang, setLang, onCta, logoVariant, onTeam }) {
+function Header({ t, lang, setLang, onCta, logoVariant }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -1235,7 +1273,6 @@ function Header({ t, lang, setLang, onCta, logoVariant, onTeam }) {
   const navLinks = [
     ["#about", t.nav.home],
     ["#services-ar", t.nav.services],
-    [null, t.nav.team, onTeam],
     ["#contact", t.nav.contact],
   ];
 
@@ -1253,9 +1290,9 @@ function Header({ t, lang, setLang, onCta, logoVariant, onTeam }) {
           </nav>
           <div className="header-actions">
             <div className="lang-switch" role="tablist" aria-label="Language">
-              <button role="tab" aria-selected={lang === "es"} className={lang === "es" ? "is-active" : ""} onClick={() => setLang("es")}><span className="flag">🇦🇷</span>ES</button>
+              <button role="tab" aria-selected={lang === "es"} className={lang === "es" ? "is-active" : ""} onClick={() => setLang("es")}><FlagAR/>ES</button>
               <span className="lang-divider" aria-hidden="true"></span>
-              <button role="tab" aria-selected={lang === "en"} className={lang === "en" ? "is-active" : ""} onClick={() => setLang("en")}><span className="flag">🇦🇺</span>EN</button>
+              <button role="tab" aria-selected={lang === "en"} className={lang === "en" ? "is-active" : ""} onClick={() => setLang("en")}><FlagAU/>EN</button>
             </div>
             <button className="btn btn-primary btn-sm" onClick={onCta} style={{ display: menuOpen ? "none" : undefined }}>{t.nav.cta}</button>
             <button className={"hamburger " + (menuOpen ? "is-open" : "")} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu" aria-expanded={menuOpen}>
@@ -1313,7 +1350,6 @@ function Hero({ t }) {
       <div className="container hero-stats">
         <Stat n={t.hero.stat1Num} l={t.hero.stat1Label}/>
         <Stat n={t.hero.stat2Num} l={t.hero.stat2Label}/>
-        <Stat n={t.hero.stat3Num} l={t.hero.stat3Label}/>
         <Stat n={t.hero.stat4Num} l={t.hero.stat4Label}/>
       </div>
     </section>
@@ -1604,11 +1640,20 @@ function FAQ({ t }) {
 }
 
 // ── Contact ──
-function Contact({ t }) {
+function Contact({ t, lang }) {
   const [sent, setSent] = useState(false);
   const [division, setDivision] = useState("AR");
+  const [contactErr, setContactErr] = useState("");
   function submit(e) {
     e.preventDefault();
+    const fd = new FormData(e.target);
+    const email = fd.get("email") || "";
+    const phone = fd.get("phone") || "";
+    if (!email.trim() && !phone.trim()) {
+      setContactErr(lang === "es" ? "Ingresá al menos un email o teléfono de contacto." : "Please provide at least an email or phone number.");
+      return;
+    }
+    setContactErr("");
     setSent(true);
     setTimeout(() => setSent(false), 4000);
   }
@@ -1632,21 +1677,21 @@ function Contact({ t }) {
           <div className="cf-row">
             <label className="cf-field">
               <span>{t.contact.formName}</span>
-              <input type="text" required placeholder="Juan Pérez"/>
+              <input type="text" name="name" required placeholder="Juan Pérez"/>
             </label>
             <label className="cf-field">
               <span>{t.contact.formEmail}</span>
-              <input type="email" required placeholder="juan@empresa.com"/>
+              <input type="email" name="email" placeholder="juan@empresa.com"/>
             </label>
           </div>
           <div className="cf-row">
             <label className="cf-field">
               <span>{t.contact.formCompany}</span>
-              <input type="text" placeholder="ACME S.A."/>
+              <input type="text" name="company" placeholder="ACME S.A."/>
             </label>
             <label className="cf-field">
               <span>{t.contact.formPhone}</span>
-              <input type="tel" placeholder="+54 9 ..."/>
+              <input type="tel" name="phone" placeholder="+54 9 ..."/>
             </label>
           </div>
           <div className="cf-field">
@@ -1658,8 +1703,9 @@ function Contact({ t }) {
           </div>
           <label className="cf-field">
             <span>{t.contact.formMsg}</span>
-            <textarea rows="4" placeholder="..."></textarea>
+            <textarea name="message" rows="4" placeholder="..." required></textarea>
           </label>
+          {contactErr && <p style={{ color: "#FF6B6B", fontSize: "13px", margin: "0 0 -8px", fontStyle: "italic" }}>{contactErr}</p>}
           <button type="submit" className="btn btn-primary btn-block">
             {sent ? t.contact.sent : t.contact.submit}
             {!sent && <span className="btn-arrow"><ArrowIcon/></span>}
@@ -1881,7 +1927,6 @@ function App() {
   const [tweak, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
   const [lang, setLangState] = React.useState(tweak.lang || "es");
   const t = window.I18N[lang];
-  const [teamOpen, setTeamOpen] = React.useState(false);
   const [svcModal, setSvcModal] = React.useState(null);
 
   function setLang(l) {
@@ -1940,7 +1985,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header t={t} lang={lang} setLang={setLang} onCta={scrollToContact} logoVariant={tweak.logoVariant} onTeam={() => setTeamOpen(true)}/>
+      <Header t={t} lang={lang} setLang={setLang} onCta={scrollToContact} logoVariant={tweak.logoVariant}/>
       <main>
         <Hero t={t}/>
         <About t={t}/>
@@ -1948,13 +1993,12 @@ function App() {
         <ServicesINT t={t} onSelect={(data) => setSvcModal(data)}/>
         <Process t={t}/>
         <FAQ t={t}/>
-        <Contact t={t}/>
+        <Contact t={t} lang={lang}/>
       </main>
       <Footer t={t} logoVariant={tweak.logoVariant}/>
       <ScrollProgress/>
       <BackToTop/>
       {tweak.whatsapp !== false && <WhatsAppFab/>}
-      {teamOpen && <TeamModal t={t} onClose={() => setTeamOpen(false)}/>}
       {svcModal && <ServiceModal {...svcModal} onClose={() => setSvcModal(null)}/>}
 
       <TweaksPanel title="Tweaks">
