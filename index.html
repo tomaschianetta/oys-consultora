@@ -491,7 +491,7 @@ html { scroll-behavior: smooth; }
   background: linear-gradient(130deg, var(--accent) 0%, #6BABFF 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text; font-style: italic; color: transparent;
-  padding-bottom: 0.1em; display: inline-block;
+  padding: 0.05em 0.1em 0.15em 0; display: inline-block; line-height: 1.15;
 }
 
 /* Service icon hover scale + rotate */
@@ -1303,7 +1303,11 @@ function Header({ t, lang, setLang, onCta, logoVariant }) {
     <>
       <header className={"site-header " + (scrolled ? "is-scrolled" : "") + (menuOpen ? " menu-open" : "")}>
         <div className="container header-row">
-          <Logo variant={logoVariant}/>
+          <a href="#top" className="logo" aria-label="O&amp;S Consultora">
+            <span className="logo-text">
+              <span className="logo-name">O&amp;S Consultora</span>
+            </span>
+          </a>
           <nav className="nav" aria-label="Primary">
             {navLinks.map(([href, label, action]) => 
               action 
@@ -1907,20 +1911,20 @@ function Footer({ t, logoVariant }) {
     <footer className="footer">
       <div className="container footer-grid">
         <div className="footer-brand">
-          <Logo variant={logoVariant} mono={true}/>
+          <a href="#top" className="logo" aria-label="O&amp;S Consultora" style={{textDecoration:'none'}}>
+            <span className="logo-name" style={{color:'var(--paper)', fontSize:'20px', fontWeight:'700', fontFamily:'var(--font-display)', letterSpacing:'-0.02em'}}>O&amp;S Consultora</span>
+          </a>
           <p className="footer-tag">{t.footer.tag}</p>
         </div>
         <div className="footer-col">
           <h4>{t.footer.ar}</h4>
           <p>Rosario, Argentina</p>
-          <p>+54 9 341 XXX-XXXX</p>
-          <p>ar@oysconsultora.com</p>
+          <p><a href="mailto:info@oysconsultora.com.ar">info@oysconsultora.com.ar</a></p>
         </div>
         <div className="footer-col">
           <h4>{t.footer.au}</h4>
           <p>Sydney, Australia</p>
-          <p>+61 4 XXXX XXXX</p>
-          <p>intl@oysconsultora.com</p>
+          <p><a href="mailto:info@oysconsultora.com.ar">info@oysconsultora.com.ar</a></p>
         </div>
         <div className="footer-col">
           <h4>{t.nav.services}</h4>
@@ -1931,7 +1935,7 @@ function Footer({ t, logoVariant }) {
       </div>
       <div className="container footer-foot">
         <span>© {new Date().getFullYear()} O&amp;S Consultora. {t.footer.rights}</span>
-        <span style={{ fontFamily: "ui-monospace, monospace", fontSize: "10px", letterSpacing: "0.18em" }}>CUIT 30-XXXXXXXX-X</span>
+
       </div>
     </footer>
   );
