@@ -198,7 +198,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .stat { padding: 24px 28px; border-right: 1px solid var(--ink-15); }
 .stat:last-child { border-right: none; }
-.stat:first-child { padding-left: 0; }
 .stat-n { font-family: var(--font-display); font-size: clamp(30px, 2.8vw, 42px); font-weight: 700; line-height: 1; letter-spacing: -0.03em; color: var(--accent); }
 .stat-l { color: var(--ink-soft); font-size: 13px; margin-top: 8px; }
 @media (max-width: 720px) {
@@ -213,7 +212,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .section-head .lede { margin-top: 18px; }
 
 /* About */
-.about { background: #EEF3FF; border-top: none; }
+.about { background: var(--paper); border-top: 1px solid var(--ink-15); }
 .about .eyebrow { color: var(--accent); }
 .about .h-display { color: var(--ink); }
 .about .lede { color: var(--ink-soft); }
@@ -239,7 +238,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 @media (max-width: 600px) { .pillars { grid-template-columns: 1fr; } }
 
 /* Services */
-.services-ar { background: var(--paper-warm); border-top: none; padding-top: 0; }
+.services-ar { background: #EEF3FF; border-top: none; }
 .services-grid {
   list-style: none; padding: 0; margin: 0;
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
@@ -284,7 +283,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .svc-d-dark { color: rgba(255,255,255,0.7); }
 
 /* Process */
-.process { background: var(--paper); border-top: 1px solid var(--ink-15); }
+.process { background: #EEF3FF; border-top: none; }
 .steps {
   list-style: none; padding: 0; margin: 0;
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; counter-reset: step;
@@ -411,7 +410,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .logo-st-sub { font-family: ui-monospace, monospace; font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); margin-top: 4px; }
 
 /* FAQ */
-.faq { background: var(--paper); border-top: 1px solid var(--ink-15); }
+.faq { background: var(--paper); border-top: none; }
 .faq-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--ink); }
 .faq-item { border-bottom: 1px solid var(--ink-15); }
 .faq-q {
@@ -492,6 +491,7 @@ html { scroll-behavior: smooth; }
   background: linear-gradient(130deg, var(--accent) 0%, #6BABFF 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text; font-style: italic; color: transparent;
+  padding-bottom: 0.1em; display: inline-block;
 }
 
 /* Service icon hover scale + rotate */
@@ -579,45 +579,55 @@ html { scroll-behavior: smooth; }
 /* Service Detail Modal */
 .svc-modal-overlay {
   position: fixed; inset: 0; z-index: 200;
-  background: rgba(10,31,58,0.6); backdrop-filter: blur(6px);
+  background: rgba(10,31,58,0.55); backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px; animation: fadeIn .2s ease;
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .svc-modal {
-  background: var(--paper); border-radius: 10px;
-  max-width: 560px; width: 100%;
-  max-height: 88vh; overflow-y: auto;
-  animation: slideUp .28s cubic-bezier(.2,.7,.2,1);
-  box-shadow: 0 32px 80px -16px rgba(10,31,58,0.35);
+  background: var(--paper); border-radius: 16px;
+  max-width: 540px; width: 100%;
+  max-height: 90vh; overflow-y: auto;
+  animation: slideUp .3s cubic-bezier(.2,.7,.2,1);
+  box-shadow: 0 40px 100px -20px rgba(10,31,58,0.4);
 }
-@keyframes slideUp { from { transform: translateY(28px); opacity: 0; } to { transform: none; opacity: 1; } }
-.svc-modal-header {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  padding: 28px 28px 0;
+@keyframes slideUp { from { transform: translateY(32px) scale(0.97); opacity: 0; } to { transform: none; opacity: 1; } }
+.svc-modal-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 24px 0;
 }
-.svc-modal-section { font-family: var(--font-display); font-size: 12px; font-style: italic; color: var(--accent); letter-spacing: 0.04em; }
+.svc-modal-icon-wrap {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: linear-gradient(135deg, #EEF3FF 0%, #dce8ff 100%);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent);
+}
 .svc-modal-close {
-  width: 32px; height: 32px; border-radius: 50%; background: var(--paper-warm);
-  display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--ink-soft);
-  transition: background .2s;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--paper-warm); border: 1px solid var(--ink-15);
+  display: flex; align-items: center; justify-content: center; color: var(--ink-soft);
+  transition: background .2s, color .2s; flex-shrink: 0;
 }
-.svc-modal-close:hover { background: var(--ink-15); }
-.svc-modal-body { padding: 20px 28px 28px; }
-.svc-modal-icon { color: var(--accent); margin-bottom: 16px; }
-.svc-modal-title { font-family: var(--font-display); font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.02em; margin: 0 0 16px; color: var(--ink); }
-.svc-modal-desc { color: var(--ink-soft); font-size: 16px; line-height: 1.65; margin: 0 0 28px; }
-.svc-modal-nav { display: flex; gap: 8px; border-top: 1px solid var(--ink-15); padding-top: 20px; }
+.svc-modal-close:hover { background: var(--ink-15); color: var(--ink); }
+.svc-modal-body { padding: 20px 24px 28px; }
+.svc-modal-section { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+.svc-modal-title { font-family: var(--font-display); font-size: clamp(22px, 2.8vw, 30px); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 16px; color: var(--ink); line-height: 1.2; }
+.svc-modal-desc { color: var(--ink-soft); font-size: 15px; line-height: 1.7; margin: 0 0 28px; }
+.svc-modal-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--ink-15); padding-top: 20px; }
+.svc-modal-dots { display: flex; gap: 6px; }
+.svc-modal-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--ink-15);
+  transition: background .2s, transform .2s; border: none; cursor: pointer; padding: 0;
+}
+.svc-modal-dot.is-active { background: var(--accent); transform: scale(1.3); }
+.svc-modal-nav { display: flex; gap: 8px; }
 .svc-modal-nav button {
-  flex: 1; padding: 10px; font-size: 13px; border: 1px solid var(--ink-15); border-radius: 6px;
-  color: var(--ink-soft); transition: border-color .2s, color .2s; text-align: center;
-  font-family: var(--font-display); font-style: italic;
+  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--ink-15);
+  display: flex; align-items: center; justify-content: center; color: var(--ink-soft);
+  transition: border-color .2s, color .2s, background .2s;
 }
-.svc-modal-nav button:hover { border-color: var(--accent); color: var(--accent); }
-.svc-modal-nav button:disabled { opacity: 0.3; cursor: default; }
-.svc-modal-dots { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
-.svc-modal-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-15); transition: background .2s; }
-.svc-modal-dot.is-active { background: var(--accent); }
+.svc-modal-nav button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); background: #EEF3FF; }
+.svc-modal-nav button:disabled { opacity: 0.25; cursor: default; }
 
 /* Team Modal */
 .team-modal-overlay {
@@ -689,6 +699,8 @@ window.I18N = {
         { t: "Administración de facturación", d: "Emisión, control y conciliación. Integración con sistemas de gestión." },
         { t: "Libros contables", d: "Rúbrica, asientos, mayores y subdiarios. Cumplimiento societario." },
         { t: "Business Analyst & Automatización", d: "Relevamiento y automatización de procesos contables, integración de sistemas y tableros de gestión BI." },
+        { t: "Certificaciones Contables", d: "Certificaciones de ingresos, patrimoniales y de estados contables para bancos, embajadas, entes regulatorios y trámites legales." },
+        { t: "Reclutamiento de Personal", d: "Búsqueda y selección de perfiles contables, financieros y administrativos. Incorporación al equipo de tu empresa." },
       ],
     },
     servicesINT: {
@@ -704,6 +716,7 @@ window.I18N = {
         { t: "Configuración de Software", d: "Xero, QuickBooks, MYOB, Deputy, Tanda. Migraciones y limpiezas de datos." },
         { t: "Proyección de Flujo de Caja", d: "Cash flow rotativo a 13 semanas, modelos de escenarios y comparación presupuesto vs. real." },
         { t: "Automatización & Business Analyst", d: "Relevamiento de procesos, automatización de flujos, implementación de RPA y tableros de gestión." },
+        { t: "Reclutamiento de Personal", d: "Búsqueda y selección de perfiles contables, financieros y administrativos para clientes internacionales." },
       ],
     },
     team: {
@@ -832,6 +845,8 @@ window.I18N = {
         { t: "Billing administration", d: "Issuance, control and reconciliation. Integration with ERP systems." },
         { t: "Accounting books", d: "Stamping, journal entries, ledgers and sub-ledgers. Statutory compliance." },
         { t: "Business Analyst & Automation", d: "Process mapping and automation for accounting workflows, systems integration and BI management dashboards." },
+        { t: "Accounting Certifications", d: "Income, asset and financial-statement certifications for banks, embassies, regulatory bodies and legal proceedings." },
+        { t: "Staff Recruitment", d: "Search and selection of accounting, finance and administrative profiles. Onboarding support for your team." },
       ],
     },
     servicesINT: {
@@ -847,6 +862,7 @@ window.I18N = {
         { t: "Software Setup", d: "Xero, QuickBooks, MYOB, Deputy, Tanda. Migrations and clean-ups." },
         { t: "Cashflow Forecasting", d: "13-week rolling cashflow, scenario modelling and budget vs actuals." },
         { t: "Automation Business Analyst", d: "Process mapping, workflow automation, RPA implementation and management dashboards for growing businesses." },
+        { t: "Staff Recruitment", d: "Search and selection of accounting, finance and administrative talent for international clients." },
       ],
     },
     team: {
@@ -1166,9 +1182,21 @@ function Logo({ variant = "monogram", mono = false }) {
   }
   return (
     <a href="#top" className="logo" aria-label="O&amp;S Consultora">
-      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
-        <rect width="40" height="40" rx="6" fill={accent}/>
-        <text x="5" y="26" fontFamily="'Montserrat', system-ui, sans-serif" fontSize="18" fontWeight="700" fill="white" letterSpacing="-0.5">O&amp;S</text>
+      <svg width="40" height="40" viewBox="0 0 80 80" aria-hidden="true" style={{flexShrink:0}}>
+        {/* Grid */}
+        <rect width="80" height="80" rx="4" fill="#EEF3FF"/>
+        <line x1="0" y1="26.6" x2="80" y2="26.6" stroke="#B4CEDF" strokeWidth="0.8"/>
+        <line x1="0" y1="53.3" x2="80" y2="53.3" stroke="#B4CEDF" strokeWidth="0.8"/>
+        <line x1="26.6" y1="0" x2="26.6" y2="80" stroke="#B4CEDF" strokeWidth="0.8"/>
+        <line x1="53.3" y1="0" x2="53.3" y2="80" stroke="#B4CEDF" strokeWidth="0.8"/>
+        {/* Ghost & */}
+        <text x="18" y="62" fontFamily="Georgia, serif" fontSize="52" fontWeight="400" fill="#B4CEDF" opacity="0.7">&amp;</text>
+        {/* Diagonal slash */}
+        <line x1="68" y1="4" x2="12" y2="76" stroke="#0A1F3A" strokeWidth="3" strokeLinecap="round"/>
+        {/* O */}
+        <text x="4" y="46" fontFamily="Georgia, serif" fontSize="44" fontWeight="700" fill="#0A1F3A">O</text>
+        {/* S */}
+        <text x="40" y="76" fontFamily="Georgia, serif" fontSize="44" fontWeight="700" fill="#0A1F3A">S</text>
       </svg>
       <span className="logo-text">
         <span className="logo-name">O&amp;S</span>
@@ -1411,6 +1439,10 @@ const AR_ICONS = [
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
   // 7 Automation BA
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="6" height="6"/><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/></svg>,
+  // 8 Certificaciones
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M9 12l-4 9 7-2 7 2-4-9"/><polyline points="9 8 11 10 15 6"/></svg>,
+  // 9 Reclutamiento
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 11l2 2 4-4"/></svg>,
 ];
 
 function ServicesAR({ t, onSelect }) {
@@ -1453,6 +1485,8 @@ const INT_ICONS = [
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="20" x2="21" y2="20"/><polyline points="7 14 12 9 16 13 21 8"/><circle cx="21" cy="8" r="2" fill="currentColor" stroke="none"/></svg>,
   // 7 Automation BA
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M22 12h-2M4 12H2M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93M12 22v-2M12 4V2"/></svg>,
+  // 8 Staff Recruitment
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 11l2 2 4-4"/></svg>,
 ];
 
 function ServicesINT({ t, onSelect }) {
@@ -1661,11 +1695,7 @@ function Contact({ t, lang }) {
           <p className="lede lede-light">{t.contact.lede}</p>
           <div className="contact-direct">
             <div className="cd-label">{t.contact.directContact}</div>
-            <a href="mailto:admin@oysconsultora.com" className="cd-link">admin@oysconsultora.com</a>
-            <div className="cd-phones">
-              <div><span className="cd-flag">AR</span> +54 9 341 XXX-XXXX</div>
-              <div><span className="cd-flag">AU</span> +61 4 XXXX XXXX</div>
-            </div>
+            <a href="mailto:info@oysconsultora.com.au" className="cd-link">info@oysconsultora.com.au</a>
           </div>
         </div>
         <form className="contact-form" onSubmit={submit}>
@@ -1712,9 +1742,12 @@ function Contact({ t, lang }) {
 }
 
 // ── WhatsApp FAB ──
-function WhatsAppFab() {
+function WhatsAppFab({ lang }) {
   const phone = "5493410000000";
-  const msg = encodeURIComponent("Hola, me gustaría consultar sobre los servicios de O&S Consultora.");
+  const msgText = lang === "en"
+    ? "Hi, I would like to enquire about O&S Consultora's services."
+    : "Hola, me gustaría consultar sobre los servicios de O&S Consultora.";
+  const msg = encodeURIComponent(msgText);
   return (
     <a className="wa-fab" href={`https://wa.me/${phone}?text=${msg}`} target="_blank" rel="noopener" aria-label="WhatsApp">
       <span className="wa-fab-pulse" aria-hidden="true"></span>
@@ -1733,32 +1766,44 @@ function ServiceModal({ items, idx, icons, sectionTitle, onClose }) {
   const icon = icons[cur] || icons[0];
 
   useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     const onKey = (e) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowRight' && cur < items.length - 1) setCur(c => c + 1);
       if (e.key === 'ArrowLeft' && cur > 0) setCur(c => c - 1);
     };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
   }, [cur, items.length]);
 
   return (
     <div className="svc-modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="svc-modal" role="dialog" aria-modal="true">
-        <div className="svc-modal-header">
-          <span className="svc-modal-section">{sectionTitle}</span>
-          <button className="svc-modal-close" onClick={onClose} aria-label="Cerrar">&#x2715;</button>
+      <div className="svc-modal" role="dialog" aria-modal="true" aria-labelledby="svc-modal-ttl">
+        <div className="svc-modal-top">
+          <div className="svc-modal-icon-wrap">{icon}</div>
+          <button className="svc-modal-close" onClick={onClose} aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
         </div>
         <div className="svc-modal-body">
-          <div className="svc-modal-icon" style={{ width: 40, height: 40 }}>{icon}</div>
-          <h2 className="svc-modal-title">{item.t}</h2>
+          <p className="svc-modal-section">{sectionTitle}</p>
+          <h2 className="svc-modal-title" id="svc-modal-ttl">{item.t}</h2>
           <p className="svc-modal-desc">{item.d}</p>
-          <div className="svc-modal-nav">
-            <button onClick={() => setCur(c => c - 1)} disabled={cur === 0}>← Anterior</button>
-            <button onClick={() => setCur(c => c + 1)} disabled={cur === items.length - 1}>Siguiente →</button>
-          </div>
-          <div className="svc-modal-dots">
-            {items.map((_, i) => <span key={i} className={"svc-modal-dot " + (i === cur ? "is-active" : "")}/>)}
+          <div className="svc-modal-footer">
+            <div className="svc-modal-dots">
+              {items.map((_, i) => (
+                <button key={i} className={"svc-modal-dot " + (i === cur ? "is-active" : "")} onClick={() => setCur(i)} aria-label={`Servicio ${i+1}`}/>
+              ))}
+            </div>
+            <div className="svc-modal-nav">
+              <button onClick={() => setCur(c => c - 1)} disabled={cur === 0} aria-label="Anterior">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button onClick={() => setCur(c => c + 1)} disabled={cur === items.length - 1} aria-label="Siguiente">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1993,7 +2038,7 @@ function App() {
       <Footer t={t} logoVariant={tweak.logoVariant}/>
       <ScrollProgress/>
       <BackToTop/>
-      {tweak.whatsapp !== false && <WhatsAppFab/>}
+      {tweak.whatsapp !== false && <WhatsAppFab lang={lang}/>}
       {svcModal && <ServiceModal {...svcModal} onClose={() => setSvcModal(null)}/>}
 
       <TweaksPanel title="Tweaks">
