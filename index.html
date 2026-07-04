@@ -94,14 +94,14 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .display {
   font-family: var(--font-display);
-  font-size: clamp(40px, 6vw, 80px);
+  font-size: clamp(38px, 5.5vw, 72px);
   letter-spacing: -0.03em;
   font-weight: 700;
   line-height: 1.05;
   color: var(--ink);
   margin: 0;
 }
-.display-soft { color: var(--ink-soft); font-style: italic; }
+.display-soft { color: var(--ink-soft); font-style: normal; }
 .h-display { font-size: clamp(32px, 3.6vw, 52px); }
 .h-display-light { color: var(--paper); }
 .h-stack { font-family: var(--font-display); font-weight: 600; font-size: clamp(20px, 2vw, 28px); margin: 4px 0 0; letter-spacing: -0.02em; }
@@ -227,6 +227,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 0; padding: 28px 0 64px;
   border-top: 1px solid var(--ink-15); margin-top: 24px;
+  max-width: 1000px;
 }
 .stat { padding: 24px 28px; border-right: 1px solid var(--ink-15); }
 .stat:last-child { border-right: none; }
@@ -551,6 +552,7 @@ html { scroll-behavior: smooth; }
   opacity: 0; transition: opacity .2s;
 }
 .svc-clickable:hover .svc-more { opacity: 1; }
+@media (hover: none) { .svc-more { opacity: 1; } }
 
 /* Service Detail Modal */
 .svc-modal-overlay {
@@ -717,10 +719,10 @@ window.I18N = {
       directContact: "O escribinos directamente",
     },
     footer: {
-      tag: "O&S Consultora · Estudio Contable Internacional",
+      tag: "Contabilidad sin fronteras — Rosario · Sydney.",
       rights: "Todos los derechos reservados.",
       ar: "División Nacional",
-      au: "International Division",
+      au: "División Internacional",
     },
   },
   en: {
@@ -828,7 +830,7 @@ window.I18N = {
       directContact: "Or write to us directly",
     },
     footer: {
-      tag: "O&S Consulting · International Accounting Firm",
+      tag: "Accounting without borders — Rosario · Sydney.",
       rights: "All rights reserved.",
       ar: "National Division",
       au: "International Division",
@@ -947,7 +949,7 @@ function Header({ t, lang, setLang, onCta, logoVariant }) {
   function handleCta() { close(); onCta(); }
 
   const navLinks = [
-    ["#about", t.nav.home],
+    ["#top", t.nav.home],
     ["#services-ar", t.nav.services],
     ["#contact", t.nav.contact],
   ];
