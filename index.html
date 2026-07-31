@@ -1230,11 +1230,13 @@ function FAQ({ t }) {
 // ── Contact ──
 function Contact({ t, lang }) {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
   const [division, setDivision] = useState("AR");
   const [contactErr, setContactErr] = useState("");
-  function submit(e) {
+  async function submit(e) {
     e.preventDefault();
-    const fd = new FormData(e.target);
+    const form = e.target;
+    const fd = new FormData(form);
     const email = fd.get("email") || "";
     const phone = fd.get("phone") || "";
     if (!email.trim() && !phone.trim()) {
@@ -1242,8 +1244,30 @@ function Contact({ t, lang }) {
       return;
     }
     setContactErr("");
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
+    fd.append("division", division === "AR" ? (lang === "es" ? "Argentina" : "Argentina") : (lang === "es" ? "Internacional" : "International"));
+    fd.append("subject", "Nueva consulta desde oysconsultora.com.ar");
+    fd.append("from_name", "Web O&S Consultora");
+    setSending(true);
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: fd,
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSent(true);
+        form.reset();
+        setDivision("AR");
+        setTimeout(() => setSent(false), 6000);
+      } else {
+        setContactErr(lang === "es" ? "No pudimos enviar tu consulta. Escribinos a info@oysconsultora.com.ar" : "We couldn't send your message. Please email info@oysconsultora.com.ar");
+      }
+    } catch (err) {
+      setContactErr(lang === "es" ? "Error de conexión. Escribinos a info@oysconsultora.com.ar" : "Connection error. Please email info@oysconsultora.com.ar");
+    } finally {
+      setSending(false);
+    }
   }
   return (
     <section className="section contact" id="contact">
@@ -1258,6 +1282,8 @@ function Contact({ t, lang }) {
           </div>
         </div>
         <form className="contact-form" onSubmit={submit}>
+          <input type="hidden" name="access_key" value="5e30e739-c017-48c9-816b-e841ed7cdaa9"/>
+          <input type="checkbox" name="botcheck" style={{ display: "none" }} tabIndex="-1" autoComplete="off"/>
           <div className="cf-row">
             <label className="cf-field">
               <span>{t.contact.formName}</span>
@@ -1290,9 +1316,9 @@ function Contact({ t, lang }) {
             <textarea name="message" rows="4" placeholder="..." required></textarea>
           </label>
           {contactErr && <p role="alert" aria-live="assertive" style={{ color: "#FFB3B3", fontSize: "13px", margin: "0 0 -8px" }}>{contactErr}</p>}
-          <button type="submit" className="btn btn-primary btn-block">
-            {sent ? t.contact.sent : t.contact.submit}
-            {!sent && <span className="btn-arrow"><ArrowIcon/></span>}
+          <button type="submit" className="btn btn-primary btn-block" disabled={sending}>
+            {sent ? t.contact.sent : (sending ? (lang === "es" ? "Enviando…" : "Sending…") : t.contact.submit)}
+            {!sent && !sending && <span className="btn-arrow"><ArrowIcon/></span>}
           </button>
         </form>
       </div>
