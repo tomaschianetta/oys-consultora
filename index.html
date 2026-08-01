@@ -6,13 +6,18 @@
 <title>O&amp;S Consultora · Estudio Contable Internacional</title>
 <meta name="description" content="Estudio contable boutique con sedes en Rosario y Sydney. Asesoramiento integral para clientes de Argentina y servicios remotos para clientes globales."/>
 <meta name="theme-color" content="#0A1F3A"/>
+<link rel="canonical" href="https://oysconsultora.com.ar/"/>
+<meta name="robots" content="index, follow"/>
+<meta name="author" content="O&amp;S Consultora"/>
+<meta name="geo.region" content="AR-S"/>
+<meta name="geo.placename" content="Rosario"/>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230A1F3A'/%3E%3Ctext x='32' y='43' font-family='Arial,sans-serif' font-size='24' font-weight='700' fill='white' text-anchor='middle'%3EO%26amp;S%3C/text%3E%3C/svg%3E"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="O&amp;S Consultora"/>
 <meta property="og:title" content="O&amp;S Consultora · Estudio Contable — Argentina + Australia"/>
 <meta property="og:description" content="Asesoramiento contable e impositivo en Argentina y servicios contables remotos para clientes globales, desde Rosario y Sydney."/>
 <meta property="og:url" content="https://oysconsultora.com.ar/"/>
-<meta property="og:image" content="https://tomaschianetta.github.io/oys-consultora/og.png"/>
+<meta property="og:image" content="https://oysconsultora.com.ar/og.png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:locale" content="es_AR"/>
@@ -841,28 +846,39 @@ window.I18N = {
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-
 <!-- State hook -->
-<script type="text/babel">
+<script>
 function useTweaks(defaults) {
   const [values, setValues] = React.useState(defaults);
   const setTweak = React.useCallback((keyOrEdits, val) => {
-    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
-      ? keyOrEdits : { [keyOrEdits]: val };
-    setValues((prev) => ({ ...prev, ...edits }));
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null ? keyOrEdits : {
+      [keyOrEdits]: val
+    };
+    setValues(prev => ({
+      ...prev,
+      ...edits
+    }));
   }, []);
   return [values, setTweak];
 }
-Object.assign(window, { useTweaks });
+Object.assign(window, {
+  useTweaks
+});
 </script>
 
 <!-- Components -->
-<script type="text/babel">
-const { useState, useEffect, useRef } = React;
+<script>
+const {
+  useState,
+  useEffect,
+  useRef
+} = React;
 
 // ── Animated Number ──
-function AnimatedNumber({ value, duration = 1400 }) {
+function AnimatedNumber({
+  value,
+  duration = 1400
+}) {
   const [v, setV] = useState(0);
   const ref = useRef(null);
   const started = useRef(false);
@@ -872,12 +888,12 @@ function AnimatedNumber({ value, duration = 1400 }) {
   const suffix = match ? match[3] : "";
   useEffect(() => {
     if (!ref.current) return;
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
         if (e.isIntersecting && !started.current) {
           started.current = true;
           const start = performance.now();
-          const step = (now) => {
+          const step = now => {
             const p = Math.min(1, (now - start) / duration);
             const eased = 1 - Math.pow(1 - p, 3);
             setV(target * eased);
@@ -886,349 +902,1052 @@ function AnimatedNumber({ value, duration = 1400 }) {
           requestAnimationFrame(step);
         }
       });
-    }, { threshold: 0.4 });
+    }, {
+      threshold: 0.4
+    });
     io.observe(ref.current);
     return () => io.disconnect();
   }, [target, duration]);
-  if (!match) return <span ref={ref}>{value}</span>;
+  if (!match) return /*#__PURE__*/React.createElement("span", {
+    ref: ref
+  }, value);
   const display = target >= 100 ? Math.round(v) : v.toFixed(target % 1 === 0 ? 0 : 1);
-  return <span ref={ref}>{prefix}{display}{suffix}</span>;
+  return /*#__PURE__*/React.createElement("span", {
+    ref: ref
+  }, prefix, display, suffix);
 }
 
 // ── Flag SVGs ──
 function FlagAR() {
-  return (
-    <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true" style={{borderRadius:'2px',flexShrink:0,display:'block'}}>
-      <rect width="20" height="14" fill="#74ACDF"/>
-      <rect y="4.67" width="20" height="4.67" fill="white"/>
-      <circle cx="10" cy="7" r="2.2" fill="#F6B40E"/>
-      <line x1="10" y1="3.8" x2="10" y2="5" stroke="#F6B40E" strokeWidth="0.8"/>
-      <line x1="10" y1="9" x2="10" y2="10.2" stroke="#F6B40E" strokeWidth="0.8"/>
-      <line x1="7" y1="7" x2="8.2" y2="7" stroke="#F6B40E" strokeWidth="0.8"/>
-      <line x1="11.8" y1="7" x2="13" y2="7" stroke="#F6B40E" strokeWidth="0.8"/>
-    </svg>
-  );
+  return /*#__PURE__*/React.createElement("svg", {
+    width: "20",
+    height: "14",
+    viewBox: "0 0 20 14",
+    "aria-hidden": "true",
+    style: {
+      borderRadius: '2px',
+      flexShrink: 0,
+      display: 'block'
+    }
+  }, /*#__PURE__*/React.createElement("rect", {
+    width: "20",
+    height: "14",
+    fill: "#74ACDF"
+  }), /*#__PURE__*/React.createElement("rect", {
+    y: "4.67",
+    width: "20",
+    height: "4.67",
+    fill: "white"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "10",
+    cy: "7",
+    r: "2.2",
+    fill: "#F6B40E"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "10",
+    y1: "3.8",
+    x2: "10",
+    y2: "5",
+    stroke: "#F6B40E",
+    strokeWidth: "0.8"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "10",
+    y1: "9",
+    x2: "10",
+    y2: "10.2",
+    stroke: "#F6B40E",
+    strokeWidth: "0.8"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "7",
+    y1: "7",
+    x2: "8.2",
+    y2: "7",
+    stroke: "#F6B40E",
+    strokeWidth: "0.8"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "11.8",
+    y1: "7",
+    x2: "13",
+    y2: "7",
+    stroke: "#F6B40E",
+    strokeWidth: "0.8"
+  }));
 }
 function FlagAU() {
-  return (
-    <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true" style={{borderRadius:'2px',flexShrink:0,display:'block'}}>
-      <rect width="20" height="14" fill="#003DA5"/>
-      <rect y="6" width="10" height="2" fill="white"/>
-      <rect x="4" y="0" width="2" height="14" fill="white"/>
-      <rect y="6.5" width="10" height="1" fill="#CF142B"/>
-      <rect x="4.5" y="0" width="1" height="14" fill="#CF142B"/>
-      <line x1="0" y1="0" x2="10" y2="7" stroke="white" strokeWidth="2"/>
-      <line x1="10" y1="0" x2="0" y2="7" stroke="white" strokeWidth="2"/>
-      <line x1="0" y1="0" x2="10" y2="7" stroke="#CF142B" strokeWidth="1"/>
-      <line x1="10" y1="0" x2="0" y2="7" stroke="#CF142B" strokeWidth="1"/>
-      <circle cx="14.5" cy="10" r="1.3" fill="white"/>
-      <circle cx="17.5" cy="6.5" r="1.0" fill="white"/>
-      <circle cx="17" cy="12" r="0.9" fill="white"/>
-      <circle cx="13" cy="7" r="0.8" fill="white"/>
-    </svg>
-  );
+  return /*#__PURE__*/React.createElement("svg", {
+    width: "20",
+    height: "14",
+    viewBox: "0 0 20 14",
+    "aria-hidden": "true",
+    style: {
+      borderRadius: '2px',
+      flexShrink: 0,
+      display: 'block'
+    }
+  }, /*#__PURE__*/React.createElement("rect", {
+    width: "20",
+    height: "14",
+    fill: "#003DA5"
+  }), /*#__PURE__*/React.createElement("rect", {
+    y: "6",
+    width: "10",
+    height: "2",
+    fill: "white"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "4",
+    y: "0",
+    width: "2",
+    height: "14",
+    fill: "white"
+  }), /*#__PURE__*/React.createElement("rect", {
+    y: "6.5",
+    width: "10",
+    height: "1",
+    fill: "#CF142B"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "4.5",
+    y: "0",
+    width: "1",
+    height: "14",
+    fill: "#CF142B"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "0",
+    y1: "0",
+    x2: "10",
+    y2: "7",
+    stroke: "white",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "10",
+    y1: "0",
+    x2: "0",
+    y2: "7",
+    stroke: "white",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "0",
+    y1: "0",
+    x2: "10",
+    y2: "7",
+    stroke: "#CF142B",
+    strokeWidth: "1"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "10",
+    y1: "0",
+    x2: "0",
+    y2: "7",
+    stroke: "#CF142B",
+    strokeWidth: "1"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "14.5",
+    cy: "10",
+    r: "1.3",
+    fill: "white"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "17.5",
+    cy: "6.5",
+    r: "1.0",
+    fill: "white"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "17",
+    cy: "12",
+    r: "0.9",
+    fill: "white"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "13",
+    cy: "7",
+    r: "0.8",
+    fill: "white"
+  }));
 }
 
 // ── Header ──
-function Header({ t, lang, setLang, onCta, logoVariant }) {
+function Header({
+  t,
+  lang,
+  setLang,
+  onCta,
+  logoVariant
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, {
+      passive: true
+    });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
-
-  function close() { setMenuOpen(false); }
-  function handleCta() { close(); onCta(); }
-
-  const navLinks = [
-    ["#top", t.nav.home],
-    ["#services-ar", t.nav.services],
-    ["#contact", t.nav.contact],
-  ];
-
-  return (
-    <>
-      <header className={"site-header " + (scrolled ? "is-scrolled" : "") + (menuOpen ? " menu-open" : "")}>
-        <div className="container header-row">
-          <a href="#top" className="logo" aria-label="O&amp;S Consultora">
-            <span className="logo-text">
-              <span className="logo-name">O&amp;S Consultora</span>
-            </span>
-          </a>
-          <nav className="nav" aria-label="Primary">
-            {navLinks.map(([href, label, action]) => 
-              action 
-                ? <button key={label} className="nav-btn" onClick={action}>{label}</button>
-                : <a key={href} href={href}>{label}</a>
-            )}
-          </nav>
-          <div className="header-actions">
-            <div className="lang-switch" role="tablist" aria-label="Language">
-              <button role="tab" aria-selected={lang === "es"} className={lang === "es" ? "is-active" : ""} onClick={() => setLang("es")}><FlagAR/>ES</button>
-              <span className="lang-divider" aria-hidden="true"></span>
-              <button role="tab" aria-selected={lang === "en"} className={lang === "en" ? "is-active" : ""} onClick={() => setLang("en")}><FlagAU/>EN</button>
-            </div>
-            <button className="btn btn-primary btn-sm" onClick={onCta} style={{ display: menuOpen ? "none" : undefined }}>{t.nav.cta}</button>
-            <button className={"hamburger " + (menuOpen ? "is-open" : "")} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu" aria-expanded={menuOpen}>
-              <span/><span/><span/>
-            </button>
-          </div>
-        </div>
-      </header>
-      <div className={"nav-overlay " + (menuOpen ? "is-open" : "")} aria-hidden={!menuOpen}>
-        <button className="nav-overlay-close" onClick={close} aria-label="Close menu">&#x2715;</button>
-        <div className="nav-overlay-links">
-          {navLinks.map(([href, label, action]) => (
-            action
-              ? <button key={label} className="nav-btn nav-overlay-btn" onClick={() => { action(); close(); }}>{label}</button>
-              : <a key={href} href={href} onClick={close}>{label}</a>
-          ))}
-        </div>
-        <div className="nav-overlay-cta">
-          <button className="btn btn-primary" onClick={handleCta}>{t.nav.cta}<span className="btn-arrow"><ArrowIcon/></span></button>
-        </div>
-      </div>
-    </>
-  );
+  function close() {
+    setMenuOpen(false);
+  }
+  function handleCta() {
+    close();
+    onCta();
+  }
+  const navLinks = [["#top", t.nav.home], ["#services-ar", t.nav.services], ["#contact", t.nav.contact]];
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", {
+    className: "site-header " + (scrolled ? "is-scrolled" : "") + (menuOpen ? " menu-open" : "")
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container header-row"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "#top",
+    className: "logo",
+    "aria-label": "O&S Consultora"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "logo-text"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "logo-name"
+  }, "O&S Consultora"))), /*#__PURE__*/React.createElement("nav", {
+    className: "nav",
+    "aria-label": "Primary"
+  }, navLinks.map(([href, label, action]) => action ? /*#__PURE__*/React.createElement("button", {
+    key: label,
+    className: "nav-btn",
+    onClick: action
+  }, label) : /*#__PURE__*/React.createElement("a", {
+    key: href,
+    href: href
+  }, label))), /*#__PURE__*/React.createElement("div", {
+    className: "header-actions"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lang-switch",
+    role: "tablist",
+    "aria-label": "Language"
+  }, /*#__PURE__*/React.createElement("button", {
+    role: "tab",
+    "aria-selected": lang === "es",
+    className: lang === "es" ? "is-active" : "",
+    onClick: () => setLang("es")
+  }, /*#__PURE__*/React.createElement(FlagAR, null), "ES"), /*#__PURE__*/React.createElement("span", {
+    className: "lang-divider",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("button", {
+    role: "tab",
+    "aria-selected": lang === "en",
+    className: lang === "en" ? "is-active" : "",
+    onClick: () => setLang("en")
+  }, /*#__PURE__*/React.createElement(FlagAU, null), "EN")), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-primary btn-sm",
+    onClick: onCta,
+    style: {
+      display: menuOpen ? "none" : undefined
+    }
+  }, t.nav.cta), /*#__PURE__*/React.createElement("button", {
+    className: "hamburger " + (menuOpen ? "is-open" : ""),
+    onClick: () => setMenuOpen(!menuOpen),
+    "aria-label": "Menu",
+    "aria-expanded": menuOpen
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null))))), /*#__PURE__*/React.createElement("div", {
+    className: "nav-overlay " + (menuOpen ? "is-open" : ""),
+    "aria-hidden": !menuOpen
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "nav-overlay-close",
+    onClick: close,
+    "aria-label": "Close menu"
+  }, "\u2715"), /*#__PURE__*/React.createElement("div", {
+    className: "nav-overlay-links"
+  }, navLinks.map(([href, label, action]) => action ? /*#__PURE__*/React.createElement("button", {
+    key: label,
+    className: "nav-btn nav-overlay-btn",
+    onClick: () => {
+      action();
+      close();
+    }
+  }, label) : /*#__PURE__*/React.createElement("a", {
+    key: href,
+    href: href,
+    onClick: close
+  }, label))), /*#__PURE__*/React.createElement("div", {
+    className: "nav-overlay-cta"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-primary",
+    onClick: handleCta
+  }, t.nav.cta, /*#__PURE__*/React.createElement("span", {
+    className: "btn-arrow"
+  }, /*#__PURE__*/React.createElement(ArrowIcon, null))))));
 }
 
 // ── Hero ──
-function Hero({ t }) {
-  return (
-    <section className="hero" id="top">
-      <div className="hero-deco" aria-hidden="true">
-        <svg width="560" height="560" viewBox="0 0 560 560" fill="none">
-          <circle cx="280" cy="280" r="270" stroke="var(--accent)" strokeWidth="1"/>
-          <circle cx="280" cy="280" r="210" stroke="var(--accent)" strokeWidth="1"/>
-          <circle cx="280" cy="280" r="150" stroke="var(--accent)" strokeWidth="1"/>
-          <circle cx="280" cy="280" r="90" stroke="var(--accent)" strokeWidth="1.5"/>
-          <circle cx="280" cy="280" r="30" stroke="var(--accent)" strokeWidth="2"/>
-        </svg>
-      </div>
-      <div className="container hero-grid hero-grid-solo">
-        <div className="hero-copy">
-          <div className="eyebrow">{t.hero.eyebrow}</div>
-          <h1 className="display">
-            <span>{t.hero.titleA}</span>{" "}
-            <em className="display-italic">{t.hero.titleB}</em>
-            <br/>
-            <span className="display-soft">{t.hero.titleC}</span>
-          </h1>
-          <p className="lede">{t.hero.lede}</p>
-          <div className="hero-ctas">
-            <a href="#contact" className="btn btn-primary">{t.hero.ctaPrimary}<span className="btn-arrow"><ArrowIcon/></span></a>
-            <a href="#services-ar" className="btn btn-ghost">{t.hero.ctaSecondary}</a>
-          </div>
-        </div>
-      </div>
-      <div className="container hero-stats">
-        <Stat n={t.hero.stat1Num} l={t.hero.stat1Label}/>
-        <Stat n={t.hero.stat2Num} l={t.hero.stat2Label}/>
-        <Stat n={t.hero.stat4Num} l={t.hero.stat4Label}/>
-      </div>
-    </section>
-  );
+function Hero({
+  t
+}) {
+  return /*#__PURE__*/React.createElement("section", {
+    className: "hero",
+    id: "top"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hero-deco",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "560",
+    height: "560",
+    viewBox: "0 0 560 560",
+    fill: "none"
+  }, /*#__PURE__*/React.createElement("circle", {
+    cx: "280",
+    cy: "280",
+    r: "270",
+    stroke: "var(--accent)",
+    strokeWidth: "1"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "280",
+    cy: "280",
+    r: "210",
+    stroke: "var(--accent)",
+    strokeWidth: "1"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "280",
+    cy: "280",
+    r: "150",
+    stroke: "var(--accent)",
+    strokeWidth: "1"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "280",
+    cy: "280",
+    r: "90",
+    stroke: "var(--accent)",
+    strokeWidth: "1.5"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "280",
+    cy: "280",
+    r: "30",
+    stroke: "var(--accent)",
+    strokeWidth: "2"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "container hero-grid hero-grid-solo"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hero-copy"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow"
+  }, t.hero.eyebrow), /*#__PURE__*/React.createElement("h1", {
+    className: "display"
+  }, /*#__PURE__*/React.createElement("span", null, t.hero.titleA), " ", /*#__PURE__*/React.createElement("em", {
+    className: "display-italic"
+  }, t.hero.titleB), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+    className: "display-soft"
+  }, t.hero.titleC)), /*#__PURE__*/React.createElement("p", {
+    className: "lede"
+  }, t.hero.lede), /*#__PURE__*/React.createElement("div", {
+    className: "hero-ctas"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "#contact",
+    className: "btn btn-primary"
+  }, t.hero.ctaPrimary, /*#__PURE__*/React.createElement("span", {
+    className: "btn-arrow"
+  }, /*#__PURE__*/React.createElement(ArrowIcon, null))), /*#__PURE__*/React.createElement("a", {
+    href: "#services-ar",
+    className: "btn btn-ghost"
+  }, t.hero.ctaSecondary)))), /*#__PURE__*/React.createElement("div", {
+    className: "container hero-stats"
+  }, /*#__PURE__*/React.createElement(Stat, {
+    n: t.hero.stat1Num,
+    l: t.hero.stat1Label
+  }), /*#__PURE__*/React.createElement(Stat, {
+    n: t.hero.stat2Num,
+    l: t.hero.stat2Label
+  }), /*#__PURE__*/React.createElement(Stat, {
+    n: t.hero.stat4Num,
+    l: t.hero.stat4Label
+  })));
 }
-
-function Stat({ n, l }) {
-  return (
-    <div className="stat">
-      <div className="stat-n"><AnimatedNumber value={n}/></div>
-      <div className="stat-l">{l}</div>
-    </div>
-  );
+function Stat({
+  n,
+  l
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "stat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-n"
+  }, /*#__PURE__*/React.createElement(AnimatedNumber, {
+    value: n
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "stat-l"
+  }, l));
 }
-
 function ArrowIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
+  return /*#__PURE__*/React.createElement("svg", {
+    width: "16",
+    height: "16",
+    viewBox: "0 0 16 16",
+    fill: "none",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M3 8h10M9 4l4 4-4 4",
+    stroke: "currentColor",
+    strokeWidth: "1.6",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  }));
 }
 
 // ── About ──
-function About({ t }) {
-  return (
-    <section className="section about" id="about">
-      <div className="container about-grid">
-        <div className="about-head">
-          <div className="eyebrow">{t.about.eyebrow}</div>
-          <h2 className="h-display">{t.about.title}</h2>
-        </div>
-        <div className="about-body">
-          <p className="lede about-lede">{t.about.body}</p>
-          <dl className="pillars">
-            {t.about.pillars.map((p, i) => (
-              <div className="pillar" key={i}>
-                <dt>{p.k}</dt>
-                <dd>{p.v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
-    </section>
-  );
+function About({
+  t
+}) {
+  return /*#__PURE__*/React.createElement("section", {
+    className: "section about",
+    id: "about"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container about-grid"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "about-head"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow"
+  }, t.about.eyebrow), /*#__PURE__*/React.createElement("h2", {
+    className: "h-display"
+  }, t.about.title)), /*#__PURE__*/React.createElement("div", {
+    className: "about-body"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "lede about-lede"
+  }, t.about.body), /*#__PURE__*/React.createElement("dl", {
+    className: "pillars"
+  }, t.about.pillars.map((p, i) => /*#__PURE__*/React.createElement("div", {
+    className: "pillar",
+    key: i
+  }, /*#__PURE__*/React.createElement("dt", null, p.k), /*#__PURE__*/React.createElement("dd", null, p.v)))))));
 }
 
 // ── Services ──
 const AR_ICONS = [
-  // 0 Impuestos
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/><circle cx="10" cy="10" r="1.5" fill="currentColor" stroke="none"/></svg>,
-  // 1 Sueldos
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-  // 2 Constitución
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-  // 3 Auditorías
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M8.5 11l2.5 2.5 4-4"/></svg>,
-  // 4 Análisis de viabilidad
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="3" y1="20" x2="21" y2="20"/></svg>,
-  // 5 Facturación
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>,
-  // 6 Libros contables
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
-  // 7 Automation BA
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="6" height="6"/><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/></svg>,
-  // 8 Certificaciones
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M9 12l-4 9 7-2 7 2-4-9"/><polyline points="9 8 11 10 15 6"/></svg>,
-  // 9 Reclutamiento
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 11l2 2 4-4"/></svg>,
-];
-
-function ServicesAR({ t, onSelect }) {
-  return (
-    <section className="section services-ar" id="services-ar">
-      <div className="container">
-        <div className="section-head">
-          <div className="eyebrow">{t.servicesAR.eyebrow}</div>
-          <h2 className="h-display">{t.servicesAR.title}</h2>
-          <p className="lede">{t.servicesAR.lede}</p>
-        </div>
-        <ul className="services-grid">
-          {t.servicesAR.items.map((it, i) => (
-            <li className="svc svc-clickable" key={i} onClick={() => onSelect({ items: t.servicesAR.items, idx: i, icons: AR_ICONS, sectionTitle: t.servicesAR.title })} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onSelect({ items: t.servicesAR.items, idx: i, icons: AR_ICONS, sectionTitle: t.servicesAR.title })}>
-              <span className="svc-icon" aria-hidden="true" style={{ width: 28, height: 28 }}>{AR_ICONS[i] || AR_ICONS[0]}</span>
-              <h3 className="svc-t">{it.t}</h3>
-              <span className="svc-more">Ver detalle <ArrowIcon/></span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
+/*#__PURE__*/
+// 0 Impuestos
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "14 2 14 8 20 8"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "9",
+  y1: "13",
+  x2: "15",
+  y2: "13"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "9",
+  y1: "17",
+  x2: "15",
+  y2: "17"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "10",
+  cy: "10",
+  r: "1.5",
+  fill: "currentColor",
+  stroke: "none"
+})),
+/*#__PURE__*/
+// 1 Sueldos
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "9",
+  cy: "7",
+  r: "4"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+})),
+/*#__PURE__*/
+// 2 Constitución
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "9 22 9 12 15 12 15 22"
+})),
+/*#__PURE__*/
+// 3 Auditorías
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "11",
+  cy: "11",
+  r: "8"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "21",
+  y1: "21",
+  x2: "16.65",
+  y2: "16.65"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M8.5 11l2.5 2.5 4-4"
+})),
+/*#__PURE__*/
+// 4 Análisis de viabilidad
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("line", {
+  x1: "18",
+  y1: "20",
+  x2: "18",
+  y2: "10"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "20",
+  x2: "12",
+  y2: "4"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "6",
+  y1: "20",
+  x2: "6",
+  y2: "14"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "3",
+  y1: "20",
+  x2: "21",
+  y2: "20"
+})),
+/*#__PURE__*/
+// 5 Facturación
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "14 2 14 8 20 8"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "18",
+  x2: "12",
+  y2: "12"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "9 15 12 12 15 15"
+})),
+/*#__PURE__*/
+// 6 Libros contables
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+})),
+/*#__PURE__*/
+// 7 Automation BA
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("rect", {
+  x: "9",
+  y: "9",
+  width: "6",
+  height: "6"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "4",
+  y: "4",
+  width: "16",
+  height: "16",
+  rx: "2"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "9",
+  y1: "2",
+  x2: "9",
+  y2: "4"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "15",
+  y1: "2",
+  x2: "15",
+  y2: "4"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "9",
+  y1: "20",
+  x2: "9",
+  y2: "22"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "15",
+  y1: "20",
+  x2: "15",
+  y2: "22"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "20",
+  y1: "9",
+  x2: "22",
+  y2: "9"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "20",
+  y1: "14",
+  x2: "22",
+  y2: "14"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "2",
+  y1: "9",
+  x2: "4",
+  y2: "9"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "2",
+  y1: "14",
+  x2: "4",
+  y2: "14"
+})),
+/*#__PURE__*/
+// 8 Certificaciones
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "8",
+  r: "4"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M9 12l-4 9 7-2 7 2-4-9"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "9 8 11 10 15 6"
+})),
+/*#__PURE__*/
+// 9 Reclutamiento
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "9",
+  cy: "7",
+  r: "4"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M16 11l2 2 4-4"
+}))];
+function ServicesAR({
+  t,
+  onSelect
+}) {
+  return /*#__PURE__*/React.createElement("section", {
+    className: "section services-ar",
+    id: "services-ar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-head"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow"
+  }, t.servicesAR.eyebrow), /*#__PURE__*/React.createElement("h2", {
+    className: "h-display"
+  }, t.servicesAR.title), /*#__PURE__*/React.createElement("p", {
+    className: "lede"
+  }, t.servicesAR.lede)), /*#__PURE__*/React.createElement("ul", {
+    className: "services-grid"
+  }, t.servicesAR.items.map((it, i) => /*#__PURE__*/React.createElement("li", {
+    className: "svc svc-clickable",
+    key: i,
+    onClick: () => onSelect({
+      items: t.servicesAR.items,
+      idx: i,
+      icons: AR_ICONS,
+      sectionTitle: t.servicesAR.title
+    }),
+    role: "button",
+    tabIndex: 0,
+    onKeyDown: e => e.key === 'Enter' && onSelect({
+      items: t.servicesAR.items,
+      idx: i,
+      icons: AR_ICONS,
+      sectionTitle: t.servicesAR.title
+    })
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "svc-icon",
+    "aria-hidden": "true",
+    style: {
+      width: 28,
+      height: 28
+    }
+  }, AR_ICONS[i] || AR_ICONS[0]), /*#__PURE__*/React.createElement("h3", {
+    className: "svc-t"
+  }, it.t), /*#__PURE__*/React.createElement("span", {
+    className: "svc-more"
+  }, "Ver detalle ", /*#__PURE__*/React.createElement(ArrowIcon, null)))))));
 }
-
 const INT_ICONS = [
-  // 0 Bookkeeping
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/><line x1="6" y1="8" x2="8" y2="8"/><line x1="6" y1="12" x2="8" y2="12"/></svg>,
-  // 1 Invoice Processing
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
-  // 2 Wages & Payroll
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><line x1="5" y1="15" x2="9" y2="15"/><line x1="12" y1="15" x2="13" y2="15"/></svg>,
-  // 3 Financial Reporting
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-  // 4 BAS & Tax
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>,
-  // 5 Software Setup
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="16" cy="10" r="2"/><path d="M16 8v-2M16 14v-2M13.27 8.27l1.42 1.42M19.31 14.31l1.42 1.42M12 10h-2M20 10h2M13.27 11.73l1.42-1.42M19.31 9.69l1.42-1.42"/></svg>,
-  // 6 Cashflow Forecasting
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="20" x2="21" y2="20"/><polyline points="7 14 12 9 16 13 21 8"/><circle cx="21" cy="8" r="2" fill="currentColor" stroke="none"/></svg>,
-  // 7 Automation BA
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M22 12h-2M4 12H2M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93M12 22v-2M12 4V2"/></svg>,
-  // 8 Staff Recruitment
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 11l2 2 4-4"/></svg>,
-];
-
-function ServicesINT({ t, onSelect }) {
-  return (
-    <section className="section services-int" id="services-int">
-      <div className="container">
-        <div className="section-head">
-          <div className="eyebrow eyebrow-light">{t.servicesINT.eyebrow}</div>
-          <h2 className="h-display" style={{ color: "var(--paper)" }}>{t.servicesINT.title}</h2>
-          <p className="lede lede-light">{t.servicesINT.lede}</p>
-        </div>
-        <ul className="services-grid services-grid-dark">
-          {t.servicesINT.items.map((it, i) => (
-            <li className="svc svc-dark svc-clickable" key={i} onClick={() => onSelect({ items: t.servicesINT.items, idx: i, icons: INT_ICONS, sectionTitle: t.servicesINT.title, dark: true })} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onSelect({ items: t.servicesINT.items, idx: i, icons: INT_ICONS, sectionTitle: t.servicesINT.title, dark: true })}>
-              <span className="svc-icon" aria-hidden="true" style={{ width: 28, height: 28 }}>{INT_ICONS[i] || INT_ICONS[0]}</span>
-              <h3 className="svc-t svc-t-dark">{it.t}</h3>
-              <span className="svc-more" style={{ color: "rgba(255,255,255,0.5)" }}>Ver detalle <ArrowIcon/></span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
+/*#__PURE__*/
+// 0 Bookkeeping
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "6",
+  y1: "8",
+  x2: "8",
+  y2: "8"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "6",
+  y1: "12",
+  x2: "8",
+  y2: "12"
+})),
+/*#__PURE__*/
+// 1 Invoice Processing
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "14 2 14 8 20 8"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "16",
+  y1: "13",
+  x2: "8",
+  y2: "13"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "16",
+  y1: "17",
+  x2: "8",
+  y2: "17"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "10 9 9 9 8 9"
+})),
+/*#__PURE__*/
+// 2 Wages & Payroll
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("rect", {
+  x: "1",
+  y: "4",
+  width: "22",
+  height: "16",
+  rx: "2"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "1",
+  y1: "10",
+  x2: "23",
+  y2: "10"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "5",
+  y1: "15",
+  x2: "9",
+  y2: "15"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "15",
+  x2: "13",
+  y2: "15"
+})),
+/*#__PURE__*/
+// 3 Financial Reporting
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("polyline", {
+  points: "23 6 13.5 15.5 8.5 10.5 1 18"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "17 6 23 6 23 12"
+})),
+/*#__PURE__*/
+// 4 BAS & Tax
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M9 12l2 2 4-4"
+})),
+/*#__PURE__*/
+// 5 Software Setup
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("rect", {
+  x: "2",
+  y: "3",
+  width: "20",
+  height: "14",
+  rx: "2"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "8",
+  y1: "21",
+  x2: "16",
+  y2: "21"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "17",
+  x2: "12",
+  y2: "21"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "16",
+  cy: "10",
+  r: "2"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M16 8v-2M16 14v-2M13.27 8.27l1.42 1.42M19.31 14.31l1.42 1.42M12 10h-2M20 10h2M13.27 11.73l1.42-1.42M19.31 9.69l1.42-1.42"
+})),
+/*#__PURE__*/
+// 6 Cashflow Forecasting
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("line", {
+  x1: "3",
+  y1: "20",
+  x2: "21",
+  y2: "20"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "7 14 12 9 16 13 21 8"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "21",
+  cy: "8",
+  r: "2",
+  fill: "currentColor",
+  stroke: "none"
+})),
+/*#__PURE__*/
+// 7 Automation BA
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "3"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M22 12h-2M4 12H2M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93M12 22v-2M12 4V2"
+})),
+/*#__PURE__*/
+// 8 Staff Recruitment
+React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "9",
+  cy: "7",
+  r: "4"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M16 11l2 2 4-4"
+}))];
+function ServicesINT({
+  t,
+  onSelect
+}) {
+  return /*#__PURE__*/React.createElement("section", {
+    className: "section services-int",
+    id: "services-int"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-head"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow eyebrow-light"
+  }, t.servicesINT.eyebrow), /*#__PURE__*/React.createElement("h2", {
+    className: "h-display",
+    style: {
+      color: "var(--paper)"
+    }
+  }, t.servicesINT.title), /*#__PURE__*/React.createElement("p", {
+    className: "lede lede-light"
+  }, t.servicesINT.lede)), /*#__PURE__*/React.createElement("ul", {
+    className: "services-grid services-grid-dark"
+  }, t.servicesINT.items.map((it, i) => /*#__PURE__*/React.createElement("li", {
+    className: "svc svc-dark svc-clickable",
+    key: i,
+    onClick: () => onSelect({
+      items: t.servicesINT.items,
+      idx: i,
+      icons: INT_ICONS,
+      sectionTitle: t.servicesINT.title,
+      dark: true
+    }),
+    role: "button",
+    tabIndex: 0,
+    onKeyDown: e => e.key === 'Enter' && onSelect({
+      items: t.servicesINT.items,
+      idx: i,
+      icons: INT_ICONS,
+      sectionTitle: t.servicesINT.title,
+      dark: true
+    })
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "svc-icon",
+    "aria-hidden": "true",
+    style: {
+      width: 28,
+      height: 28
+    }
+  }, INT_ICONS[i] || INT_ICONS[0]), /*#__PURE__*/React.createElement("h3", {
+    className: "svc-t svc-t-dark"
+  }, it.t), /*#__PURE__*/React.createElement("span", {
+    className: "svc-more",
+    style: {
+      color: "rgba(255,255,255,0.5)"
+    }
+  }, "Ver detalle ", /*#__PURE__*/React.createElement(ArrowIcon, null)))))));
 }
 
 // ── Process ──
-function Process({ t }) {
-  return (
-    <section className="section process">
-      <div className="container">
-        <div className="section-head">
-          <div className="eyebrow">{t.process.eyebrow}</div>
-          <h2 className="h-display">{t.process.title}</h2>
-        </div>
-        <ol className="steps">
-          {t.process.steps.map((s, i) => (
-            <li className="step" key={i}>
-              <div className="step-n">{s.n}</div>
-              <h3 className="step-t">{s.t}</h3>
-              <p className="step-d">{s.d}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  );
+function Process({
+  t
+}) {
+  return /*#__PURE__*/React.createElement("section", {
+    className: "section process"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-head"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow"
+  }, t.process.eyebrow), /*#__PURE__*/React.createElement("h2", {
+    className: "h-display"
+  }, t.process.title)), /*#__PURE__*/React.createElement("ol", {
+    className: "steps"
+  }, t.process.steps.map((s, i) => /*#__PURE__*/React.createElement("li", {
+    className: "step",
+    key: i
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "step-n"
+  }, s.n), /*#__PURE__*/React.createElement("h3", {
+    className: "step-t"
+  }, s.t), /*#__PURE__*/React.createElement("p", {
+    className: "step-d"
+  }, s.d))))));
 }
 
 // ── FAQ ──
-function FAQ({ t }) {
+function FAQ({
+  t
+}) {
   const [open, setOpen] = useState(-1);
-  return (
-    <section className="section faq" id="faq">
-      <div className="container">
-        <div className="section-head">
-          <div className="eyebrow">{t.faq.eyebrow}</div>
-          <h2 className="h-display">{t.faq.title}</h2>
-        </div>
-        <ul className="faq-list">
-          {t.faq.items.map((it, i) => (
-            <li key={i} className={"faq-item " + (open === i ? "is-open" : "")}>
-              <button className="faq-q" onClick={() => setOpen(open === i ? -1 : i)} aria-expanded={open === i}>
-                <span className="faq-num">{String(i + 1).padStart(2, "0")}</span>
-                <span className="faq-q-text">{it.q}</span>
-                <span className="faq-icon" aria-hidden="true">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8h10M8 3v10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
-                </span>
-              </button>
-              <div className="faq-a-wrap">
-                <p className="faq-a">{it.a}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
+  return /*#__PURE__*/React.createElement("section", {
+    className: "section faq",
+    id: "faq"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-head"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow"
+  }, t.faq.eyebrow), /*#__PURE__*/React.createElement("h2", {
+    className: "h-display"
+  }, t.faq.title)), /*#__PURE__*/React.createElement("ul", {
+    className: "faq-list"
+  }, t.faq.items.map((it, i) => /*#__PURE__*/React.createElement("li", {
+    key: i,
+    className: "faq-item " + (open === i ? "is-open" : "")
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "faq-q",
+    onClick: () => setOpen(open === i ? -1 : i),
+    "aria-expanded": open === i
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "faq-num"
+  }, String(i + 1).padStart(2, "0")), /*#__PURE__*/React.createElement("span", {
+    className: "faq-q-text"
+  }, it.q), /*#__PURE__*/React.createElement("span", {
+    className: "faq-icon",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "16",
+    height: "16",
+    viewBox: "0 0 16 16",
+    fill: "none"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M3 8h10M8 3v10",
+    stroke: "currentColor",
+    strokeWidth: "1.5",
+    strokeLinecap: "round"
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "faq-a-wrap"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "faq-a"
+  }, it.a)))))));
 }
 
 // ── Contact ──
-function Contact({ t, lang }) {
+function Contact({
+  t,
+  lang
+}) {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [division, setDivision] = useState("AR");
@@ -1244,15 +1963,17 @@ function Contact({ t, lang }) {
       return;
     }
     setContactErr("");
-    fd.append("division", division === "AR" ? (lang === "es" ? "Argentina" : "Argentina") : (lang === "es" ? "Internacional" : "International"));
+    fd.append("division", division === "AR" ? lang === "es" ? "Argentina" : "Argentina" : lang === "es" ? "Internacional" : "International");
     fd.append("subject", "Nueva consulta desde oysconsultora.com.ar");
     fd.append("from_name", "Web O&S Consultora");
     setSending(true);
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Accept": "application/json" },
-        body: fd,
+        headers: {
+          "Accept": "application/json"
+        },
+        body: fd
       });
       const data = await res.json();
       if (data.success) {
@@ -1269,150 +1990,272 @@ function Contact({ t, lang }) {
       setSending(false);
     }
   }
-  return (
-    <section className="section contact" id="contact">
-      <div className="container contact-grid">
-        <div className="contact-copy">
-          <div className="eyebrow eyebrow-light">{t.contact.eyebrow}</div>
-          <h2 className="h-display" style={{ color: "var(--paper)" }}>{t.contact.title}</h2>
-          <p className="lede lede-light">{t.contact.lede}</p>
-          <div className="contact-direct">
-            <div className="cd-label">{t.contact.directContact}</div>
-            <a href="mailto:info@oysconsultora.com.ar" className="cd-link">info@oysconsultora.com.ar</a>
-          </div>
-        </div>
-        <form className="contact-form" onSubmit={submit}>
-          <input type="hidden" name="access_key" value="5e30e739-c017-48c9-816b-e841ed7cdaa9"/>
-          <input type="checkbox" name="botcheck" style={{ display: "none" }} tabIndex="-1" autoComplete="off"/>
-          <div className="cf-row">
-            <label className="cf-field">
-              <span>{t.contact.formName}</span>
-              <input type="text" name="name" required placeholder="Juan Pérez"/>
-            </label>
-            <label className="cf-field">
-              <span>{t.contact.formEmail}</span>
-              <input type="email" name="email" placeholder="juan@empresa.com"/>
-            </label>
-          </div>
-          <div className="cf-row">
-            <label className="cf-field">
-              <span>{t.contact.formCompany}</span>
-              <input type="text" name="company" placeholder="ACME S.A."/>
-            </label>
-            <label className="cf-field">
-              <span>{t.contact.formPhone}</span>
-              <input type="tel" name="phone" placeholder="+54 9 ..."/>
-            </label>
-          </div>
-          <div className="cf-field">
-            <span>{t.contact.formDivision}</span>
-            <div className="cf-radio">
-              <button type="button" className={division === "AR" ? "is-active" : ""} onClick={() => setDivision("AR")}>{t.contact.divAR}</button>
-              <button type="button" className={division === "INT" ? "is-active" : ""} onClick={() => setDivision("INT")}>{t.contact.divINT}</button>
-            </div>
-          </div>
-          <label className="cf-field">
-            <span>{t.contact.formMsg}</span>
-            <textarea name="message" rows="4" placeholder="..." required></textarea>
-          </label>
-          {contactErr && <p role="alert" aria-live="assertive" style={{ color: "#FFB3B3", fontSize: "13px", margin: "0 0 -8px" }}>{contactErr}</p>}
-          <button type="submit" className="btn btn-primary btn-block" disabled={sending}>
-            {sent ? t.contact.sent : (sending ? (lang === "es" ? "Enviando…" : "Sending…") : t.contact.submit)}
-            {!sent && !sending && <span className="btn-arrow"><ArrowIcon/></span>}
-          </button>
-        </form>
-      </div>
-    </section>
-  );
+  return /*#__PURE__*/React.createElement("section", {
+    className: "section contact",
+    id: "contact"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container contact-grid"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "contact-copy"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow eyebrow-light"
+  }, t.contact.eyebrow), /*#__PURE__*/React.createElement("h2", {
+    className: "h-display",
+    style: {
+      color: "var(--paper)"
+    }
+  }, t.contact.title), /*#__PURE__*/React.createElement("p", {
+    className: "lede lede-light"
+  }, t.contact.lede), /*#__PURE__*/React.createElement("div", {
+    className: "contact-direct"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cd-label"
+  }, t.contact.directContact), /*#__PURE__*/React.createElement("a", {
+    href: "mailto:info@oysconsultora.com.ar",
+    className: "cd-link"
+  }, "info@oysconsultora.com.ar"))), /*#__PURE__*/React.createElement("form", {
+    className: "contact-form",
+    onSubmit: submit
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "hidden",
+    name: "access_key",
+    value: "5e30e739-c017-48c9-816b-e841ed7cdaa9"
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    name: "botcheck",
+    style: {
+      display: "none"
+    },
+    tabIndex: "-1",
+    autoComplete: "off"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "cf-row"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "cf-field"
+  }, /*#__PURE__*/React.createElement("span", null, t.contact.formName), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    name: "name",
+    required: true,
+    placeholder: "Juan P\xE9rez"
+  })), /*#__PURE__*/React.createElement("label", {
+    className: "cf-field"
+  }, /*#__PURE__*/React.createElement("span", null, t.contact.formEmail), /*#__PURE__*/React.createElement("input", {
+    type: "email",
+    name: "email",
+    placeholder: "juan@empresa.com"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "cf-row"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "cf-field"
+  }, /*#__PURE__*/React.createElement("span", null, t.contact.formCompany), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    name: "company",
+    placeholder: "ACME S.A."
+  })), /*#__PURE__*/React.createElement("label", {
+    className: "cf-field"
+  }, /*#__PURE__*/React.createElement("span", null, t.contact.formPhone), /*#__PURE__*/React.createElement("input", {
+    type: "tel",
+    name: "phone",
+    placeholder: "+54 9 ..."
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "cf-field"
+  }, /*#__PURE__*/React.createElement("span", null, t.contact.formDivision), /*#__PURE__*/React.createElement("div", {
+    className: "cf-radio"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: division === "AR" ? "is-active" : "",
+    onClick: () => setDivision("AR")
+  }, t.contact.divAR), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: division === "INT" ? "is-active" : "",
+    onClick: () => setDivision("INT")
+  }, t.contact.divINT))), /*#__PURE__*/React.createElement("label", {
+    className: "cf-field"
+  }, /*#__PURE__*/React.createElement("span", null, t.contact.formMsg), /*#__PURE__*/React.createElement("textarea", {
+    name: "message",
+    rows: "4",
+    placeholder: "...",
+    required: true
+  })), contactErr && /*#__PURE__*/React.createElement("p", {
+    role: "alert",
+    "aria-live": "assertive",
+    style: {
+      color: "#FFB3B3",
+      fontSize: "13px",
+      margin: "0 0 -8px"
+    }
+  }, contactErr), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "btn btn-primary btn-block",
+    disabled: sending
+  }, sent ? t.contact.sent : sending ? lang === "es" ? "Enviando…" : "Sending…" : t.contact.submit, !sent && !sending && /*#__PURE__*/React.createElement("span", {
+    className: "btn-arrow"
+  }, /*#__PURE__*/React.createElement(ArrowIcon, null))))));
 }
 
 // ── WhatsApp FAB ──
-function WhatsAppFab({ lang }) {
+function WhatsAppFab({
+  lang
+}) {
   const phone = ""; // completar cuando el estudio tenga número propio
   if (!phone) return null;
-  const msgText = lang === "en"
-    ? "Hi, I would like to enquire about O&S Consultora's services."
-    : "Hola, me gustaría consultar sobre los servicios de O&S Consultora.";
+  const msgText = lang === "en" ? "Hi, I would like to enquire about O&S Consultora's services." : "Hola, me gustaría consultar sobre los servicios de O&S Consultora.";
   const msg = encodeURIComponent(msgText);
-  return (
-    <a className="wa-fab" href={`https://wa.me/${phone}?text=${msg}`} target="_blank" rel="noopener" aria-label="WhatsApp">
-      <span className="wa-fab-pulse" aria-hidden="true"></span>
-      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
-        <path fill="#fff" d="M16 3C8.82 3 3 8.82 3 16c0 2.42.66 4.7 1.82 6.66L3 29l6.5-1.78A12.94 12.94 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm0 23.6c-1.96 0-3.86-.52-5.5-1.5l-.4-.24-3.86 1.06 1.04-3.76-.26-.4A10.6 10.6 0 1 1 26.6 16 10.6 10.6 0 0 1 16 26.6zm5.86-7.96c-.32-.16-1.9-.94-2.2-1.04-.3-.1-.5-.16-.72.16-.22.32-.82 1.04-1.02 1.26-.18.2-.36.22-.68.08-.32-.16-1.36-.5-2.6-1.6-.96-.86-1.6-1.92-1.8-2.24-.18-.32-.02-.5.14-.66.14-.14.32-.36.48-.54.16-.18.22-.32.32-.52.1-.22.06-.4-.02-.56-.08-.16-.72-1.74-1-2.38-.26-.62-.52-.54-.72-.54l-.62-.02c-.2 0-.54.08-.82.4-.28.32-1.08 1.06-1.08 2.58s1.1 3 1.26 3.2c.16.22 2.18 3.32 5.28 4.66.74.32 1.32.5 1.76.66.74.24 1.42.2 1.96.12.6-.08 1.9-.78 2.18-1.52.28-.74.28-1.38.2-1.52-.08-.14-.3-.22-.62-.38z"/>
-      </svg>
-      <span className="wa-fab-label">WhatsApp</span>
-    </a>
-  );
+  return /*#__PURE__*/React.createElement("a", {
+    className: "wa-fab",
+    href: `https://wa.me/${phone}?text=${msg}`,
+    target: "_blank",
+    rel: "noopener",
+    "aria-label": "WhatsApp"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "wa-fab-pulse",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 32 32",
+    width: "28",
+    height: "28",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("path", {
+    fill: "#fff",
+    d: "M16 3C8.82 3 3 8.82 3 16c0 2.42.66 4.7 1.82 6.66L3 29l6.5-1.78A12.94 12.94 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm0 23.6c-1.96 0-3.86-.52-5.5-1.5l-.4-.24-3.86 1.06 1.04-3.76-.26-.4A10.6 10.6 0 1 1 26.6 16 10.6 10.6 0 0 1 16 26.6zm5.86-7.96c-.32-.16-1.9-.94-2.2-1.04-.3-.1-.5-.16-.72.16-.22.32-.82 1.04-1.02 1.26-.18.2-.36.22-.68.08-.32-.16-1.36-.5-2.6-1.6-.96-.86-1.6-1.92-1.8-2.24-.18-.32-.02-.5.14-.66.14-.14.32-.36.48-.54.16-.18.22-.32.32-.52.1-.22.06-.4-.02-.56-.08-.16-.72-1.74-1-2.38-.26-.62-.52-.54-.72-.54l-.62-.02c-.2 0-.54.08-.82.4-.28.32-1.08 1.06-1.08 2.58s1.1 3 1.26 3.2c.16.22 2.18 3.32 5.28 4.66.74.32 1.32.5 1.76.66.74.24 1.42.2 1.96.12.6-.08 1.9-.78 2.18-1.52.28-.74.28-1.38.2-1.52-.08-.14-.3-.22-.62-.38z"
+  })), /*#__PURE__*/React.createElement("span", {
+    className: "wa-fab-label"
+  }, "WhatsApp"));
 }
 
 // ── Service Detail Modal ──
-function ServiceModal({ items, idx, icons, sectionTitle, onClose }) {
+function ServiceModal({
+  items,
+  idx,
+  icons,
+  sectionTitle,
+  onClose
+}) {
   const [cur, setCur] = useState(idx);
   const item = items[cur];
   const icon = icons[cur] || icons[0];
   const boxRef = React.useRef(null);
-
   useEffect(() => {
     const prevFocus = document.activeElement;
     if (boxRef.current) {
       const btn = boxRef.current.querySelector('button');
       if (btn) btn.focus();
     }
-    return () => { if (prevFocus && prevFocus.focus) prevFocus.focus(); };
+    return () => {
+      if (prevFocus && prevFocus.focus) prevFocus.focus();
+    };
   }, []);
-
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const onKey = (e) => {
+    const onKey = e => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowRight' && cur < items.length - 1) setCur(c => c + 1);
       if (e.key === 'ArrowLeft' && cur > 0) setCur(c => c - 1);
       if (e.key === 'Tab' && boxRef.current) {
         const f = Array.from(boxRef.current.querySelectorAll('button')).filter(b => !b.disabled);
         if (!f.length) return;
-        const first = f[0], last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-        else if (!boxRef.current.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+        const first = f[0],
+          last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        } else if (!boxRef.current.contains(document.activeElement)) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     window.addEventListener('keydown', onKey);
-    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prev;
+    };
   }, [cur, items.length]);
-
-  return (
-    <div className="svc-modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="svc-modal" role="dialog" aria-modal="true" aria-labelledby="svc-modal-ttl" ref={boxRef}>
-        <div className="svc-modal-top">
-          <div className="svc-modal-icon-wrap">{icon}</div>
-          <button className="svc-modal-close" onClick={onClose} aria-label="Cerrar">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-        </div>
-        <div className="svc-modal-body">
-          <p className="svc-modal-section">{sectionTitle}</p>
-          <h2 className="svc-modal-title" id="svc-modal-ttl">{item.t}</h2>
-          <p className="svc-modal-desc">{item.d}</p>
-          <div className="svc-modal-footer">
-            <div className="svc-modal-dots">
-              {items.map((_, i) => (
-                <button key={i} className={"svc-modal-dot " + (i === cur ? "is-active" : "")} onClick={() => setCur(i)} aria-label={`Servicio ${i+1}`}/>
-              ))}
-            </div>
-            <div className="svc-modal-nav">
-              <button onClick={() => setCur(c => c - 1)} disabled={cur === 0} aria-label="Anterior">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
-              </button>
-              <button onClick={() => setCur(c => c + 1)} disabled={cur === items.length - 1} aria-label="Siguiente">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "svc-modal-overlay",
+    onClick: e => e.target === e.currentTarget && onClose()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "svc-modal",
+    role: "dialog",
+    "aria-modal": "true",
+    "aria-labelledby": "svc-modal-ttl",
+    ref: boxRef
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "svc-modal-top"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "svc-modal-icon-wrap"
+  }, icon), /*#__PURE__*/React.createElement("button", {
+    className: "svc-modal-close",
+    onClick: onClose,
+    "aria-label": "Cerrar"
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "18",
+    height: "18",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }, /*#__PURE__*/React.createElement("line", {
+    x1: "18",
+    y1: "6",
+    x2: "6",
+    y2: "18"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "6",
+    y1: "6",
+    x2: "18",
+    y2: "18"
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "svc-modal-body"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "svc-modal-section"
+  }, sectionTitle), /*#__PURE__*/React.createElement("h2", {
+    className: "svc-modal-title",
+    id: "svc-modal-ttl"
+  }, item.t), /*#__PURE__*/React.createElement("p", {
+    className: "svc-modal-desc"
+  }, item.d), /*#__PURE__*/React.createElement("div", {
+    className: "svc-modal-footer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "svc-modal-dots"
+  }, items.map((_, i) => /*#__PURE__*/React.createElement("button", {
+    key: i,
+    className: "svc-modal-dot " + (i === cur ? "is-active" : ""),
+    onClick: () => setCur(i),
+    "aria-label": `Servicio ${i + 1}`
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "svc-modal-nav"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setCur(c => c - 1),
+    disabled: cur === 0,
+    "aria-label": "Anterior"
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "16",
+    height: "16",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }, /*#__PURE__*/React.createElement("polyline", {
+    points: "15 18 9 12 15 6"
+  }))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setCur(c => c + 1),
+    disabled: cur === items.length - 1,
+    "aria-label": "Siguiente"
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "16",
+    height: "16",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }, /*#__PURE__*/React.createElement("polyline", {
+    points: "9 18 15 12 9 6"
+  }))))))));
 }
 
 // ── Scroll Progress ──
@@ -1422,12 +2265,20 @@ function ScrollProgress() {
     const update = () => {
       const scrolled = window.scrollY;
       const max = document.body.scrollHeight - window.innerHeight;
-      setW(max > 0 ? Math.round((scrolled / max) * 1000) / 10 : 0);
+      setW(max > 0 ? Math.round(scrolled / max * 1000) / 10 : 0);
     };
-    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("scroll", update, {
+      passive: true
+    });
     return () => window.removeEventListener("scroll", update);
   }, []);
-  return <div className="scroll-prog" style={{ transform: `scaleX(${w/100})` }} aria-hidden="true"/>;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "scroll-prog",
+    style: {
+      transform: `scaleX(${w / 100})`
+    },
+    "aria-hidden": "true"
+  });
 }
 
 // ── Back to Top ──
@@ -1435,59 +2286,102 @@ function BackToTop() {
   const [vis, setVis] = useState(false);
   useEffect(() => {
     const onScroll = () => setVis(window.scrollY > 640);
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, {
+      passive: true
+    });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  return (
-    <button className={"back-top " + (vis ? "is-vis" : "")} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Back to top">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path d="M8 13V3M3 8l5-5 5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    </button>
-  );
+  return /*#__PURE__*/React.createElement("button", {
+    className: "back-top " + (vis ? "is-vis" : ""),
+    onClick: () => window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    }),
+    "aria-label": "Back to top"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "16",
+    height: "16",
+    viewBox: "0 0 16 16",
+    fill: "none",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M8 13V3M3 8l5-5 5 5",
+    stroke: "currentColor",
+    strokeWidth: "1.6",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  })));
 }
 
 // ── Footer ──
-function Footer({ t, logoVariant }) {
-  return (
-    <footer className="footer">
-      <div className="container footer-grid">
-        <div className="footer-brand">
-          <a href="#top" className="logo" aria-label="O&amp;S Consultora" style={{textDecoration:'none'}}>
-            <span className="logo-name" style={{color:'var(--paper)', fontSize:'20px', fontWeight:'700', fontFamily:'var(--font-display)', letterSpacing:'-0.02em'}}>O&amp;S Consultora</span>
-          </a>
-          <p className="footer-tag">{t.footer.tag}</p>
-        </div>
-        <div className="footer-col">
-          <h4>{t.footer.ar}</h4>
-          <p>Rosario, Argentina</p>
-          <p><a href="mailto:info@oysconsultora.com.ar">info@oysconsultora.com.ar</a></p>
-        </div>
-        <div className="footer-col">
-          <h4>{t.footer.au}</h4>
-          <p>Sydney, Australia</p>
-          <p><a href="mailto:info@oysconsultora.com.ar">info@oysconsultora.com.ar</a></p>
-        </div>
-        <div className="footer-col">
-          <h4>{t.nav.services}</h4>
-          <p><a href="#services-ar">{t.servicesAR.eyebrow.split("·")[1]?.trim() || "Nacional"}</a></p>
-          <p><a href="#services-int">{t.servicesINT.eyebrow.split("·")[1]?.trim() || "Internacional"}</a></p>
-          <p><a href="#contact">{t.nav.contact}</a></p>
-        </div>
-      </div>
-      <div className="container footer-foot">
-        <span>© {new Date().getFullYear()} O&amp;S Consultora. {t.footer.rights}</span>
-
-      </div>
-    </footer>
-  );
+function Footer({
+  t,
+  logoVariant
+}) {
+  return /*#__PURE__*/React.createElement("footer", {
+    className: "footer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container footer-grid"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "footer-brand"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "#top",
+    className: "logo",
+    "aria-label": "O&S Consultora",
+    style: {
+      textDecoration: 'none'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "logo-name",
+    style: {
+      color: 'var(--paper)',
+      fontSize: '20px',
+      fontWeight: '700',
+      fontFamily: 'var(--font-display)',
+      letterSpacing: '-0.02em'
+    }
+  }, "O&S Consultora")), /*#__PURE__*/React.createElement("p", {
+    className: "footer-tag"
+  }, t.footer.tag)), /*#__PURE__*/React.createElement("div", {
+    className: "footer-col"
+  }, /*#__PURE__*/React.createElement("h4", null, t.footer.ar), /*#__PURE__*/React.createElement("p", null, "Rosario, Argentina"), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("a", {
+    href: "mailto:info@oysconsultora.com.ar"
+  }, "info@oysconsultora.com.ar"))), /*#__PURE__*/React.createElement("div", {
+    className: "footer-col"
+  }, /*#__PURE__*/React.createElement("h4", null, t.footer.au), /*#__PURE__*/React.createElement("p", null, "Sydney, Australia"), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("a", {
+    href: "mailto:info@oysconsultora.com.ar"
+  }, "info@oysconsultora.com.ar"))), /*#__PURE__*/React.createElement("div", {
+    className: "footer-col"
+  }, /*#__PURE__*/React.createElement("h4", null, t.nav.services), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("a", {
+    href: "#services-ar"
+  }, t.servicesAR.eyebrow.split("·")[1]?.trim() || "Nacional")), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("a", {
+    href: "#services-int"
+  }, t.servicesINT.eyebrow.split("·")[1]?.trim() || "Internacional")), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("a", {
+    href: "#contact"
+  }, t.nav.contact)))), /*#__PURE__*/React.createElement("div", {
+    className: "container footer-foot"
+  }, /*#__PURE__*/React.createElement("span", null, "\xA9 ", new Date().getFullYear(), " O&S Consultora. ", t.footer.rights)));
 }
-
-Object.assign(window, { Header, Hero, About, ServicesAR, ServicesINT, Process, FAQ, Contact, ScrollProgress, BackToTop, Footer, WhatsAppFab, ServiceModal });
+Object.assign(window, {
+  Header,
+  Hero,
+  About,
+  ServicesAR,
+  ServicesINT,
+  Process,
+  FAQ,
+  Contact,
+  ScrollProgress,
+  BackToTop,
+  Footer,
+  WhatsAppFab,
+  ServiceModal
+});
 </script>
 
 <!-- App -->
-<script type="text/babel">
+<script>
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 const TWEAK_DEFAULTS = {
   "lang": "es",
   "palette": "navy",
@@ -1496,39 +2390,55 @@ const TWEAK_DEFAULTS = {
   "logoVariant": "monogram",
   "whatsapp": true
 };
-
 const PALETTES = {
-  navy: { ink: "#0A1F3A", inkSoft: "#1E3A5F", accent: "#1E60D6", accentSoft: "#3A7BE0", paper: "#FFFFFF", paperWarm: "#F4F7FF" },
+  navy: {
+    ink: "#0A1F3A",
+    inkSoft: "#1E3A5F",
+    accent: "#1E60D6",
+    accentSoft: "#3A7BE0",
+    paper: "#FFFFFF",
+    paperWarm: "#F4F7FF"
+  }
 };
-
 const TYPES = {
-  modern:    { display: '"Montserrat", system-ui, sans-serif', body: '"Inter", system-ui, sans-serif' },
-  editorial: { display: '"Montserrat", system-ui, sans-serif', body: '"Inter", system-ui, sans-serif' },
-  classic:   { display: '"Montserrat", system-ui, sans-serif', body: '"Inter", system-ui, sans-serif' },
+  modern: {
+    display: '"Montserrat", system-ui, sans-serif',
+    body: '"Inter", system-ui, sans-serif'
+  },
+  editorial: {
+    display: '"Montserrat", system-ui, sans-serif',
+    body: '"Inter", system-ui, sans-serif'
+  },
+  classic: {
+    display: '"Montserrat", system-ui, sans-serif',
+    body: '"Inter", system-ui, sans-serif'
+  }
 };
-
 function App() {
   const [tweak, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
   const [lang, setLangState] = React.useState(tweak.lang || "es");
   const t = window.I18N[lang];
   const [svcModal, setSvcModal] = React.useState(null);
-
   function setLang(l) {
     setLangState(l);
     setTweak("lang", l);
     document.documentElement.lang = l;
   }
-
   const palette = PALETTES[tweak.palette] || PALETTES.navy;
   const typePair = TYPES[tweak.type] || TYPES.modern;
-
   React.useEffect(() => {
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const io = new IntersectionObserver((entries) => {
+      const io = new IntersectionObserver(entries => {
         entries.forEach(e => {
-          if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            io.unobserve(e.target);
+          }
         });
-      }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -32px 0px'
+      });
       const staggerGroups = ['.services-grid .svc', '.steps .step', '.hero-stats .stat', '.pillars .pillar', '.stack-list li', '.faq-list .faq-item'];
       staggerGroups.forEach(sel => {
         document.querySelectorAll(sel).forEach((el, i) => {
@@ -1536,13 +2446,15 @@ function App() {
         });
       });
       const els = document.querySelectorAll('.section-head, .pillar, .svc, .step, .member, .office, .stack-list li, .faq-item, .stat, .hero-copy');
-      els.forEach(el => { el.classList.add('reveal-el'); io.observe(el); });
+      els.forEach(el => {
+        el.classList.add('reveal-el');
+        io.observe(el);
+      });
       return () => io.disconnect();
     }
   }, []);
-
   React.useEffect(() => {
-    const toHex2 = (n) => Math.round(n * 255).toString(16).padStart(2, "0");
+    const toHex2 = n => Math.round(n * 255).toString(16).padStart(2, "0");
     const vars = {
       "--ink": palette.ink,
       "--ink-soft": palette.inkSoft,
@@ -1558,39 +2470,52 @@ function App() {
       "--paper-warm": palette.paperWarm,
       "--font-display": typePair.display,
       "--font-body": typePair.body,
-      "--density": tweak.density === "compact" ? "0.85" : tweak.density === "spacious" ? "1.15" : "1",
+      "--density": tweak.density === "compact" ? "0.85" : tweak.density === "spacious" ? "1.15" : "1"
     };
     Object.entries(vars).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
   }, [palette, typePair, tweak.density]);
-
   function scrollToContact() {
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("contact")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
   }
-
-  return (
-    <div className="app">
-      <Header t={t} lang={lang} setLang={setLang} onCta={scrollToContact} logoVariant={tweak.logoVariant}/>
-      <main>
-        <Hero t={t}/>
-        <About t={t}/>
-        <ServicesAR t={t} onSelect={(data) => setSvcModal(data)}/>
-        <ServicesINT t={t} onSelect={(data) => setSvcModal(data)}/>
-        <Process t={t}/>
-        <FAQ t={t}/>
-        <Contact t={t} lang={lang}/>
-      </main>
-      <Footer t={t} logoVariant={tweak.logoVariant}/>
-      <ScrollProgress/>
-      <BackToTop/>
-      {tweak.whatsapp !== false && <WhatsAppFab lang={lang}/>}
-      {svcModal && <ServiceModal {...svcModal} onClose={() => setSvcModal(null)}/>}
-
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "app"
+  }, /*#__PURE__*/React.createElement(Header, {
+    t: t,
+    lang: lang,
+    setLang: setLang,
+    onCta: scrollToContact,
+    logoVariant: tweak.logoVariant
+  }), /*#__PURE__*/React.createElement("main", null, /*#__PURE__*/React.createElement(Hero, {
+    t: t
+  }), /*#__PURE__*/React.createElement(About, {
+    t: t
+  }), /*#__PURE__*/React.createElement(ServicesAR, {
+    t: t,
+    onSelect: data => setSvcModal(data)
+  }), /*#__PURE__*/React.createElement(ServicesINT, {
+    t: t,
+    onSelect: data => setSvcModal(data)
+  }), /*#__PURE__*/React.createElement(Process, {
+    t: t
+  }), /*#__PURE__*/React.createElement(FAQ, {
+    t: t
+  }), /*#__PURE__*/React.createElement(Contact, {
+    t: t,
+    lang: lang
+  })), /*#__PURE__*/React.createElement(Footer, {
+    t: t,
+    logoVariant: tweak.logoVariant
+  }), /*#__PURE__*/React.createElement(ScrollProgress, null), /*#__PURE__*/React.createElement(BackToTop, null), tweak.whatsapp !== false && /*#__PURE__*/React.createElement(WhatsAppFab, {
+    lang: lang
+  }), svcModal && /*#__PURE__*/React.createElement(ServiceModal, _extends({}, svcModal, {
+    onClose: () => setSvcModal(null)
+  })));
 }
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App/>);
+root.render(/*#__PURE__*/React.createElement(App, null));
 </script>
 </body>
 </html>
