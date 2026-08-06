@@ -625,7 +625,7 @@ window.I18N = {
       services: "Servicios",
       contact: "Contacto",
       cta: "Solicitar consulta",
-      team: "Acceso equipo",
+      team: "Portal",
     },
     hero: {
       eyebrow: "Estudio Contable · Argentina + Australia",
@@ -737,7 +737,7 @@ window.I18N = {
       services: "Services",
       contact: "Contact",
       cta: "Book a consultation",
-      team: "Team access",
+      team: "Portal",
     },
     hero: {
       eyebrow: "Accounting Firm · Argentina + Australia",
@@ -1135,18 +1135,18 @@ function Header({
     "aria-selected": lang === "en",
     className: lang === "en" ? "is-active" : "",
     onClick: () => setLang("en")
-  }, /*#__PURE__*/React.createElement(FlagAU, null), "EN")), /*#__PURE__*/React.createElement("a", {
-    href: "https://portal.oysconsultora.com.ar",
-    className: "btn btn-ghost btn-sm nav-team",
-    target: "_blank",
-    rel: "noopener noreferrer"
-  }, t.nav.team), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(FlagAU, null), "EN")), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-primary btn-sm",
     onClick: onCta,
     style: {
       display: menuOpen ? "none" : undefined
     }
-  }, t.nav.cta), /*#__PURE__*/React.createElement("button", {
+  }, t.nav.cta), /*#__PURE__*/React.createElement("a", {
+    href: "https://portal.oysconsultora.com.ar",
+    className: "btn btn-ghost btn-sm nav-team",
+    target: "_blank",
+    rel: "noopener noreferrer"
+  }, t.nav.team), /*#__PURE__*/React.createElement("button", {
     className: "hamburger " + (menuOpen ? "is-open" : ""),
     onClick: () => setMenuOpen(!menuOpen),
     "aria-label": "Menu",
