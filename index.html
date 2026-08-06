@@ -1957,6 +1957,12 @@ function FAQ({
 }
 
 // ── Contact ──
+// ── CAPTCHA anti-spam del formulario de contacto ──
+// Para activarlo: (1) en tu panel de Web3Forms activá hCaptcha y copiá la
+// "Site Key"; (2) pegala acá abajo entre las comillas; (3) subí el cambio.
+// Mientras esté vacío, el formulario funciona igual que siempre (sin captcha).
+const HCAPTCHA_SITEKEY = "";
+
 function Contact({
   t,
   lang
@@ -1965,6 +1971,30 @@ function Contact({
   const [sending, setSending] = useState(false);
   const [division, setDivision] = useState("AR");
   const [contactErr, setContactErr] = useState("");
+  const captchaRef = useRef(null);
+  useEffect(() => {
+    if (!HCAPTCHA_SITEKEY) return;
+    function render() {
+      if (window.hcaptcha && captchaRef.current && captchaRef.current.childElementCount === 0) {
+        window.hcaptcha.render(captchaRef.current, {
+          sitekey: HCAPTCHA_SITEKEY
+        });
+      }
+    }
+    if (window.hcaptcha) {
+      render();
+      return;
+    }
+    window.__hcaptchaOnLoad = render;
+    if (!document.getElementById("hcaptcha-api")) {
+      const s = document.createElement("script");
+      s.id = "hcaptcha-api";
+      s.src = "https://js.hcaptcha.com/1/api.js?render=explicit&onload=__hcaptchaOnLoad";
+      s.async = true;
+      s.defer = true;
+      document.head.appendChild(s);
+    }
+  }, []);
   async function submit(e) {
     e.preventDefault();
     const form = e.target;
@@ -1973,6 +2003,10 @@ function Contact({
     const phone = fd.get("phone") || "";
     if (!email.trim() && !phone.trim()) {
       setContactErr(lang === "es" ? "Ingresá al menos un email o teléfono de contacto." : "Please provide at least an email or phone number.");
+      return;
+    }
+    if (HCAPTCHA_SITEKEY && !fd.get("h-captcha-response")) {
+      setContactErr(lang === "es" ? "Confirmá que no sos un robot." : "Please confirm you are not a robot.");
       return;
     }
     setContactErr("");
@@ -1993,6 +2027,7 @@ function Contact({
         setSent(true);
         form.reset();
         setDivision("AR");
+        if (HCAPTCHA_SITEKEY && window.hcaptcha) window.hcaptcha.reset();
         setTimeout(() => setSent(false), 6000);
       } else {
         setContactErr(lang === "es" ? "No pudimos enviar tu consulta. Escribinos a info@oysconsultora.com.ar" : "We couldn't send your message. Please email info@oysconsultora.com.ar");
@@ -2089,7 +2124,13 @@ function Contact({
     rows: "4",
     placeholder: "...",
     required: true
-  })), contactErr && /*#__PURE__*/React.createElement("p", {
+  })), HCAPTCHA_SITEKEY && /*#__PURE__*/React.createElement("div", {
+    ref: captchaRef,
+    className: "h-captcha",
+    style: {
+      marginTop: "4px"
+    }
+  }), contactErr && /*#__PURE__*/React.createElement("p", {
     role: "alert",
     "aria-live": "assertive",
     style: {
