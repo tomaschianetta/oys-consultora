@@ -48,16 +48,21 @@ Genera la versión final en `dist/`.
 
 ## Publicar
 
-El sitio actual se publica desde la rama `main` del repo `tomaschianetta/oys-consultora`.
-El contenido de **esta carpeta `web/`** pasa a ser la raíz del repo (sin `node_modules/` ni `dist/`).
+El sitio se publica con **GitHub Pages** desde el repo `tomaschianetta/oys-consultora`
+(el dominio está en Cloudflare, solo como DNS).
 
-**Cloudflare Pages** (Workers & Pages → tu proyecto → Settings → Build):
-- Build command: `npm run build`
-- Build output directory: `dist`
-- Variable de entorno: `NODE_VERSION` = `22`
+| Rama / etiqueta | Qué tiene |
+|---|---|
+| `main` | El sitio **ya compilado** (el contenido de `dist/`). Todo lo que llega acá se publica solo en 1 o 2 minutos. |
+| `fuente-astro` | Este código fuente. |
+| `v1.1-sitio-anterior` | El sitio viejo, por si hay que volver atrás. |
 
-**Si en cambio se publica con GitHub Pages**, en GitHub → Settings → Pages → Source elegí "GitHub Actions"
-y usá la plantilla oficial de Astro (`withastro/action`).
+**Para publicar un cambio:**
+1. Editar, compilar (`node node_modules/astro/bin/astro.mjs build`) y revisar.
+2. Subir el código a la rama `fuente-astro`.
+3. Reemplazar el contenido de `main` por el de `dist/` y subirlo. Así se publica.
 
-Recomendación: subilo primero a una rama `rediseno` para ver la vista previa que genera Cloudflare.
-Cuando esté aprobado, fusioná a `main`. La etiqueta `v1.0` del repo te permite volver al sitio anterior.
+**Vista previa para mostrar cambios sin publicar:** https://oys-preview.pages.dev (Cloudflare Pages,
+proyecto `oys-preview`, oculta de Google).
+
+**Volver al sitio anterior:** restaurar en `main` el contenido de la etiqueta `v1.1-sitio-anterior` y subirlo.
