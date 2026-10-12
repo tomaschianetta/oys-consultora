@@ -1,0 +1,32 @@
+---
+import Arrow from './Arrow.astro';
+interface Props { title?: string; text?: string; href?: string; label?: string }
+const {
+  title = 'Hablemos de tu caso.',
+  text = 'Diagnóstico inicial sin cargo. Te decimos qué necesitás, cuánto cuesta y cómo empezamos.',
+  href = '/contacto/',
+  label = 'Agendar una consulta',
+} = Astro.props;
+---
+<section class="cta bg-navy">
+  <div class="container cta-inner">
+    <div>
+      <h2>{title}</h2>
+      <p class="lede">{text}</p>
+    </div>
+    <a href={href} class="btn btn-gold">{label} <Arrow /></a>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative; overflow: hidden; padding-block: clamp(64px, 8vw, 104px);
+    background: linear-gradient(120deg, var(--navy-800), var(--navy-950));
+  }
+  .cta::before {
+    content: ''; position: absolute; left: 62%; top: -40%; width: 2px; height: 200%;
+    background: linear-gradient(var(--gold-500), transparent); transform: rotate(28deg); opacity: .55;
+  }
+  .cta-inner { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px; }
+  .cta-inner > div { display: grid; gap: 14px; max-width: 640px; }
+</style>

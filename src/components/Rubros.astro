@@ -1,0 +1,65 @@
+---
+// Grilla "Todos los rubros": imagen fija y, al pasar el mouse, el video del rubro.
+import { rubros } from '../data/rubros';
+import Arrow from './Arrow.astro';
+---
+<section class="section bg-sand rubros">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Rubros</p>
+      <h2>De la fábrica a la oficina. <em>Conocemos tu actividad.</em></h2>
+      <p class="lede">Cada rubro tiene sus impuestos, sus convenios y sus particularidades. Trabajamos con empresas de toda la economía argentina.</p>
+    </div>
+    <ul class="r-grid">
+      {rubros.map((r, i) => (
+        <li class="r-tile reveal" style={`transition-delay:${(i % 3) * 60}ms`} data-rubro={`/media/rubros/${r.id}.mp4`}>
+          <img src={`/media/rubros/${r.id}.jpg`} alt="" width="640" height="360" loading="lazy" decoding="async" />
+          <div class="r-copy">
+            <h3>{r.label}</h3>
+            <p>{r.d}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+    <div class="r-foot reveal">
+      <p>¿Tu rubro no está en la lista? Seguramente también lo conocemos.</p>
+      <a href="/contacto/" class="link-arrow">Contanos de tu negocio <Arrow /></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .r-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .r-tile { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--navy-900); color: var(--white); }
+  .r-tile img, .r-tile :global(video) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .r-tile :global(video) { opacity: 0; transition: opacity .5s var(--ease); }
+  .r-tile.playing :global(video) { opacity: 1; }
+  .r-tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(6, 18, 42, .95) 0%, rgba(6, 18, 42, .45) 45%, rgba(6, 18, 42, .1) 100%); }
+  .r-tile:hover img { transform: scale(1.05); }
+  .r-copy { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: 22px; display: grid; gap: 6px; }
+  .r-copy h3 { color: var(--white); font-size: 1.2rem; padding-top: 12px; border-top: 1px solid var(--gold-500); }
+  .r-copy p { font-size: 14px; color: #C9D3E4; line-height: 1.5; }
+  .r-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-top: 32px; color: var(--muted); }
+  @media (max-width: 1000px) { .r-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .r-tile { aspect-ratio: 1 / 1; } .r-copy { padding: 16px; } .r-copy p { display: none; } }
+</style>
+
+<script>
+  // El video se carga recién cuando el mouse pasa por la tarjeta (solo en dispositivos con mouse)
+  if (matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll<HTMLElement>('.r-tile').forEach((tile) => {
+      let v: HTMLVideoElement | null = null;
+      tile.addEventListener('mouseenter', () => {
+        if (!v) {
+          v = document.createElement('video');
+          Object.assign(v, { muted: true, loop: true, playsInline: true, preload: 'auto', src: tile.dataset.rubro! });
+          v.setAttribute('aria-hidden', 'true');
+          tile.prepend(v);
+          v.addEventListener('playing', () => tile.classList.add('playing'));
+        }
+        v.play().catch(() => {});
+      });
+      tile.addEventListener('mouseleave', () => { v?.pause(); tile.classList.remove('playing'); });
+    });
+  }
+</script>

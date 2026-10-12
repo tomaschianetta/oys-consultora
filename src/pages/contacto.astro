@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../data/site';
+---
+<Base
+  title="Contacto · Agendá una consulta con tu contador en Rosario | O&S Consultora"
+  description="Escribinos y agendá un diagnóstico sin cargo. Respondemos en menos de 24 horas hábiles. Atención presencial en Rosario o por videollamada."
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={[{ label: 'Contacto' }]} />
+      <p class="eyebrow">Contacto</p>
+      <h1>Contanos sobre tu negocio.</h1>
+      <p class="lede">La primera reunión es sin cargo. Respondemos en menos de 24 horas hábiles.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact">
+      <div class="form-card"><ContactForm /></div>
+      <aside class="info">
+        <div><span>Email</span><a href={`mailto:${site.email}`}>{site.email}</a></div>
+        {site.phoneDisplay && <div><span>WhatsApp</span><a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener">{site.phoneDisplay}</a></div>}
+        <div><span>Oficina</span><p>{site.address.street ? `${site.address.street}, ` : ''}{site.address.city}, {site.address.region}</p></div>
+        <div><span>Horario</span><p>{site.hours}</p></div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact { display: grid; grid-template-columns: 1.6fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+  .form-card { background: var(--white); border: 1px solid var(--line); padding: clamp(24px, 4vw, 44px); }
+  .info { display: grid; gap: 28px; padding-top: 8px; }
+  .info span { display: block; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-700); font-weight: 600; margin-bottom: 6px; }
+  .info a, .info p { font-family: var(--serif); font-size: 1.2rem; color: var(--navy-800); text-decoration: none; }
+  .info a:hover { color: var(--navy-600); }
+  @media (max-width: 900px) { .contact { grid-template-columns: 1fr; } }
+</style>

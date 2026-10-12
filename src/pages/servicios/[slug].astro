@@ -1,0 +1,134 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Arrow from '../../components/Arrow.astro';
+import { services, categories, servicesByCategory, type Service } from '../../data/services';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+
+const { service } = Astro.props as { service: Service };
+const cat = categories.find((c) => c.id === service.category)!;
+const related = servicesByCategory(service.category).filter((s) => s.slug !== service.slug);
+const url = `${site.url}/servicios/${service.slug}/`;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org', '@type': 'Service',
+    name: service.title, description: service.seoDescription, url,
+    serviceType: service.title, category: cat.title,
+    provider: { '@id': `${site.url}/#organizacion` },
+    areaServed: [{ '@type': 'City', name: 'Rosario' }, { '@type': 'Country', name: 'Argentina' }],
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Servicios', item: `${site.url}/servicios/` },
+      { '@type': 'ListItem', position: 3, name: service.title, item: url },
+    ],
+  },
+  ...(service.faqs.length
+    ? [{
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        mainEntity: service.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+      }]
+    : []),
+];
+---
+<Base title={`${service.seoTitle} | O&S Consultora`} description={service.seoDescription} jsonLd={jsonLd}>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={[{ label: 'Servicios', href: '/servicios/' }, { label: service.menuLabel ?? service.title }]} />
+      <p class="eyebrow">{cat.title}</p>
+      <h1>{service.title}</h1>
+      <p class="lede">{service.lead}</p>
+      <div><a href={`/contacto/?servicio=${service.slug}`} class="btn btn-gold">Consultar por este servicio <Arrow /></a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-col">
+      <div class="reveal">
+        <p class="eyebrow">¿Te pasa esto?</p>
+        <h2 class="h2">Lo que escuchamos todas las semanas.</h2>
+      </div>
+      <ul class="dash-list pains reveal">
+        {service.pains.map((p) => <li>{p}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Qué incluye</p>
+        <h2>Cómo lo resolvemos.</h2>
+      </div>
+      <div class="grid g-3">
+        {service.includes.map((it, i) => (
+          <div class="card reveal" style={`transition-delay:${(i % 3) * 70}ms`}>
+            <span class="num">0{i + 1}</span>
+            <h3>{it.t}</h3>
+            <p>{it.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-col">
+      <div class="reveal">
+        <p class="eyebrow">Para quién es</p>
+        <h2 class="h2">Pensado para…</h2>
+      </div>
+      <ul class="check-list for-who reveal">
+        {service.forWho.map((p) => <li>{p}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  {service.faqs.length > 0 && (
+    <section class="section bg-white">
+      <div class="container two-col">
+        <div class="reveal">
+          <p class="eyebrow">Preguntas frecuentes</p>
+          <h2 class="h2">Sobre {service.menuLabel ?? service.title}</h2>
+        </div>
+        <div class="reveal"><Faq items={service.faqs} /></div>
+      </div>
+    </section>
+  )}
+
+  {related.length > 0 && (
+    <section class="section-tight">
+      <div class="container">
+        <p class="eyebrow">También en {cat.title}</p>
+        <div class="grid g-3 related">
+          {related.map((s) => (
+            <a href={`/servicios/${s.slug}/`} class="card">
+              <h3>{s.title}</h3>
+              <p>{s.short}</p>
+              <span class="card-foot">Ver servicio <Arrow /></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CtaBand title="¿Lo vemos juntos?" text={`Contanos tu situación y te enviamos una propuesta de ${(service.menuLabel ?? service.title).toLowerCase()} con abono fijo.`} href={`/contacto/?servicio=${service.slug}`} />
+</Base>
+
+<style>
+  .two-col { display: grid; grid-template-columns: 1fr 1.5fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
+  .two-col > div:first-child { display: grid; gap: 14px; }
+  .pains li, .for-who li { font-size: 1.12rem; padding-block: 6px; }
+  .related { margin-top: 24px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+</style>

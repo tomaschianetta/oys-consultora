@@ -1,0 +1,90 @@
+---
+import Base from '../../layouts/Base.astro';
+import Arrow from '../../components/Arrow.astro';
+import Faq from '../../components/Faq.astro';
+import { site } from '../../data/site';
+
+const services = [
+  { t: 'Bookkeeping', d: 'Daily and monthly reconciliations, chart of accounts and transaction categorisation.' },
+  { t: 'Invoice processing', d: 'AP/AR management, supplier onboarding, payment runs and approvals.' },
+  { t: 'Wages & payroll', d: 'Payroll processing, payslips, superannuation/STP and leave tracking.' },
+  { t: 'Financial reporting', d: 'Monthly P&L, balance sheet, cash flow and KPI dashboards.' },
+  { t: 'BAS & tax support', d: 'BAS preparation support, GST and year-end coordination with your local tax agent.' },
+  { t: 'Software setup', d: 'Xero, QuickBooks, MYOB, Deputy and Tanda. Migrations and clean-ups.' },
+  { t: 'Cash flow forecasting', d: '13-week rolling cash flow, scenario modelling and budget vs actuals.' },
+  { t: 'Automation & business analysis', d: 'Process mapping, workflow automation and management dashboards.' },
+  { t: 'Doing business in Argentina', d: 'Company set-up, tax registration and ongoing compliance for foreign investors.' },
+];
+
+const faqs = [
+  { q: 'Which time zone do you work in?', a: 'Our international division is based in Sydney, so we work in AEST/AEDT, and we overlap with US and European clients through our team in Argentina.' },
+  { q: 'Do you lodge tax returns in Australia?', a: 'We support your bookkeeping and BAS preparation and coordinate with your registered tax or BAS agent, who reviews and lodges.' },
+  { q: 'How do you charge?', a: 'A fixed monthly fee based on transaction volume and scope, agreed upfront. No surprises.' },
+];
+const faqLd = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Base
+  title="O&S Consulting · Remote bookkeeping & payroll from Sydney and Argentina"
+  description="Remote bookkeeping, payroll, invoice processing and financial reporting for businesses worldwide, delivered in English from Sydney and Rosario."
+  lang="en"
+  jsonLd={[faqLd]}
+  alternates={[{ lang: 'en', href: '/en/' }, { lang: 'es-AR', href: '/' }, { lang: 'x-default', href: '/' }]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">International division · Sydney + Rosario</p>
+      <h1>Remote accounting that works in your time zone.</h1>
+      <p class="lede">Bookkeeping, payroll and reporting for growing businesses in Australia, the US and Europe, delivered in English by a team with more than 30 years of experience.</p>
+      <div class="ctas">
+        <a href={`mailto:${site.email}?subject=International%20enquiry`} class="btn btn-gold">Get in touch <Arrow /></a>
+        <a href="/" class="btn btn-ghost" hreflang="es">Versión en español</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Services</p>
+        <h2>Your back office, handled.</h2>
+      </div>
+      <div class="grid g-3">
+        {services.map((s, i) => (
+          <div class="card reveal">
+            <span class="num">0{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container two">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2>Before we talk.</h2>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <section class="section bg-navy">
+    <div class="container end">
+      <h2>Let's talk about your business.</h2>
+      <p class="lede">We reply within one business day.</p>
+      <a href={`mailto:${site.email}?subject=International%20enquiry`} class="btn btn-gold">{site.email}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+  .two { display: grid; grid-template-columns: 1fr 1.6fr; gap: 56px; }
+  .end { display: grid; gap: 18px; justify-items: start; }
+  @media (max-width: 900px) { .two { grid-template-columns: 1fr; } }
+</style>

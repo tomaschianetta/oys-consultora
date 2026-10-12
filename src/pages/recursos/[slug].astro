@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getCollection, render } from 'astro:content';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('recursos', ({ data }) => !data.draft);
+  return posts.map((p) => ({ params: { slug: p.id }, props: { post: p } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const url = `${site.url}/recursos/${post.id}/`;
+const fmt = post.data.date.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org', '@type': 'Article',
+    headline: post.data.title, description: post.data.description,
+    datePublished: post.data.date.toISOString(), mainEntityOfPage: url, inLanguage: 'es-AR',
+    author: { '@type': 'Organization', name: site.name, url: site.url },
+    publisher: { '@id': `${site.url}/#organizacion` },
+    image: `${site.url}/og.png`,
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Recursos', item: `${site.url}/recursos/` },
+      { '@type': 'ListItem', position: 3, name: post.data.title, item: url },
+    ],
+  },
+];
+---
+<Base title={`${post.data.title} | O&S Consultora`} description={post.data.description} jsonLd={jsonLd} type="article">
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={[{ label: 'Recursos', href: '/recursos/' }, { label: post.data.category }]} />
+      <p class="eyebrow">{post.data.category} · <time datetime={post.data.date.toISOString()}>{fmt}</time></p>
+      <h1 class="post-title">{post.data.title}</h1>
+      <p class="lede">{post.data.description}</p>
+    </div>
+  </section>
+
+  <article class="section">
+    <div class="container">
+      <div class="prose"><Content /></div>
+    </div>
+  </article>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .post-title { max-width: 24ch !important; font-size: clamp(2rem, 4.4vw, 3.4rem); }
+  .prose :global(table) { display: block; overflow-x: auto; }
+  .prose :global(input[type='checkbox']) { margin-right: 8px; accent-color: var(--gold-500); }
+  .prose :global(ul.contains-task-list) { list-style: none; padding-left: 0; }
+</style>

@@ -1,0 +1,19 @@
+{
+  "name": "oys-consultora-web",
+  "type": "module",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "imagenes": "node scripts/preparar-imagenes.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.7"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5"
+  }
+}

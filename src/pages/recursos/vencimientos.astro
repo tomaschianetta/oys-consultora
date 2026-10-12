@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaBand from '../../components/CtaBand.astro';
+
+// Obligaciones habituales. No ponemos fechas exactas porque las publica ARCA
+// cada año y dependen de la terminación de la CUIT.
+const items = [
+  { t: 'Monotributo', d: 'Pago mensual de la cuota. Recategorización semestral en enero y julio.' },
+  { t: 'IVA', d: 'Declaración jurada y pago mensual, según la terminación de la CUIT.' },
+  { t: 'Libro de Sueldos Digital y F.931', d: 'Presentación y pago mensual de aportes y contribuciones del personal.' },
+  { t: 'Ingresos Brutos (API Santa Fe)', d: 'Anticipo mensual y declaración jurada anual. Convenio Multilateral si vendés en varias provincias.' },
+  { t: 'DReI (Rosario)', d: 'Derecho de Registro e Inspección: liquidación y pago mensual.' },
+  { t: 'Ganancias y Bienes Personales', d: 'Declaraciones juradas anuales y anticipos durante el año.' },
+];
+---
+<Base
+  title="Calendario de vencimientos impositivos · ARCA, API y DReI | O&S Consultora"
+  description="Qué vence cada mes para pymes, monotributistas y empleadores: Monotributo, IVA, F.931, Ingresos Brutos y DReI. Cómo leer el calendario según tu CUIT."
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={[{ label: 'Recursos', href: '/recursos/' }, { label: 'Vencimientos' }]} />
+      <p class="eyebrow">Herramienta</p>
+      <h1>Calendario de vencimientos</h1>
+      <p class="lede">Las obligaciones que se repiten todos los meses y cómo saber cuándo te toca a vos.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container layout">
+      <div class="prose">
+        <h2>Cómo leer el calendario</h2>
+        <p>ARCA fija los vencimientos de casi todas las obligaciones nacionales según el <strong>último dígito de tu CUIT</strong>. Los organismos provinciales y municipales tienen sus propios calendarios. Por eso, dos empresas vecinas pueden tener fechas distintas.</p>
+        <p>Podés consultar las fechas exactas en el <a href="https://www.arca.gob.ar/vencimientos/" target="_blank" rel="noopener">calendario oficial de ARCA</a>.</p>
+
+        <h2>Lo que vence todos los meses</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Obligación</th><th>Qué implica</th></tr></thead>
+            <tbody>{items.map((i) => <tr><td><strong>{i.t}</strong></td><td>{i.d}</td></tr>)}</tbody>
+          </table>
+        </div>
+
+        <h2>¿Querés olvidarte de los vencimientos?</h2>
+        <p>Cada cliente recibe su calendario personalizado. Nuestro sistema interno controla cada fecha y te avisamos antes de cada pago.</p>
+      </div>
+      <aside class="side">
+        <p class="eyebrow">Delegalo</p>
+        <p class="side-title">Nosotros controlamos tus vencimientos por vos.</p>
+        <a href="/contacto/?servicio=impuestos" class="btn btn-navy">Quiero que me ayuden</a>
+      </aside>
+    </div>
+  </section>
+
+  <CtaBand title="Que los vencimientos dejen de ser tu problema." />
+</Base>
+
+<style>
+  .layout { display: grid; grid-template-columns: 1fr 300px; gap: 56px; align-items: start; }
+  .side { position: sticky; top: 100px; display: grid; gap: 14px; padding: 28px; background: var(--white); border: 1px solid var(--line); border-top: 3px solid var(--gold-500); }
+  .side-title { font-family: var(--serif); font-size: 1.3rem; color: var(--navy-800); line-height: 1.25; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .side { position: static; } }
+</style>

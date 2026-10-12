@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+
+const values = [
+  { t: 'Claridad', d: 'Te explicamos qué pagás y por qué. Sin jerga y sin letra chica.' },
+  { t: 'Compromiso', d: 'Tus vencimientos son nuestros vencimientos.' },
+  { t: 'Cercanía', d: 'Un profesional que conoce tu negocio y atiende el teléfono.' },
+  { t: 'Mejora continua', d: 'Procesos digitales para hacer más en menos tiempo y con menos errores.' },
+];
+
+---
+<Base
+  title="Nosotros · Estudio contable familiar en Rosario desde hace 30 años | O&S Consultora"
+  description="Conocé a O&S Consultora: un estudio contable familiar fundado en Rosario, con más de 30 años de trayectoria y una división internacional en Sydney."
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={[{ label: 'Nosotros' }]} />
+      <p class="eyebrow">Nosotros</p>
+      <h1>Organización y Sistemas: el nombre lo dice todo.</h1>
+      <p class="lede">Nacimos en Rosario con una idea simple: que las empresas estén organizadas y que sus sistemas trabajen para ellas. Más de 30 años después seguimos con la misma idea y con más herramientas.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container story">
+      <div class="reveal">
+        <p class="eyebrow">Nuestra historia</p>
+        <h2>De Rosario al mundo, sin perder la cercanía.</h2>
+      </div>
+      <div class="prose reveal">
+        <p>O&amp;S Consultora nació como un estudio contable familiar enfocado en pymes y profesionales de Rosario. Durante más de tres décadas acompañamos a nuestros clientes en sus decisiones más importantes: sociedades que se constituyeron, empresas que crecieron, profesionales que dieron el salto.</p>
+        <p>En 2023 abrimos nuestra división internacional en Sydney, Australia. Desde allí trabajamos para clientes del exterior y sumamos al estudio una forma de trabajar más digital, más ordenada y más medible.</p>
+        <p>Hoy somos un equipo de profesionales que combina la experiencia de un estudio tradicional con la agilidad de un equipo distribuido.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">El equipo</p>
+        <h2>Un equipo, una sola forma de trabajar.</h2>
+        <p class="lede">Contadores con experiencia en impuestos, sueldos, sociedades y auditoría, más un área de tecnología y procesos. Cada cliente tiene un profesional a cargo que conoce su negocio.</p>
+      </div>
+      <div class="grid g-3">
+        <div class="card reveal"><span class="num">01</span><h3>División Nacional</h3><p>Impuestos, sueldos, sociedades, auditoría y certificaciones para clientes de todo el país desde Rosario.</p></div>
+        <div class="card reveal"><span class="num">02</span><h3>Gestión y Tecnología</h3><p>Automatización de procesos, tableros de gestión y nuestro sistema interno de control de vencimientos.</p></div>
+        <div class="card reveal"><span class="num">03</span><h3>División Internacional</h3><p>Servicios contables remotos en inglés desde Sydney, y apoyo a empresas argentinas con vínculos en el exterior.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-navy">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Cómo pensamos</p>
+        <h2>Nuestros valores.</h2>
+      </div>
+      <div class="grid g-4">
+        {values.map((v) => (
+          <div class="val reveal"><h3>{v.t}</h3><p>{v.d}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title="Sumate a los clientes que ya trabajan con nosotros." />
+</Base>
+
+<style>
+  .story { display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(32px, 6vw, 88px); }
+  .story > div:first-child { display: grid; gap: 14px; align-content: start; }
+  .story .prose { font-size: 1.08rem; color: var(--muted); }
+  .val { border-top: 1px solid var(--gold-500); padding-top: 20px; display: grid; gap: 8px; }
+  .val p { color: #B9C6D5; }
+  @media (max-width: 860px) { .story { grid-template-columns: 1fr; } }
+</style>

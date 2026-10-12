@@ -1,0 +1,63 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Arrow from '../../components/Arrow.astro';
+import { categories, servicesByCategory } from '../../data/services';
+---
+<Base
+  title="Servicios contables, impositivos y laborales en Rosario | O&S Consultora"
+  description="Impuestos, sueldos, constitución de sociedades, auditoría, facturación, automatización y selección de talento contable. Todos los servicios de O&S Consultora."
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={[{ label: 'Servicios' }]} />
+      <p class="eyebrow">Servicios</p>
+      <h1>Todo lo que tu empresa necesita, coordinado por un mismo equipo.</h1>
+      <p class="lede">Cuatro áreas de práctica que trabajan juntas para que tus impuestos, tus sueldos y tus números estén siempre en orden.</p>
+    </div>
+  </section>
+
+  {categories.map((cat, i) => (
+    <section class:list={['section-tight', { 'bg-white': i % 2 === 0 }]} id={cat.id}>
+      <div class="container cat">
+        <div class="cat-head reveal">
+          <span class="num">0{i + 1}</span>
+          <h2 class="h2">{cat.title}</h2>
+          <p class="muted">{cat.blurb}</p>
+        </div>
+        <div class="grid g-2">
+          {servicesByCategory(cat.id).map((s) => (
+            <a href={`/servicios/${s.slug}/`} class="card reveal">
+              <h3>{s.title}</h3>
+              <p>{s.short}</p>
+              <span class="card-foot">Ver detalle <Arrow /></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section-tight">
+    <div class="container intl">
+      <div>
+        <p class="eyebrow">División internacional</p>
+        <h2 class="h3">¿Tu empresa está fuera de Argentina?</h2>
+        <p class="muted">Desde Sydney ofrecemos bookkeeping, payroll y reportes financieros remotos en inglés.</p>
+      </div>
+      <a href="/en/" class="link-arrow" hreflang="en">International services <Arrow /></a>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .cat { display: grid; grid-template-columns: 1fr 2fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+  .cat-head { display: grid; gap: 10px; position: sticky; top: 100px; }
+  .cat-head .num { font-family: var(--serif); color: var(--gold-700); }
+  .intl { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px; border: 1px solid var(--line); padding: 32px; background: var(--white); }
+  .intl > div { display: grid; gap: 8px; }
+  @media (max-width: 900px) { .cat { grid-template-columns: 1fr; } .cat-head { position: static; } }
+</style>

@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Arrow from '../../components/Arrow.astro';
+import { segments } from '../../data/segments';
+---
+<Base
+  title="Para quién trabajamos · Pymes, profesionales y startups | O&S Consultora"
+  description="Acompañamos a pymes, profesionales, monotributistas, emprendedores y empresas con vínculos en el exterior. Conocé cómo te ayudamos según tu caso."
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={[{ label: 'Para quién' }]} />
+      <p class="eyebrow">Para quién trabajamos</p>
+      <h1>No existe un cliente estándar. Por eso no hay soluciones estándar.</h1>
+      <p class="lede">Elegí lo que mejor te describe y te contamos cómo trabajamos con negocios como el tuyo.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid g-2">
+      {segments.map((s, i) => (
+        <a href={`/para-quien/${s.slug}/`} class="card reveal">
+          <span class="num">0{i + 1}</span>
+          <h2 class="h3">{s.title}</h2>
+          <p class="tag">{s.tagline}</p>
+          <p>{s.intro}</p>
+          <span class="card-foot">Cómo te ayudamos <Arrow /></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .tag { font-family: var(--serif); font-size: 1.15rem; color: var(--navy-700) !important; }
+</style>

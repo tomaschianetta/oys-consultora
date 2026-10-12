@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Arrow from '../../components/Arrow.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('recursos', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = (d: Date) => d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base
+  title="Recursos · Notas sobre impuestos, sueldos y sociedades | O&S Consultora"
+  description="Notas claras sobre impuestos, Monotributo, sueldos, sociedades y gestión para pymes y profesionales, escritas por el equipo de O&S Consultora."
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={[{ label: 'Recursos' }]} />
+      <p class="eyebrow">Recursos</p>
+      <h1>Información clara para decidir mejor.</h1>
+      <p class="lede">Notas prácticas sobre impuestos, sueldos, sociedades y gestión, sin jerga.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <a href="/recursos/vencimientos/" class="venc reveal">
+        <div>
+          <p class="eyebrow">Herramienta</p>
+          <h2 class="h3">Calendario de vencimientos</h2>
+          <p class="muted">Cómo leer el calendario de ARCA según tu CUIT y qué vence cada mes.</p>
+        </div>
+        <Arrow />
+      </a>
+
+      <div class="grid g-3 posts">
+        {posts.map((p) => (
+          <a href={`/recursos/${p.id}/`} class="card reveal">
+            <span class="num">{p.data.category} · {fmt(p.data.date)}</span>
+            <h2 class="h3">{p.data.title}</h2>
+            <p>{p.data.description}</p>
+            <span class="card-foot">Leer nota <Arrow /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .venc { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 32px; text-decoration: none; background: var(--white); border: 1px solid var(--line); border-left: 3px solid var(--gold-500); margin-bottom: 40px; }
+  .venc > div { display: grid; gap: 8px; }
+  .venc :global(svg) { width: 22px; color: var(--gold-700); flex: none; }
+  .venc:hover { box-shadow: var(--shadow); }
+</style>

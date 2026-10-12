@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Página no encontrada | O&S Consultora" description="La página que buscás no existe." noindex>
+  <section class="page-hero nf">
+    <div class="container">
+      <p class="eyebrow">Error 404</p>
+      <h1>Esta página no está en nuestros libros.</h1>
+      <p class="lede">Puede que se haya movido con el rediseño del sitio. Probá desde el inicio o los servicios.</p>
+      <div class="ctas">
+        <a href="/" class="btn btn-gold">Ir al inicio</a>
+        <a href="/servicios/" class="btn btn-ghost">Ver servicios</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { min-height: 80vh; display: flex; align-items: center; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+</style>

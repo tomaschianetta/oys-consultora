@@ -1,0 +1,318 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import HeroVideo from '../components/HeroVideo.astro';
+import Rubros from '../components/Rubros.astro';
+import Faq from '../components/Faq.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { stats } from '../data/site';
+import { categories, servicesByCategory } from '../data/services';
+import { segments } from '../data/segments';
+import { allyAreas } from '../data/allies';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('recursos', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const faqs = [
+  { q: '¿Atienden monotributistas o solo empresas?', a: 'Atendemos ambos. Tenemos planes mensuales para monotributistas (recategorización, facturación y pagos) y abonos fijos para sociedades comerciales.' },
+  { q: '¿Cómo se cobran los honorarios?', a: 'Con un abono mensual fijo, definido al inicio según el alcance acordado. No cobramos por consulta. Los servicios puntuales, como una constitución de sociedad o una auditoría, se cotizan aparte.' },
+  { q: '¿Trabajan con clientes fuera de Rosario?', a: 'Sí. Trabajamos 100% en forma remota con videollamadas, firma electrónica y acceso a la nube. Tenemos clientes en CABA y en el exterior.' },
+  { q: '¿Qué sistemas contables usan?', a: 'Nos adaptamos a tu sistema: Tango, Bejerman, Xubio, Holded, Xero o QuickBooks. Si todavía no tenés uno, te recomendamos el más adecuado para tu volumen.' },
+  { q: '¿Cuánto tarda en empezar a trabajar el estudio?', a: 'El onboarding lleva entre 7 y 14 días hábiles: migramos accesos e información histórica, te asignamos un profesional de contacto y armamos tu calendario de vencimientos.' },
+  { q: 'Ya tengo contador. ¿Cómo es el cambio de estudio?', a: 'Simple. Nos ocupamos de pedir la información y las claves necesarias, revisamos la situación actual y te avisamos si encontramos algo para corregir.' },
+];
+
+const faqLd = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+
+const steps = [
+  { t: 'Diagnóstico', d: 'Primera reunión sin cargo. Entendemos tu negocio, tu equipo y tu situación actual frente a ARCA, API y el municipio.' },
+  { t: 'Propuesta', d: 'Alcance, entregables y un abono mensual fijo, por escrito y sin letra chica.' },
+  { t: 'Onboarding', d: 'En 7 a 14 días hábiles migramos accesos e información y te asignamos un profesional de contacto.' },
+  { t: 'Acompañamiento', d: 'Calendario de vencimientos, reportes mensuales y una reunión trimestral para revisar números y planificar.' },
+];
+---
+<Base
+  title="O&S Consultora · Estudio contable en Rosario para pymes y profesionales"
+  description="Estudio contable en Rosario con más de 30 años. Impuestos, sueldos, sociedades y auditoría para pymes, profesionales y emprendedores. Abono mensual fijo y diagnóstico sin cargo."
+  jsonLd={[faqLd]}
+  alternates={[{ lang: 'es-AR', href: '/' }, { lang: 'en', href: '/en/' }, { lang: 'x-default', href: '/' }]}
+>
+  <script is:inline slot="head">
+    // Redirige anclas del sitio anterior (#services-ar, #services-int, #contact) a las páginas nuevas
+    (function () {
+      var map = { '#services-ar': '/servicios/', '#services-int': '/en/', '#contact': '/contacto/' };
+      if (map[location.hash]) location.replace(map[location.hash]);
+    })();
+  </script>
+
+  <!-- HERO -->
+  <section class="hero on-dark">
+    <HeroVideo />
+    <div class="container hero-inner">
+      <p class="eyebrow">Estudio contable · Rosario · Desde hace más de 30 años</p>
+      <h1>Ordenamos tus números y te ayudamos a <em>crecer</em>.</h1>
+      <p class="lede">Impuestos, sueldos, sociedades y gestión para pymes, profesionales y emprendedores. Un solo equipo, un abono fijo y alguien que conoce tu empresa del otro lado.</p>
+      <div class="hero-ctas">
+        <a href="/contacto/" class="btn btn-gold">Agendar diagnóstico sin cargo <Arrow /></a>
+        <a href="/servicios/" class="btn btn-ghost">Ver servicios</a>
+      </div>
+      <div class="stats">
+        {stats.map((s) => (
+          <div class="stat"><div class="stat-value">{s.value}</div><div class="stat-label">{s.label}</div></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PARA QUIÉN -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Para quién trabajamos</p>
+        <h2>Cada negocio tiene preguntas distintas. <em>Empecemos por la tuya.</em></h2>
+      </div>
+      <div class="grid g-4">
+        {segments.map((s, i) => (
+          <a href={`/para-quien/${s.slug}/`} class="card seg reveal" style={`transition-delay:${i * 70}ms`}>
+            <span class="num">0{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.tagline}</p>
+            <span class="card-foot">Cómo te ayudamos <Arrow /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- RUBROS -->
+  <Rubros />
+
+  <!-- SERVICIOS -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Servicios</p>
+        <h2>Todo lo contable, impositivo y laboral, en un solo lugar.</h2>
+        <p class="lede">Cuatro áreas de práctica coordinadas por un mismo equipo. Sin derivaciones, sin pasarte la pelota.</p>
+      </div>
+      <div class="practice">
+        {categories.map((cat, i) => (
+          <div class="practice-row reveal">
+            <div class="practice-head">
+              <span class="num">0{i + 1}</span>
+              <h3>{cat.title}</h3>
+              <p class="muted">{cat.blurb}</p>
+            </div>
+            <ul class="practice-list">
+              {servicesByCategory(cat.id).map((s) => (
+                <li>
+                  <a href={`/servicios/${s.slug}/`}>
+                    <strong>{s.menuLabel ?? s.title}</strong>
+                    <span>{s.short}</span>
+                    <Arrow />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIALES -->
+  <section class="section bg-navy diff">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Por qué O&amp;S</p>
+        <h2>La seriedad de una firma grande. <em>La cercanía de un estudio que te conoce.</em></h2>
+      </div>
+      <div class="grid g-4">
+        <div class="diff-item reveal"><h3>Un profesional a cargo</h3><p>Siempre hablás con alguien que conoce tu empresa. No con un call center ni con un ticket.</p></div>
+        <div class="diff-item reveal"><h3>Abono fijo, sin sorpresas</h3><p>Sabés desde el primer día cuánto pagás y qué incluye. No cobramos por consulta.</p></div>
+        <div class="diff-item reveal"><h3>Tecnología propia</h3><p>Sistema interno de control de vencimientos, procesos automatizados y reportes claros.</p></div>
+        <div class="diff-item reveal"><h3>Una red que suma</h3><p>Abogados, escribanos, despachantes, asesores de inversión y más, coordinados por nosotros.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Cómo trabajamos</p>
+        <h2>Un proceso simple, ordenado y predecible.</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="reveal" style={`transition-delay:${i * 80}ms`}>
+            <span class="step-n">0{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section class="section bg-sand">
+    <div class="container about">
+      <div class="about-img reveal">
+        <div class="about-panel">
+          <img src="/brand/os-mark-light.png" alt="" width="460" height="420" loading="lazy" />
+          <p>Organización y Sistemas<br />Consultora</p>
+        </div>
+      </div>
+      <div class="about-copy reveal">
+        <p class="eyebrow">Nosotros</p>
+        <h2>Un estudio familiar con más de 30 años, pensado para lo que viene.</h2>
+        <p class="lede">O&amp;S nació en Rosario como un estudio familiar, acompañando a pymes y profesionales. Hoy somos un equipo de profesionales que combina la experiencia de un estudio tradicional con procesos digitales y una mirada internacional desde Sydney.</p>
+        <a href="/nosotros/" class="link-arrow">Conocé al equipo <Arrow /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RED DE ALIADOS -->
+  <section class="section-tight bg-white">
+    <div class="container allies">
+      <div class="reveal">
+        <p class="eyebrow">Red de aliados</p>
+        <h2 class="h3">Un ecosistema integral para potenciar tu negocio.</h2>
+      </div>
+      <ul class="allies-list reveal">
+        {allyAreas.map((a) => <li>{a.area}</li>)}
+      </ul>
+      <a href="/red-de-aliados/" class="link-arrow reveal">Ver la red <Arrow /></a>
+    </div>
+  </section>
+
+  <!-- RECURSOS -->
+  {posts.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Recursos</p>
+          <h2>Información clara para decidir mejor.</h2>
+        </div>
+        <div class="grid g-3">
+          {posts.map((p) => (
+            <a href={`/recursos/${p.id}/`} class="card reveal">
+              <span class="num">{p.data.category}</span>
+              <h3>{p.data.title}</h3>
+              <p>{p.data.description}</p>
+              <span class="card-foot">Leer nota <Arrow /></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- FAQ -->
+  <section class="section bg-white">
+    <div class="container faq-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h2>Lo que nos preguntan antes de la primera reunión.</h2>
+      </div>
+      <div class="reveal"><Faq items={faqs} /></div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="section bg-navy contact" id="contacto">
+    <div class="container contact-grid">
+      <div class="contact-copy">
+        <p class="eyebrow">Contacto</p>
+        <h2>Contanos sobre tu negocio.</h2>
+        <p class="lede">La primera reunión es sin cargo. Te decimos qué necesitás, cuánto cuesta y cómo empezamos.</p>
+        <ul class="check-list">
+          <li>Respuesta en menos de 24 horas hábiles</li>
+          <li>Reunión presencial en Rosario o por videollamada</li>
+          <li>Propuesta por escrito con abono fijo</li>
+        </ul>
+      </div>
+      <div class="contact-card"><ContactForm /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero { position: relative; min-height: min(100svh, 920px); display: flex; align-items: flex-end; color: var(--white); overflow: hidden; background: var(--navy-950); }
+  .hero-inner { position: relative; z-index: 1; display: grid; gap: 26px; padding-top: 150px; padding-bottom: 56px; }
+  .hero h1 { max-width: 16ch; font-size: clamp(2.6rem, 6.4vw, 5rem); line-height: 1.04; }
+  .hero .lede { max-width: 56ch; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 28px; }
+  .hero > * { animation: rise .9s var(--ease) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+
+  /* Áreas de práctica */
+  .practice { border-top: 1px solid var(--line); }
+  .practice-row { display: grid; grid-template-columns: minmax(240px, 1fr) 2fr; gap: 40px; padding-block: 36px; border-bottom: 1px solid var(--line); }
+  .practice-head { display: grid; gap: 8px; align-content: start; }
+  .practice-head .num { font-family: var(--serif); color: var(--gold-700); }
+  .practice-list { list-style: none; padding: 0; display: grid; }
+  .practice-list a {
+    display: grid; grid-template-columns: 1fr 20px; gap: 4px 20px; align-items: center; padding: 16px 0; text-decoration: none;
+    border-bottom: 1px dashed var(--line);
+  }
+  .practice-list li:last-child a { border-bottom: 0; }
+  .practice-list strong { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; color: var(--navy-800); }
+  .practice-list span { grid-column: 1; font-size: 15px; color: var(--muted); }
+  .practice-list :global(svg) { grid-row: 1 / span 2; grid-column: 2; width: 18px; color: var(--gold-700); transition: transform .2s var(--ease); }
+  .practice-list a:hover strong { color: var(--navy-600); }
+  .practice-list a:hover :global(svg) { transform: translateX(4px); }
+
+  /* Diferenciales */
+  .diff { background: radial-gradient(900px 400px at 100% 0%, rgba(169, 201, 224, .12), transparent 60%), var(--navy-900); }
+  .diff-item { border-top: 1px solid var(--gold-500); padding-top: 22px; display: grid; gap: 10px; align-content: start; }
+  .diff-item p { color: #B9C6D5; font-size: 15.5px; }
+
+  /* Proceso */
+  .steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .steps li { padding: 0 28px 0 0; display: grid; gap: 10px; align-content: start; position: relative; }
+  .steps li::before { content: ''; display: block; height: 1px; background: var(--line); margin-bottom: 18px; }
+  .step-n { font-family: var(--serif); font-size: 2.6rem; color: var(--gold-500); line-height: 1; }
+  .steps p { color: var(--muted); font-size: 15.5px; }
+
+  /* Nosotros */
+  .about { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 88px); align-items: center; }
+  .about-img { position: relative; }
+  .about-panel {
+    aspect-ratio: 6 / 7; display: grid; place-content: center; justify-items: center; gap: 28px; padding: 15%;
+    background: radial-gradient(500px 300px at 80% 0%, rgba(169, 192, 224, .16), transparent 60%), linear-gradient(160deg, var(--navy-800), var(--navy-950));
+  }
+  .about-panel img { width: 70%; height: auto; }
+  .about-panel p { font-family: var(--serif); color: var(--white); text-align: center; font-size: clamp(1rem, 1.6vw, 1.25rem); line-height: 1.3; padding-top: 22px; border-top: 1px solid var(--gold-500); }
+  .about-img::after { content: ''; position: absolute; inset: 18px -18px -18px 18px; border: 1px solid var(--gold-500); z-index: -1; }
+  .about-copy { display: grid; gap: 20px; justify-items: start; }
+
+  /* Aliados */
+  .allies { display: grid; grid-template-columns: 1.2fr 2fr auto; gap: 32px; align-items: center; }
+  .allies-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .allies-list li { padding: 8px 16px; border: 1px solid var(--line); border-radius: 999px; font-size: 14.5px; color: var(--navy-700); background: var(--paper); }
+
+  .faq-wrap { display: grid; grid-template-columns: 1fr 1.6fr; gap: 56px; align-items: start; }
+
+  /* Contacto */
+  .contact { background: linear-gradient(150deg, var(--navy-800), var(--navy-950)); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
+  .contact-copy { display: grid; gap: 22px; }
+  .contact-copy .check-list { color: #D5DEE8; }
+  .contact-card { background: var(--white); color: var(--ink); padding: clamp(24px, 4vw, 44px); border-radius: var(--radius); }
+
+  @media (max-width: 960px) {
+    .practice-row, .about, .faq-wrap, .contact-grid, .allies { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; row-gap: 36px; }
+    .about-img { max-width: 420px; }
+    .about-img::after { inset: 12px 12px -12px -12px; }
+  }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+</style>

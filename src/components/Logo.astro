@@ -1,0 +1,34 @@
+---
+// Logo O&S (versión horizontal): monograma + filete dorado + nombre.
+// `tone`: 'auto' cambia según el header (claro sobre el hero, azul al hacer scroll),
+// 'light' para fondos oscuros, 'dark' para fondos claros.
+interface Props { tone?: 'auto' | 'light' | 'dark' }
+const { tone = 'auto' } = Astro.props;
+---
+<span class:list={['logo', `tone-${tone}`]}>
+  <span class="logo-mark" aria-hidden="true">
+    <img class="mark-light" src="/brand/os-mark-light-160.png" alt="" width="48" height="44" />
+    <img class="mark-dark" src="/brand/os-mark-160.png" alt="" width="48" height="44" />
+  </span>
+  <span class="logo-rule" aria-hidden="true"></span>
+  <span class="logo-text">
+    <span>Organización y</span>
+    <span>Sistemas Consultora</span>
+  </span>
+</span>
+
+<style>
+  .logo { display: inline-flex; align-items: center; gap: 14px; }
+  .logo-mark { position: relative; width: 48px; height: 44px; flex: none; }
+  .logo-mark img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .3s var(--ease); }
+  .logo-rule { width: 1px; align-self: stretch; margin-block: 4px; background: var(--gold-500); }
+  .logo-text { display: grid; font-family: var(--serif); font-size: 17px; line-height: 1.15; letter-spacing: -0.005em; white-space: nowrap; }
+
+  /* Tonos */
+  .tone-light .mark-dark, .tone-dark .mark-light { opacity: 0; }
+  .tone-auto .mark-dark { opacity: 0; }
+  :global(.is-solid) .tone-auto .mark-dark, :global(.is-open) .tone-auto .mark-dark { opacity: 1; }
+  :global(.is-solid) .tone-auto .mark-light, :global(.is-open) .tone-auto .mark-light { opacity: 0; }
+
+  @media (max-width: 380px) { .logo-text { font-size: 15px; } }
+</style>

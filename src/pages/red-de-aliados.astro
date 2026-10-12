@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { allyAreas } from '../data/allies';
+---
+<Base
+  title="Red de profesionales: legal, finanzas, comercio exterior y más | O&S Consultora"
+  description="Un ecosistema integral para tu empresa: abogados, escribanos, despachantes de aduana, asesores de inversión, seguros, inmobiliarias, arquitectos, desarrolladores y marketing."
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={[{ label: 'Red de aliados' }]} />
+      <p class="eyebrow">Red de aliados</p>
+      <h1>Un ecosistema integral para potenciar tu negocio.</h1>
+      <p class="lede">Creemos que una gestión contable sólida es solo el punto de partida. Por eso contamos con una red de profesionales de primer nivel en legal, finanzas, tecnología, bienes raíces y desarrollo comercial, para que encuentres las soluciones que tu empresa necesita en un solo lugar y con el respaldo de nuestro equipo.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid g-3">
+        {allyAreas.map((a, i) => (
+          <div class="card area reveal">
+            <span class="num">0{i + 1}</span>
+            <h2 class="h3">{a.area}</h2>
+            <p>{a.d}</p>
+            <ul class="check-list">{a.pros.map((p) => <li>{p}</li>)}</ul>
+          </div>
+        ))}
+        <div class="card area start reveal">
+          <h2 class="h3">Empezar o crecer</h2>
+          <p>Ya sea que estés dando el primer paso o buscando escalar, tenemos todo para acompañarte de la mejor manera.</p>
+          <a href="/contacto/" class="btn btn-gold">Contanos tu proyecto</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container how">
+      <div class="reveal">
+        <p class="eyebrow">Cómo funciona</p>
+        <h2>Simple para vos.</h2>
+      </div>
+      <ol class="how-list reveal">
+        <li><strong>Nos contás lo que necesitás.</strong> Por ejemplo, comprar un local, importar mercadería, lanzar tu tienda online o resolver un tema societario.</li>
+        <li><strong>Te presentamos al profesional indicado</strong> y le pasamos el contexto contable e impositivo.</li>
+        <li><strong>Coordinamos los tiempos y la información</strong> para que todo avance en paralelo.</li>
+      </ol>
+    </div>
+    <div class="container">
+      <p class="disclaimer small muted">Los profesionales de nuestra red son independientes y facturan sus servicios de forma directa. O&amp;S Consultora coordina y acompaña, y cada profesional es responsable de su propia actuación.</p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container join">
+      <h2 class="h3">¿Sos profesional y querés sumarte a la red?</h2>
+      <a href="/contacto/" class="link-arrow">Escribinos</a>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .area .check-list { margin-top: 8px; gap: 10px; font-size: 15.5px; }
+  .area .check-list li { color: var(--navy-700); }
+  .start { background: var(--navy-900); border-color: var(--navy-900); justify-content: center; }
+  .start h2 { color: var(--white); }
+  .start p { color: #C3D0DE; }
+  .start .btn { align-self: flex-start; margin-top: 8px; }
+  .how { display: grid; grid-template-columns: 1fr 1.6fr; gap: 56px; }
+  .how > div { display: grid; gap: 14px; align-content: start; }
+  .how-list { padding-left: 1.2em; display: grid; gap: 18px; font-size: 1.05rem; }
+  .how-list li::marker { color: var(--gold-700); font-family: var(--serif); }
+  .disclaimer { margin-top: 48px; max-width: 80ch; }
+  .join { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+  @media (max-width: 860px) { .how { grid-template-columns: 1fr; } }
+</style>

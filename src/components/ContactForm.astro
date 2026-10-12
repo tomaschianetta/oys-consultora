@@ -1,0 +1,120 @@
+---
+// Formulario de contacto: Web3Forms (misma clave que el sitio anterior).
+// Anti-spam invisible: campo trampa "botcheck" + descarte de envíos hechos a los pocos segundos de cargar.
+// (Se quitó hCaptcha: generaba envíos fallidos por bloqueadores y tokens vencidos.)
+import { site } from '../data/site';
+import { services } from '../data/services';
+import { segments } from '../data/segments';
+interface Props { preselect?: string }
+const { preselect = '' } = Astro.props;
+---
+<form class="cform" data-cform novalidate>
+  <input type="hidden" name="access_key" value={site.web3formsKey} />
+  <input type="hidden" name="subject" value="Nueva consulta desde oysconsultora.com.ar" />
+  <input type="hidden" name="from_name" value="Web O&S Consultora" />
+  <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
+
+  <div class="row">
+    <label><span>Nombre y apellido *</span><input name="nombre" required autocomplete="name" /></label>
+    <label><span>Empresa</span><input name="empresa" autocomplete="organization" /></label>
+  </div>
+  <div class="row">
+    <label><span>Email *</span><input type="email" name="email" required autocomplete="email" /></label>
+    <label><span>Teléfono / WhatsApp</span><input type="tel" name="telefono" autocomplete="tel" /></label>
+  </div>
+  <div class="row">
+    <label><span>Soy…</span>
+      <select name="perfil">
+        <option value="">Elegí una opción</option>
+        {segments.map((s) => <option>{s.title}</option>)}
+        <option>Otro</option>
+      </select>
+    </label>
+    <label><span>Me interesa…</span>
+      <select name="servicio" data-service-select>
+        <option value="">Elegí un servicio</option>
+        {services.map((s) => <option value={s.title} selected={s.slug === preselect} data-slug={s.slug}>{s.title}</option>)}
+        <option>Diagnóstico general</option>
+      </select>
+    </label>
+  </div>
+  <label><span>Contanos brevemente qué necesitás *</span><textarea name="mensaje" rows="4" required></textarea></label>
+
+  <div class="actions">
+    <button type="submit" class="btn btn-gold" data-submit>Enviar consulta</button>
+    <p class="small note">Respondemos en menos de 24 horas hábiles.</p>
+  </div>
+  <p class="status" role="status" aria-live="polite" data-status></p>
+</form>
+
+<style>
+  .cform { display: grid; gap: 18px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  label { display: grid; gap: 7px; }
+  label span { font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--navy-700); }
+  input, select, textarea {
+    width: 100%; padding: 13px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white);
+    font-size: 16px; transition: border-color .2s, box-shadow .2s;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--navy-600); box-shadow: 0 0 0 3px rgba(31, 69, 112, .12); }
+  input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: #B3261E; }
+  textarea { resize: vertical; min-height: 120px; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+  .note { color: var(--muted); }
+  .status { font-size: 15px; min-height: 1.4em; }
+  .status.ok { color: #1E6B3A; }
+  .status.err { color: #B3261E; }
+  @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
+</style>
+
+<script define:vars={{ email: site.email }}>
+  const loadedAt = Date.now();
+  document.querySelectorAll('[data-cform]').forEach((form) => {
+    const status = form.querySelector('[data-status]');
+    const btn = form.querySelector('[data-submit]');
+
+    // Preseleccionar servicio desde ?servicio=<slug>
+    const slug = new URLSearchParams(location.search).get('servicio');
+    if (slug) {
+      const opt = form.querySelector(`[data-slug="${CSS.escape(slug)}"]`);
+      if (opt) opt.selected = true;
+    }
+
+    const setStatus = (html, kind) => { status.innerHTML = html; status.className = `status ${kind}`; };
+    const fallback = `Escribinos a <a href="mailto:${email}">${email}</a>.`;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const required = form.querySelectorAll('[required]');
+      let firstInvalid = null;
+      required.forEach((el) => {
+        const bad = !el.value.trim() || (el.type === 'email' && !el.checkValidity());
+        el.setAttribute('aria-invalid', String(bad));
+        if (bad && !firstInvalid) firstInvalid = el;
+      });
+      if (firstInvalid) { setStatus('Revisá los campos marcados.', 'err'); firstInvalid.focus(); return; }
+
+      // Un bot completa el formulario al instante; una persona tarda más de 3 segundos
+      if (Date.now() - loadedAt < 3000 || form.querySelector('[name="botcheck"]').checked) {
+        setStatus('¡Gracias! Recibimos tu consulta.', 'ok'); form.reset(); return;
+      }
+
+      const fd = new FormData(form);
+      fd.append('pagina', location.href);
+      btn.disabled = true; btn.textContent = 'Enviando…'; setStatus('', '');
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success) throw new Error(data.message || `Error ${res.status}`);
+        form.reset();
+        setStatus('¡Gracias! Recibimos tu consulta y te respondemos en menos de 24 horas hábiles.', 'ok');
+        window.dispatchEvent(new CustomEvent('lead', { detail: { form: 'contacto' } }));
+      } catch (err) {
+        console.error('Formulario de contacto:', err);
+        setStatus(`No pudimos enviar tu consulta (${err.message || 'error de conexión'}). ${fallback}`, 'err');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Enviar consulta';
+      }
+    });
+  });
+</script>
