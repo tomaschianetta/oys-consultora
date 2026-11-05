@@ -54,7 +54,7 @@ const steps = [
   <section class="hero on-dark">
     <HeroVideo />
     <div class="container hero-inner">
-      <p class="eyebrow">Estudio contable · Rosario · Desde hace más de 30 años</p>
+      <p class="eyebrow"><span class="eb-long">Estudio contable · Rosario · Desde hace más de 30 años</span><span class="eb-short">Estudio contable · Rosario · +30 años</span></p>
       <h1>Ordenamos tus números y te ayudamos a <em>crecer</em>.</h1>
       <div class="hero-ctas">
         <a href="/contacto/" class="btn btn-gold">Agendar diagnóstico sin cargo <Arrow /></a>
@@ -252,11 +252,19 @@ const steps = [
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 28px; }
   .hero > * { animation: rise .9s var(--ease) both; }
   .seg-label { margin-bottom: 20px; }
+  .eb-short { display: none; }
   @media (max-width: 700px) {
-    .hero-inner { padding-top: 112px; padding-bottom: 40px; gap: 22px; }
-    .hero-ctas { flex-direction: column; margin-bottom: 8px; }
-    .hero-ctas .btn { width: 100%; }
-    .hero .stat { padding: 20px 12px 0 0; }
+    .eb-long { display: none; }
+    .eb-short { display: inline; white-space: nowrap; }
+    .hero .eyebrow { letter-spacing: .1em; font-size: clamp(11px, 3.2vw, 12.5px); }
+    .hero { min-height: 100svh; }
+    .hero-inner { padding-top: 96px; padding-bottom: 28px; gap: 18px; }
+    .hero h1 { font-size: clamp(2.2rem, 10vw, 2.6rem); }
+    .hero-ctas { flex-direction: column; gap: 10px; margin-bottom: 0; }
+    .hero-ctas .btn { width: 100%; padding-block: 13px; }
+    .hero .stat { padding: 14px 12px 0 0; }
+    .hero .stat-value { font-size: 1.75rem; }
+    .hero .stat-label { font-size: 12.5px; margin-top: 6px; line-height: 1.4; }
   }
   @media (max-width: 960px) { .hero .stats { grid-template-columns: 1fr 1fr; } }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
