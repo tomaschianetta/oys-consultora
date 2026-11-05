@@ -1,8 +1,7 @@
 ---
 // Fondo del hero: montaje por rubro con fundido cruzado (3 s por rubro).
-// - Computadora con buena conexión: videos.
-// - Celular o conexión lenta: el mismo montaje con fotos (mucho más liviano).
-// - "Ahorro de datos": solo la primera foto, fija.
+// - Videos para todos (computadora y celular, cualquier conexión). Están recortados y comprimidos (~3 MB en total).
+// - "Ahorro de datos" activado: solo la primera foto, fija.
 // El montaje se pausa (y deja de descargar) cuando el inicio no está a la vista o la pestaña está oculta.
 import { heroRubros } from '../data/rubros';
 const clips = heroRubros.map((r) => ({ src: `/media/rubros/${r.id}.mp4`, poster: `/media/rubros/${r.id}.jpg`, label: r.label }));
@@ -39,26 +38,12 @@ const first = clips[0];
   if (root) {
     const clips: { src: string; poster: string; label: string }[] = JSON.parse(root.dataset.clips || '[]');
     const label = document.querySelector<HTMLElement>('[data-hv-label]');
-    const conn = (navigator as any).connection;
-    const saveData = conn?.saveData;
-    const slowNet = ['slow-2g', '2g', '3g'].includes(conn?.effectiveType);
-    const useVideo = !slowNet && matchMedia('(min-width: 701px)').matches;
+    const saveData = (navigator as any).connection?.saveData;
     const CLIP_MS = 3000; // tiempo en pantalla de cada rubro
     const FADE_MS = 800;
 
-    // Dos capas que se alternan: <video> en computadora, <img> en celular
-    const videos = [...root.querySelectorAll<HTMLVideoElement>('video')];
-    let layers: (HTMLVideoElement | HTMLImageElement)[] = videos;
-    if (!useVideo) {
-      videos.forEach((v) => v.remove());
-      layers = [0, 1].map(() => {
-        const img = document.createElement('img');
-        img.className = videos[0].className;
-        img.alt = '';
-        root.querySelector('.hv-shade')!.before(img);
-        return img;
-      });
-    }
+    // Dos <video> que se alternan
+    const layers = [...root.querySelectorAll<HTMLVideoElement>('video')];
 
     let front = 0; // capa visible
     let index = -1; // rubro visible
@@ -72,22 +57,18 @@ const first = clips[0];
       const el = layers[slot];
       ready[slot] = false;
       el.dataset.k = String(k);
-      if (el instanceof HTMLVideoElement) {
-        el.src = clips[k].src;
-        el.addEventListener('canplay', () => { ready[slot] = true; }, { once: true });
-        el.load();
-      } else {
-        el.addEventListener('load', () => { ready[slot] = true; }, { once: true });
-        el.src = clips[k].poster;
-      }
+      el.src = clips[k].src;
+      el.addEventListener('canplay', () => { ready[slot] = true; }, { once: true });
+      el.load();
     };
 
     const swap = () => {
       if (!active) return;
       const slot = 1 - front;
       const el = layers[slot];
-      if (!ready[slot]) { el.addEventListener(el instanceof HTMLVideoElement ? 'canplay' : 'load', swap, { once: true }); return; }
-      if (el instanceof HTMLVideoElement) { el.currentTime = 0; el.play().catch(() => {}); }
+      if (!ready[slot]) { el.addEventListener('canplay', swap, { once: true }); return; } // todavía cargando
+      el.currentTime = 0;
+      el.play().catch(() => {});
       el.classList.add('is-on');
       const prev = layers[front];
       prev.classList.remove('is-on');
@@ -98,7 +79,7 @@ const first = clips[0];
         setTimeout(() => { label.textContent = clips[index].label; label.style.opacity = '1'; }, 300);
       }
       // cuando termina el fundido, se pausa la capa anterior y se empieza a cargar el siguiente rubro
-      setTimeout(() => { if (prev instanceof HTMLVideoElement) prev.pause(); prepare((index + 1) % clips.length); }, FADE_MS + 50);
+      setTimeout(() => { prev.pause(); prepare((index + 1) % clips.length); }, FADE_MS + 50);
       clearTimeout(timer);
       timer = window.setTimeout(swap, CLIP_MS);
     };
@@ -107,9 +88,9 @@ const first = clips[0];
       if (on === active) return;
       active = on;
       const cur = layers[front];
-      if (!on) { clearTimeout(timer); if (cur instanceof HTMLVideoElement) cur.pause(); return; }
+      if (!on) { clearTimeout(timer); cur.pause(); return; }
       if (index < 0) { prepare(0); swap(); return; } // primer arranque
-      if (cur instanceof HTMLVideoElement) cur.play().catch(() => {});
+      cur.play().catch(() => {});
       timer = window.setTimeout(swap, CLIP_MS);
     };
 

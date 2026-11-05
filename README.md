@@ -26,8 +26,8 @@ Lo que queda vacío no se muestra (por ejemplo, sin número no aparece el botón
   Cada rubro se muestra 3 segundos, así que los videos van **recortados a 4 segundos y comprimidos**
   (1280×720, sin audio, ~150–600 KB cada uno). Ejemplo con ffmpeg:
   `ffmpeg -ss 1 -i original.mp4 -t 4 -an -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,fps=25" -c:v libx264 -preset slow -crf 30 -pix_fmt yuv420p -movflags +faststart rubro.mp4`
-  En computadora se ven los videos; en celular o con conexión lenta, las fotos (.jpg) con el mismo ritmo.
-  Con "ahorro de datos" queda solo la primera foto. El montaje se pausa cuando el inicio no está a la vista.
+  Los videos se ven en computadora y en celular, con cualquier conexión. Con "ahorro de datos" activado
+  queda solo la primera foto (.jpg). El montaje se pausa cuando el inicio no está a la vista.
 - **Video de Rosario:** no hay tomas gratuitas de Rosario, el Monumento ni el Paraná. Opciones: grabar con el
   celular (dron o toma estable desde la costanera), o comprar un clip en Shutterstock o Envato
   (buscá "Rosario Argentina drone"). Guardalo como `public/media/rubros/rosario.mp4` y `.jpg`, y agregá
