@@ -56,7 +56,6 @@ const steps = [
     <div class="container hero-inner">
       <p class="eyebrow">Estudio contable · Rosario · Desde hace más de 30 años</p>
       <h1>Ordenamos tus números y te ayudamos a <em>crecer</em>.</h1>
-      <p class="lede">Impuestos, sueldos, sociedades y gestión para pymes, profesionales y emprendedores. Un solo equipo, un abono fijo y alguien que conoce tu empresa del otro lado.</p>
       <div class="hero-ctas">
         <a href="/contacto/" class="btn btn-gold">Agendar diagnóstico sin cargo <Arrow /></a>
         <a href="/servicios/" class="btn btn-ghost">Ver servicios</a>
@@ -73,9 +72,10 @@ const steps = [
   <section class="section">
     <div class="container">
       <div class="section-head reveal">
-        <p class="eyebrow">Para quién trabajamos</p>
         <h2>Cada negocio tiene preguntas distintas. <em>Empecemos por la tuya.</em></h2>
+        <p class="lede">Impuestos, sueldos, sociedades y gestión para pymes, profesionales y emprendedores. Un solo equipo, un abono fijo y alguien que conoce tu empresa del otro lado.</p>
       </div>
+      <p class="eyebrow seg-label reveal">Para quién trabajamos</p>
       <div class="grid g-4">
         {segments.map((s, i) => (
           <a href={`/para-quien/${s.slug}/`} class="card seg reveal" style={`transition-delay:${i * 70}ms`}>
@@ -251,6 +251,14 @@ const steps = [
   .hero .lede { max-width: 56ch; }
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 28px; }
   .hero > * { animation: rise .9s var(--ease) both; }
+  .seg-label { margin-bottom: 20px; }
+  @media (max-width: 700px) {
+    .hero-inner { padding-top: 112px; padding-bottom: 40px; gap: 22px; }
+    .hero-ctas { flex-direction: column; margin-bottom: 8px; }
+    .hero-ctas .btn { width: 100%; }
+    .hero .stat { padding: 20px 12px 0 0; }
+  }
+  @media (max-width: 960px) { .hero .stats { grid-template-columns: 1fr 1fr; } }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
 
   /* Áreas de práctica */
