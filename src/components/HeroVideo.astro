@@ -1,7 +1,9 @@
 ---
-// Fondo del hero: montaje de videos por rubro con fundido cruzado (3 s por rubro).
-// Mientras se ve un video, el siguiente ya se va cargando en el otro <video>.
-// Se muestra a todos; solo con "ahorro de datos" activado queda la imagen fija.
+// Fondo del hero: montaje por rubro con fundido cruzado (3 s por rubro).
+// - Computadora con buena conexión: videos.
+// - Celular o conexión lenta: el mismo montaje con fotos (mucho más liviano).
+// - "Ahorro de datos": solo la primera foto, fija.
+// El montaje se pausa (y deja de descargar) cuando el inicio no está a la vista o la pestaña está oculta.
 import { heroRubros } from '../data/rubros';
 const clips = heroRubros.map((r) => ({ src: `/media/rubros/${r.id}.mp4`, poster: `/media/rubros/${r.id}.jpg`, label: r.label }));
 const first = clips[0];
@@ -36,56 +38,91 @@ const first = clips[0];
   const root = document.querySelector<HTMLElement>('[data-hv]');
   if (root) {
     const clips: { src: string; poster: string; label: string }[] = JSON.parse(root.dataset.clips || '[]');
-    const vids = [...root.querySelectorAll<HTMLVideoElement>('video')];
     const label = document.querySelector<HTMLElement>('[data-hv-label]');
-    const saveData = (navigator as any).connection?.saveData;
+    const conn = (navigator as any).connection;
+    const saveData = conn?.saveData;
+    const slowNet = ['slow-2g', '2g', '3g'].includes(conn?.effectiveType);
+    const useVideo = !slowNet && matchMedia('(min-width: 701px)').matches;
     const CLIP_MS = 3000; // tiempo en pantalla de cada rubro
     const FADE_MS = 800;
 
-    let front = 0; // índice del <video> visible
+    // Dos capas que se alternan: <video> en computadora, <img> en celular
+    const videos = [...root.querySelectorAll<HTMLVideoElement>('video')];
+    let layers: (HTMLVideoElement | HTMLImageElement)[] = videos;
+    if (!useVideo) {
+      videos.forEach((v) => v.remove());
+      layers = [0, 1].map(() => {
+        const img = document.createElement('img');
+        img.className = videos[0].className;
+        img.alt = '';
+        root.querySelector('.hv-shade')!.before(img);
+        return img;
+      });
+    }
+
+    let front = 0; // capa visible
     let index = -1; // rubro visible
     let timer: number | undefined;
+    let active = false; // inicio a la vista y pestaña visible
     const ready = [false, false];
 
-    // Carga el rubro k en el <video> oculto
+    // Carga el rubro k en la capa oculta
     const prepare = (k: number) => {
       const slot = 1 - front;
-      const v = vids[slot];
+      const el = layers[slot];
       ready[slot] = false;
-      v.src = clips[k].src;
-      v.dataset.k = String(k);
-      v.addEventListener('canplay', () => { ready[slot] = true; }, { once: true });
-      v.load();
+      el.dataset.k = String(k);
+      if (el instanceof HTMLVideoElement) {
+        el.src = clips[k].src;
+        el.addEventListener('canplay', () => { ready[slot] = true; }, { once: true });
+        el.load();
+      } else {
+        el.addEventListener('load', () => { ready[slot] = true; }, { once: true });
+        el.src = clips[k].poster;
+      }
     };
 
     const swap = () => {
+      if (!active) return;
       const slot = 1 - front;
-      const v = vids[slot];
-      if (!ready[slot]) { v.addEventListener('canplay', swap, { once: true }); return; } // todavía cargando
-      v.currentTime = 0;
-      v.play().catch(() => {});
-      v.classList.add('is-on');
-      const prev = vids[front];
+      const el = layers[slot];
+      if (!ready[slot]) { el.addEventListener(el instanceof HTMLVideoElement ? 'canplay' : 'load', swap, { once: true }); return; }
+      if (el instanceof HTMLVideoElement) { el.currentTime = 0; el.play().catch(() => {}); }
+      el.classList.add('is-on');
+      const prev = layers[front];
       prev.classList.remove('is-on');
       front = slot;
-      index = Number(v.dataset.k);
+      index = Number(el.dataset.k);
       if (label) {
         label.style.opacity = '0';
         setTimeout(() => { label.textContent = clips[index].label; label.style.opacity = '1'; }, 300);
       }
-      // cuando termina el fundido, el video anterior se pausa y empieza a cargar el siguiente
-      setTimeout(() => { prev.pause(); prepare((index + 1) % clips.length); }, FADE_MS + 50);
+      // cuando termina el fundido, se pausa la capa anterior y se empieza a cargar el siguiente rubro
+      setTimeout(() => { if (prev instanceof HTMLVideoElement) prev.pause(); prepare((index + 1) % clips.length); }, FADE_MS + 50);
+      clearTimeout(timer);
+      timer = window.setTimeout(swap, CLIP_MS);
+    };
+
+    const setActive = (on: boolean) => {
+      if (on === active) return;
+      active = on;
+      const cur = layers[front];
+      if (!on) { clearTimeout(timer); if (cur instanceof HTMLVideoElement) cur.pause(); return; }
+      if (index < 0) { prepare(0); swap(); return; } // primer arranque
+      if (cur instanceof HTMLVideoElement) cur.play().catch(() => {});
       timer = window.setTimeout(swap, CLIP_MS);
     };
 
     if (!saveData && clips.length) {
-      const start = () => { prepare(0); swap(); };
+      let inView = true;
+      let loaded = document.readyState === 'complete';
+      const update = () => setActive(loaded && inView && !document.hidden);
+      new IntersectionObserver(([e]) => { inView = e.isIntersecting; update(); }).observe(root);
+      // Respaldo por posición de scroll (algunos navegadores demoran el observer)
+      addEventListener('scroll', () => { inView = root.getBoundingClientRect().bottom > 0; update(); }, { passive: true });
+      document.addEventListener('visibilitychange', update);
       // arrancamos después de que cargó la página, para no competir con el contenido
-      if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) { clearTimeout(timer); vids[front].pause(); }
-        else if (index >= 0) { vids[front].play().catch(() => {}); timer = window.setTimeout(swap, CLIP_MS); }
-      });
+      if (loaded) update(); else addEventListener('load', () => { loaded = true; update(); }, { once: true });
     }
   }
 </script>
