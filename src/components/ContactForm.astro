@@ -1,5 +1,5 @@
 ---
-// Formulario de contacto: Web3Forms (misma clave que el sitio anterior).
+// Formulario de contacto: Web3Forms (mail) + copia en el portal del equipo (Supabase, pestaña "Consultas").
 // Anti-spam invisible: campo trampa "botcheck" + descarte de envíos hechos a los pocos segundos de cargar.
 // (Se quitó hCaptcha: generaba envíos fallidos por bloqueadores y tokens vencidos.)
 import { site } from '../data/site';
@@ -67,7 +67,7 @@ const { preselect = '' } = Astro.props;
   @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
 </style>
 
-<script define:vars={{ email: site.email }}>
+<script define:vars={{ email: site.email, sb: { url: site.supabaseUrl, key: site.supabaseAnonKey } }}>
   const loadedAt = Date.now();
   document.querySelectorAll('[data-cform]').forEach((form) => {
     const status = form.querySelector('[data-status]');
@@ -102,10 +102,26 @@ const { preselect = '' } = Astro.props;
       const fd = new FormData(form);
       fd.append('pagina', location.href);
       btn.disabled = true; btn.textContent = 'Enviando…'; setStatus('', '');
+      // Se envía por dos caminos a la vez: mail (Web3Forms) y registro en el portal del equipo.
+      // Alcanza con que uno funcione para que la consulta no se pierda.
+      const v = (k) => String(fd.get(k) || '');
+      const porMail = fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd })
+        .then(async (res) => { const data = await res.json().catch(() => ({})); if (!res.ok || !data.success) throw new Error(data.message || `Error ${res.status}`); });
+      const alPortal = sb.url && sb.key
+        ? fetch(`${sb.url}/rest/v1/rpc/registrar_consulta`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', apikey: sb.key, Authorization: `Bearer ${sb.key}` },
+            body: JSON.stringify({
+              p_nombre: v('nombre'), p_email: v('email'), p_mensaje: v('mensaje'), p_empresa: v('empresa'),
+              p_telefono: v('telefono'), p_perfil: v('perfil'), p_servicio: v('servicio'), p_pagina: v('pagina'),
+            }),
+          }).then(async (res) => { if (!res.ok) throw new Error(`Portal ${res.status}: ${(await res.text()).slice(0, 200)}`); })
+        : Promise.reject(new Error('Portal sin configurar'));
       try {
-        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok || !data.success) throw new Error(data.message || `Error ${res.status}`);
+        const [mail, portal] = await Promise.allSettled([porMail, alPortal]);
+        if (mail.status === 'rejected') console.error('Formulario (mail):', mail.reason);
+        if (portal.status === 'rejected') console.error('Formulario (portal):', portal.reason);
+        if (mail.status === 'rejected' && portal.status === 'rejected') throw mail.reason;
         form.reset();
         setStatus('¡Gracias! Recibimos tu consulta y te respondemos en menos de 24 horas hábiles.', 'ok');
         window.dispatchEvent(new CustomEvent('lead', { detail: { form: 'contacto' } }));

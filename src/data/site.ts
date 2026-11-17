@@ -28,6 +28,12 @@ export const site = {
   // Formulario de contacto (misma clave que el sitio anterior; es pública por diseño)
   web3formsKey: '5e30e739-c017-48c9-816b-e841ed7cdaa9',
 
+  // Copia de cada consulta en el portal del equipo (pestaña "Consultas").
+  // La clave "anon" es pública por diseño: solo permite registrar consultas nuevas
+  // (ver portal-oys-app/supabase/consultas.sql).
+  supabaseUrl: 'https://aerfatduidqwimriwkjr.supabase.co',
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlcmZhdGR1aWRxd2ltcml3a2pyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MDM5NTEsImV4cCI6MjEwMTQ3OTk1MX0.bzclhIIme7Bpr3Tf7CkxM4r1_UH_sdBvvnj8lwJL1IM',
+
   // TODO: token de Cloudflare Web Analytics (Cloudflare → Analytics → Web Analytics).
   cfAnalyticsToken: '',
 
